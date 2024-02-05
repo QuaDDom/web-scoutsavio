@@ -9,10 +9,10 @@ export const Nav = () => {
         <img src="" alt="" />
       </div>
       <div className="sites">
-        <p></p>
-        <p></p>
-        <p></p>
-        <p></p>
+        <p>Quiénes somos</p>
+        <p>Secciones</p>
+        <p>Galería</p>
+        <p>Contacto</p>
       </div>
     </nav>
   </div>
