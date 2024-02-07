@@ -3,11 +3,63 @@
     top: 0;
     left: 0;
     right: 0;
+    color: #fff !important;
+    background: #101d28;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
     .nav{
         height: 50px;
-        .sites {
+        display: flex;
+        justify-content: space-between;
+        height: 10vh;
+        align-items: center;      
+        width: 95%;
+        .logo {
+            font-size: 20px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            h3 {
+                color: #fff;
+                padding-left: 5.5px;
+            }
+        }
+        a {
+            text-decoration: none;
+        }
+        .sites {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            width: 75%;
+            .link {
+                text-decoration: none;
+                color: #b2c4d0;
+                list-style: none;
+                font-size: 1.1em;
+                text-transform: capitalize;
+                margin: 0 15px;
+                transition: 0.3s;
+                position: relative;
+                &:hover {
+                    color: #fff;
+                }
+                &::before {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    width: 0;
+                    height: 2px;
+                    background: #fff;
+                    transition: 0.3s;
+                    transform-origin: left;
+                }
+                &:hover::before{
+                    width: 100%;
+                }
+            }
         }
     }
 }

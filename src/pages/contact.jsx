@@ -1,11 +1,10 @@
 import React from 'react';
-import '../styles/guide.scss';
 import { PageContainer } from '../components/PageContainer';
 
-export const Guide = () => {
+export const Contact = () => {
   return (
     <PageContainer>
-      <h1>Guide</h1>
+      <h1>Contact</h1>
     </PageContainer>
   );
 };
