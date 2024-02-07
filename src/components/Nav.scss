@@ -17,6 +17,16 @@
         height: 10vh;
         align-items: center;      
         width: 95%;
+        .mobileMenuBtn {
+            border: none;
+            background: none;
+            outline: none;
+            font-size: 28px;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
         .logo {
             font-size: 20px;
             display: flex;
@@ -30,11 +40,42 @@
         a {
             text-decoration: none;
         }
+        .sitesMobile {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 10vh;
+            width: 100%;
+            background: #101d28;
+            .link {
+                text-decoration: none;
+                color: #b2c4d0;
+                list-style: none;
+                font-size: 1.1em;
+                text-transform: capitalize;
+                width: 95%;
+                transition: 0.3s;
+                position: relative;
+                margin: 0 19px;
+                height: 50px;
+            }
+        }
         .sites {
             display: flex;
             justify-content: flex-end;
             align-items: center;
             width: 75%;
+            &.mobile{
+                display: block;
+                position: absolute;
+                list-style: none; 
+                left: 0;
+                top: 10%;
+                transition: 0.3s;
+            }
             .link {
                 text-decoration: none;
                 color: #b2c4d0;
@@ -64,3 +105,4 @@
         }
     }
 }
+
