@@ -37,7 +37,7 @@ export const Nav = () => {
               <li className="link">Quiénes somos</li>
             </Link>
             <Link to="/guide">
-              <li className="link">Secciones</li>
+              <li className="link">Guía</li>
             </Link>
             <Link to="/gallery">
               <li className="link">Galería</li>

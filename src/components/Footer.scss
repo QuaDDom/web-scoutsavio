@@ -1,0 +1,44 @@
+.footer {
+    background-color:  #101d28;
+    color: #fff;
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 150px;
+    width: 100%;
+
+    .container {
+      width: 93%;
+      margin: 0 auto;
+  
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+  
+        .col-md-12 {
+          flex: 1 1 100%;
+  
+          p {
+            margin-bottom: 10px;
+          }
+  
+          ul {
+            list-style: none;
+            padding: 0;
+  
+            li {
+              margin-bottom: 5px;
+  
+              &:before {
+                content: "•";
+                margin-right: 10px;
+                color: #ccc;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  

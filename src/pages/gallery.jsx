@@ -12,6 +12,8 @@ import img7 from '../assets/galleryimages/img7.jpg';
 import img8 from '../assets/galleryimages/img8.jpg';
 import img9 from '../assets/galleryimages/img9.jpg';
 import img10 from '../assets/galleryimages/img10.jpg';
+import img11 from '../assets/galleryimages/img11.jpg';
+import img12 from '../assets/galleryimages/img12.jpg';
 
 let data = [
   { id: 1, imgSrc: img1, title: 'example' },
@@ -23,7 +25,9 @@ let data = [
   { id: 7, imgSrc: img7, title: 'example' },
   { id: 8, imgSrc: img8, title: 'example' },
   { id: 9, imgSrc: img9, title: 'example' },
-  { id: 10, imgSrc: img10, title: 'example' }
+  { id: 10, imgSrc: img10, title: 'example' },
+  { id: 11, imgSrc: img11, title: 'example' },
+  { id: 12, imgSrc: img12, title: 'example' }
 ];
 
 export const Gallery = () => {

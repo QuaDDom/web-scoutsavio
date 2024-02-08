@@ -1,9 +1,10 @@
 .pageContainer {
     padding-top: 14vh;
     width: 100%;
+    min-height: 100vh;
     display: flex;
-    align-items: center;
     justify-content: center;
+    background: #fff;
     .page{
         width: 95%;
     }

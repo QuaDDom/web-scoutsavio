@@ -3,8 +3,8 @@
     top: 0;
     left: 0;
     right: 0;
-    color: #fff !important;
-    background: #101d28;
+    color: #fff;
+    background: #121b23;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -91,7 +91,7 @@
                 &::before {
                     content: '';
                     position: absolute;
-                    bottom: 2px;
+                    bottom: 0px;
                     width: 0;
                     height: 2.1px;
                     background: #fff;
