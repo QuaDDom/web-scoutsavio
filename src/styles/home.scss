@@ -4,7 +4,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-
     img {
         width: 100%;
         height: 100vh;
@@ -14,7 +13,7 @@
         left: 0;
         bottom: 0;
         right: 0;
-        filter: brightness(.5);
+        filter: brightness(.4);
         background-size: cover;
         object-fit: cover;
     }
@@ -27,10 +26,13 @@
         h1 {
             font-size: 3em;
             color: #fff;
+            text-align: center;
+            font-weight: 700;
         }
         button {
             border: 5px solid #fff;
-            background: transparent;
+            background: #ffffff10;
+            backdrop-filter: blur(10px);
             color: #fff;
             outline: none;
             font-size: 1.4em;

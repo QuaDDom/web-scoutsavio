@@ -49,7 +49,7 @@ export const Nav = () => {
         ) : (
           <>
             {open && (
-              <ul className={`sitesMobile`}>
+              <ul className={`sitesMobile`} onClick={handleClick}>
                 <Link to="/about">
                   <li className="link">Quiénes somos</li>
                 </Link>

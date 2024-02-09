@@ -14,14 +14,7 @@ export const Home = () => {
           <button>Únete a la aventura</button>
         </div>
       </div>
-      <main>
-        <p>
-          El escultismo potencia el desarrollo integral de los jóvenes, guiándolos hacia su máximo
-          potencial individual. Fortalecemos su carácter, fomentamos la ciudadanía y cultivamos sus
-          cualidades espirituales, sociales, mentales y físicas. ¡Bienvenido a nuestra comunidad
-          scout, donde crecemos juntos para ser líderes y ciudadanos comprometidos!
-        </p>
-      </main>
+      <main></main>
       <Footer />
     </PageContainer>
   );

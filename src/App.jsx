@@ -10,6 +10,7 @@ import { About } from './pages/about';
 import { Specialties } from './components/Guide/Specialties';
 import { Progressions } from './components/Guide/Progressions';
 import { Branches } from './components/Guide/Branches';
+import { Button } from '@nextui-org/react';
 import { NotFound } from './components/Errors/NotFound';
 
 function App() {
