@@ -1,10 +1,12 @@
+@import '../App.scss';
+
 .navContainer {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     color: #fff;
-    background: #121b23;
+    background: $main;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,7 +51,7 @@
             right: 0;
             top: 10vh;
             width: 100%;
-            background: #121b23;
+            background: $main;
             .link {
                 text-decoration: none;
                 color: #b2c4d0;
