@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { PageContainer } from '../components/PageContainer';
-import { Button, Input } from '@nextui-org/react';
+import { Button, Input, Textarea } from '@nextui-org/react';
 import '../styles/contact.scss';
 
 export const Contact = () => {
@@ -66,7 +66,7 @@ const ContactForm = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <Input
+          <Textarea
             label="Mensaje"
             type="textarea"
             className="input"
