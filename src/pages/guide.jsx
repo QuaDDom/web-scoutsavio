@@ -3,9 +3,7 @@ import '../styles/guide.scss';
 import { PageContainer } from '../components/PageContainer';
 import { GuideCards } from '../components/GuideCards';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { Specialties } from '../components/Guide/Specialties';
-import { Progressions } from '../components/Guide/Progressions';
-import { Branches } from '../components/Guide/Branches';
+import { Title } from '../components/Useless/Title';
 
 export const Guide = () => {
   const { pathname } = useLocation();
@@ -13,6 +11,7 @@ export const Guide = () => {
   if (pathname === '/guide') {
     return (
       <PageContainer>
+        <Title>Guía</Title>
         <div className="cardsContainer">
           <Link to="/guide/specialties">
             <GuideCards

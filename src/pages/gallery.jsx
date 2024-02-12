@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import '../styles/gallery.scss';
 import { PageContainer } from '../components/PageContainer';
+import { Title } from '../components/Useless/Title';
 import img1 from '../assets/galleryimages/img1.jpg';
 import img2 from '../assets/galleryimages/img2.jpg';
 import img3 from '../assets/galleryimages/img3.jpg';
@@ -33,7 +34,7 @@ let data = [
 export const Gallery = () => {
   return (
     <PageContainer>
-      <h1>Gallery</h1>
+      <Title>Galería Scout</Title>
       <div className="gallery">
         {data.map(({ id, imgSrc }, index) => (
           <GalleryImage id={id} imgSrc={imgSrc} key={id} />
