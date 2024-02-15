@@ -89,13 +89,13 @@ a {
 
 .link {
     text-decoration: none;
- 
     list-style: none;
-    font-size: 1.1em;
+    font-size: 1.11em;
     text-transform: capitalize;
     margin: 0 15px;
     transition: 0.3s;
     position: relative;
+    font-weight: 500;
     &:hover {
         color: #fff;
     }
