@@ -10,7 +10,7 @@ export const Branches = () => {
   return (
     <div>
       <h2 className="title text-5xl font-bold">Ramas</h2>
-      <div className="cardsContainer">
+      <div className="branchCardsContainer">
         <BranchCard
           rama="Manada"
           img={imgManada}

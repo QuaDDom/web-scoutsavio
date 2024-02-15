@@ -99,7 +99,7 @@ export const Nav = () => {
           onClick={handleChangeTheme}
           defaultSelected
           size="lg"
-          color="secondary"
+          color="danger"
           thumbIcon={({ isSelected, className }) =>
             theme === 'light' ? (
               <MdLightMode className={className} />

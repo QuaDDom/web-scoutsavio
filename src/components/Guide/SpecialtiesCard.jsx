@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Image, CardBody, Button, Slider } from '@nextui-org/react';
 
-export const BranchCard = ({ img, rama, edades, enfoques, objetivos }) => {
+export const SpecialtiesCard = ({ img, rama, edades, enfoques, objetivos }) => {
   return (
     <Card className=" dark:bg-default-100/50 w-[80%] p-5">
       <CardBody>
@@ -21,7 +21,7 @@ export const BranchCard = ({ img, rama, edades, enfoques, objetivos }) => {
               <h4 className="font-bold text-lg">Enfoque:</h4>
               <div>
                 {enfoques.map((e) => (
-                  <p key={e}>{e}</p>
+                  <p>{e}</p>
                 ))}
               </div>
             </div>
@@ -29,7 +29,7 @@ export const BranchCard = ({ img, rama, edades, enfoques, objetivos }) => {
               <h4 className="font-bold text-lg">Objetivos:</h4>
               <div>
                 {objetivos.map((e) => (
-                  <p key={e}>{e}</p>
+                  <p>{e}</p>
                 ))}
               </div>
             </div>
