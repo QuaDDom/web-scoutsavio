@@ -15,6 +15,17 @@ import img9 from '../assets/galleryimages/img9.jpg';
 import img10 from '../assets/galleryimages/img10.jpg';
 import img11 from '../assets/galleryimages/img11.jpg';
 import img12 from '../assets/galleryimages/img12.jpg';
+import { Popover, PopoverTrigger, PopoverContent, Button, Tooltip } from '@nextui-org/react';
+import { FaQuestionCircle } from 'react-icons/fa';
+import {
+  Image,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure
+} from '@nextui-org/react';
 
 let data = [
   { id: 1, imgSrc: img1, title: 'example' },
@@ -34,7 +45,26 @@ let data = [
 export const Gallery = () => {
   return (
     <PageContainer>
-      <Title>Galería Scout</Title>
+      <div className="headerContainer">
+        <Title>Galería Scout</Title>
+        <Tooltip
+          placement="left"
+          showArrow={true}
+          backdrop="opaque"
+          className="popover"
+          content={
+            <div className="px-1 py-2 w-[250px]">
+              <div className="text-lg font-bold">¿Qué es la galería Scout?</div>
+              <div className="text-small">
+                Aquí se muestran y se subirán fotos de los campamentos y actividades scout
+              </div>
+            </div>
+          }>
+          <button className="aboutButton">
+            <FaQuestionCircle />
+          </button>
+        </Tooltip>
+      </div>
       <div className="gallery">
         {data.map(({ id, imgSrc }, index) => (
           <GalleryImage id={id} imgSrc={imgSrc} key={id} />
@@ -45,21 +75,33 @@ export const Gallery = () => {
 };
 
 const GalleryImage = ({ id, imgSrc }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const handleClick = () => setIsOpen(!isOpen);
   return (
     <>
-      <div className="pics" onClick={handleClick}>
-        <img src={imgSrc} alt={id} style={{ width: '100%' }} />
-      </div>
-      {isOpen && (
-        <div className={`imgOpen ${isOpen && 'isOpen'}`} onClick={handleClick}>
-          <div className="imgContainer">
-            <img src={imgSrc} alt={id} style={{ width: '100%' }} />
-          </div>
-        </div>
-      )}
+      <Image
+        className="pics"
+        onClick={onOpen}
+        isBlurred
+        width="100%"
+        src={imgSrc}
+        alt={id}
+        classNames="m-5"
+      />
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="xl">
+        <ModalContent>
+          <ModalHeader className="flex flex-col gap-1">Titulo de imagen</ModalHeader>
+          <ModalBody>
+            <Image isBlurred width="100%" src={imgSrc} alt={id} />
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onPress={onClose}>
+              Descargar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };

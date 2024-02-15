@@ -1,3 +1,30 @@
+.headerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    .aboutButton {
+        font-size: 2em;
+        position: absolute;
+ 
+        right: 50px;
+        bottom: 10px;
+        height: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        background: none ;
+        border: none ;
+        outline: none;
+        transition: .3s;
+        &:hover {
+            color: #8e8e8e;
+        }
+    }
+    .popover {
+        max-width: 100px !important;
+    }
+}
 .gallery {
     column-count: 3;
     column-width: 33%;
@@ -7,8 +34,9 @@
         transition: 0.3s;
         margin-bottom: 12px;
         cursor: pointer;
+        overflow: hidden;
         &:hover {
-            opacity: 0.8;
+            filter: brightness(1.2);
         }
     }
     .imgOpen {

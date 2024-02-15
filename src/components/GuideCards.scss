@@ -5,12 +5,13 @@
     overflow: hidden;
     position: relative;
     cursor: pointer;
-    margin-right: 50px;
+    margin: 0 25px;
+    margin-top: 50px;
     display: inline-block;
     &:hover {
         img {
             transform: scale(1.1);
-            filter: brightness(0.8);
+            filter: brightness(1);
         }
     }
     img {
@@ -24,7 +25,7 @@
         background-size: contain;
         object-fit: cover;
         transition: 0.3s;
-        filter: brightness(0.7);
+        filter: brightness(0.8);
     }
     .content {
         position: absolute;

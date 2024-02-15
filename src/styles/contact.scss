@@ -14,19 +14,18 @@
     right: 0;
     h2{
         font-weight: 600;
-        color: #fff;
-        font-size: 1.4em;
+        font-size: 1.5em;
     }
     .contactForm {
         width: 40vw;
-        height: 550px;
+        min-height: 560px;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
         border-radius: 30px;
-        background: $main2;
-        padding: 0px 50px;
+        padding: 50px;
+        margin-top: 50px;
         .inputContainer {
             width: 100%;
         }
