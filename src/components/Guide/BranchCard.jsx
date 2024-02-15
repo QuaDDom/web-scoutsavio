@@ -1,24 +1,38 @@
 import React from 'react';
 import { Card, Image, CardBody, Button, Slider } from '@nextui-org/react';
 
-export const BranchCard = () => {
+export const BranchCard = ({ img, rama, edades, enfoques, objetivos }) => {
   return (
-    <Card className=" dark:bg-default-100/50 max-w-[810px]">
+    <Card className=" dark:bg-default-100/50 w-[80%]">
       <CardBody>
-        <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4 items-center justify-center">
-          <div className="relative col-span-6 md:col-span-4">
-            <Image
-              isBlurred
-              width={200}
-              src="https://antranik.com.ar/wp-content/uploads/elementor/thumbs/unnamed-p7p8t6kl9jl80fjooloawjkc78bih9v9y8bykhha60.jpg"
-            />
+        <div className="grid grid-cols-2 md:grid-cols-12 items-center justify-center">
+          <div className="relative col-span-6 md:col-span-3">
+            <Image isBlurred width={200} src={img} />
           </div>
-          <div className="flex flex-col col-span-6 md:col-span-8">
-            <h3 className="text-2xl font-bold">Manada</h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat eveniet ad iure
-              dolores sint veniam sequi dolorum molestiae, vitae quis.
-            </p>
+          <div className="flex flex-col col-span-6 md:col-span-8 gap-5">
+            <h3 className="text-3xl font-bold">{rama}</h3>
+            <div>
+              <h4 className="font-bold text-lg">Edades</h4>
+              <div>
+                <p>{edades}</p>
+              </div>
+            </div>
+            <div>
+              <h4 className="font-bold text-lg">Enfoque</h4>
+              <div>
+                {enfoques.map((e) => (
+                  <p>{e}</p>
+                ))}
+              </div>
+            </div>
+            <div>
+              <h4 className="font-bold text-lg">Objetivos</h4>
+              <div>
+                {objetivos.map((e) => (
+                  <p>{e}</p>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </CardBody>
