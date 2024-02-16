@@ -12,6 +12,7 @@ import { Progressions } from './components/Guide/Progressions';
 import { Branches } from './components/Guide/Branches';
 import { Button } from '@nextui-org/react';
 import { NotFound } from './components/Errors/NotFound';
+import './index.css';
 
 function App() {
   return (

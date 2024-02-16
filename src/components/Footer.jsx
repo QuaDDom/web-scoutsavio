@@ -1,5 +1,6 @@
 import React from 'react';
 import './Footer.scss';
+import { Card, CardBody } from '@nextui-org/react';
 
 export const Footer = () => {
   return (
