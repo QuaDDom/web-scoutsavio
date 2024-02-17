@@ -97,7 +97,6 @@ export const Nav = () => {
       <NavbarContent justify="end">
         <Switch
           onClick={handleChangeTheme}
-          defaultSelected
           size="lg"
           color="danger"
           thumbIcon={({ isSelected, className }) =>

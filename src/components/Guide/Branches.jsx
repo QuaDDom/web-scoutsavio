@@ -14,7 +14,7 @@ export const Branches = () => {
         <BranchCard
           rama="Manada"
           img={imgManada}
-          edades={'De 6 a 11 años.'}
+          edades={'De 7 a 11 años.'}
           objetivos={[
             'Fomento de la amistad, el compañerismo y el respeto por la naturaleza.',
             'Introducción a la Ley y Promesa Scout.'

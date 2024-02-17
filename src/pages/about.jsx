@@ -24,7 +24,7 @@ export const About = () => {
                   <div className="relative col-span-6 md:col-span-3">
                     <Image src={imgWalle} alt="" width="250px" className="cardImage" />
                   </div>
-                  <div className="flex flex-col col-span-6 md:col-span-8 gap-8">
+                  <div className="flex flex-col col-span-6 md:col-span-8 gap-5">
                     <h3 className="font-bold text-3xl">Historia</h3>
                     <p>
                       El grupo Scout Gral Manuel Nicolás Savio nace en marzo de 1982, de la mano de
@@ -57,6 +57,7 @@ export const About = () => {
                       voluntarios que creen en el potencial de cada chico, chica y jóven de nuestra
                       comunidad.
                     </p>
+                    <p></p>
                   </div>
                 </div>
               </CardBody>
