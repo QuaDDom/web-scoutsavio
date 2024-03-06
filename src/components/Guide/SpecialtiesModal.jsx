@@ -13,26 +13,29 @@ import {
   Chip
 } from '@nextui-org/react';
 
-export const SpecialtiesCard = ({ img, specialtie, color, colorname, about }) => {
+export const SpecialtiesModal = ({ img, specialtie, color, colorname, about }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-
-  const handleClick = () => setIsOpen(!isOpen);
 
   return (
     <>
-      <Card className=" dark:bg-default-100/50 w-[350px] p-5" onClick={handleClick}>
-        <CardBody>
-          <Image isBlurred src={img} alt={especialidad} />
-          <p>{especialidad}</p>
+      <Card className="w-[200px]">
+        <CardBody onClick={onOpen}>
+          <Image isBlurred src={img} alt={specialtie} />
         </CardBody>
       </Card>
-      <Modal backdrop="blur" isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
         <ModalContent>
           <ModalHeader className="flex flex-col gap-1 text-2xl">{specialtie}</ModalHeader>
           <ModalBody>
-            <Image isBlurred src={img} alt={especialidad} />
-            <Chip color={color}>Color representativo: {colorname}</Chip>
-            <p>{info}</p>
+            <Image isBlurred src={img} alt={specialtie} width={'200px'} />
+            <Chip
+              classNames={{
+                base: `bg-${color}`,
+                content: 'text-black'
+              }}>
+              Color representativo: {colorname}
+            </Chip>
+            <p>{about}</p>
           </ModalBody>
         </ModalContent>
       </Modal>

@@ -77,7 +77,6 @@ export const Gallery = () => {
 const GalleryImage = ({ id, imgSrc }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
-  const handleClick = () => setIsOpen(!isOpen);
   return (
     <>
       <Image
