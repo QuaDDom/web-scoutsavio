@@ -39,7 +39,7 @@ export const Nav = () => {
   }, []);
 
   return (
-    <Navbar className="navContainer">
+    <Navbar className="navContainer" maxWidth="xl">
       <NavbarBrand className="logo">
         <Link to="/" className="logo">
           <img
@@ -55,22 +55,22 @@ export const Nav = () => {
         {!mobile ? (
           <>
             <NavbarItem>
-              <Link to="/about">
+              <Link to="/sobre">
                 <li className="link">Quiénes somos</li>
               </Link>
             </NavbarItem>
             <NavbarItem>
-              <Link to="/guide">
+              <Link to="/guia">
                 <li className="link">Guía</li>
               </Link>
             </NavbarItem>
             <NavbarItem>
-              <Link to="/gallery">
+              <Link to="/galeria">
                 <li className="link">Galería</li>
               </Link>
             </NavbarItem>
             <NavbarItem>
-              <Link to="/contact">
+              <Link to="/contacto">
                 <li className="link">Contacto</li>
               </Link>
             </NavbarItem>
@@ -79,16 +79,16 @@ export const Nav = () => {
           <>
             {open && (
               <ul className={`sitesMobile`} onClick={handleClick}>
-                <Link to="/about">
+                <Link to="/sobre">
                   <li className="link">Quiénes somos</li>
                 </Link>
-                <Link to="/guide">
+                <Link to="/guia">
                   <li className="link">Secciones</li>
                 </Link>
-                <Link to="/gallery">
+                <Link to="/galeria">
                   <li className="link">Galería</li>
                 </Link>
-                <Link to="/contact">
+                <Link to="/contacto">
                   <li className="link">Contacto</li>
                 </Link>
               </ul>

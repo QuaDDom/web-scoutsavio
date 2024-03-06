@@ -6,7 +6,7 @@ import './PageContainer.scss';
 export const PageContainer = ({ children }) => {
   return (
     <div className="pageContainer">
-      <div className="page">{children}</div>
+      <div className="w-5/6">{children}</div>
     </div>
   );
 };

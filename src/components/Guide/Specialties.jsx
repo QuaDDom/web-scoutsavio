@@ -3,7 +3,7 @@ import React from 'react';
 export const Specialties = () => {
   return (
     <div>
-      <h2 className="text-4xl font-bold">Especialidades</h2>
+      <h2 className="title text-5xl font-bold">Especialidades</h2>
       <div>
         <h4 className="text-2xl font-bold">¿Qué es una especialidad?</h4>
         <p>

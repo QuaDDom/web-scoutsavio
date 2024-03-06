@@ -11,26 +11,26 @@ import imgEspecialidades from '../assets/guideimages/especialidades.png';
 export const Guide = () => {
   const { pathname } = useLocation();
 
-  if (pathname === '/guide') {
+  if (pathname === '/guia') {
     return (
       <PageContainer>
         <Title>Guía</Title>
         <div className="cardsContainer">
-          <Link to="/guide/specialties">
+          <Link to="/guia/specialties">
             <GuideCards
               img={imgEspecialidades}
               title="Especialidades"
               description="Áreas específicas para desarrollar habilidades y enriquecer la experiencia scout."
             />
           </Link>
-          <Link to="/guide/progressions">
+          <Link to="/guia/progressions">
             <GuideCards
               img={imgProgresiones}
               title="Progresiones"
               description="Sendero de desarrollo gradual que impulsa el crecimiento y la adquisición de habilidades clave en la experiencia scout."
             />
           </Link>
-          <Link to="/guide/branches">
+          <Link to="/guia/branches">
             <GuideCards
               img={imgPertenencia}
               title="Ramas"
