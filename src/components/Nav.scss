@@ -78,11 +78,19 @@ a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    transition: 0.3s;
     .logoTitle {
         padding-left: 5.5px;
         font-size: 1.3em;
         font-weight: 700;
+    }
+    .savioLogo{
+        margin-right: 5px;
+        background-size: cover;
+        object-fit: cover;
+    }
+    &:hover {
+        filter: opacity(0.85);
     }
 }
 

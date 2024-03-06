@@ -16,6 +16,7 @@ import {
   Link as LinkContainer
 } from '@nextui-org/react';
 import { useTheme } from 'next-themes';
+import whiteLogo from '../assets/logo/whitelogo.png';
 
 export const Nav = () => {
   const [mobile, setMobile] = useState(false);
@@ -41,7 +42,13 @@ export const Nav = () => {
     <Navbar className="navContainer">
       <NavbarBrand className="logo">
         <Link to="/" className="logo">
-          <h3 className="logoTitle"> G.S Savio</h3>
+          <img
+            src={whiteLogo}
+            alt="Grupo Scout Savio - Logo"
+            width={'40px'}
+            className="savioLogo"
+          />
+          <h3 className="logoTitle"> Savio</h3>
         </Link>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="end">
