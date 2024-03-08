@@ -3,7 +3,7 @@ import { Card, Image, CardBody, Button, Slider } from '@nextui-org/react';
 
 export const BranchCard = ({ img, rama, edades, enfoques, objetivos }) => {
   return (
-    <Card className=" dark:bg-default-100/50 w-[80%] p-5">
+    <Card className=" dark:bg-default-100/50 w-[100%] p-5">
       <CardBody>
         <div className="grid grid-cols-2 md:grid-cols-12 items-center justify-center">
           <div className="relative col-span-6 md:col-span-3">

@@ -10,10 +10,10 @@ import servicio from '../../assets/specialties/servicio.png';
 export const Specialties = () => {
   return (
     <div>
-      <h2 className="title text-5xl font-bold">Especialidades</h2>
+      <h2 className="title text-5xl font-bold pb-10">Especialidades</h2>
       <div>
-        <h4 className="text-2xl font-bold">¿Qué es una especialidad?</h4>
-        <p>
+        <h4 className="text-2xl font-medium pb-2">¿Qué es una especialidad?</h4>
+        <p className="text-gray-400">
           Una especialidad, es el conocimiento o habilidad particular, que se posee sobre una
           determinada materia. La especialidad scout, se origina y se desarrolla, según los
           intereses de cada uno de los chicos y chicas. Para llegar a dominarla, hace falta
@@ -23,20 +23,20 @@ export const Specialties = () => {
       </div>
       <br />
       <div>
-        <h4 className="text-2xl font-bold">¿Quiénes pueden realizar la especialidad?:</h4>
-        <p>
+        <h4 className="text-2xl font-medium pb-2">¿Quiénes pueden realizar la especialidad?:</h4>
+        <p className="text-gray-400">
           Cualquier chico/a, una vez hecho su ingreso a su rama puede solicitar iniciarse en alguna
           especialidad. No necesita haber formulado su promesa, ni haber adquirido insignia de etapa
           alguna.
         </p>
-        <p>
-          <span className="font-bold">Único requisito:</span> Querer realizarla
+        <p className="text-gray-400">
+          <span className="font-bold text-gray-300">Único requisito:</span> Querer realizarla
         </p>
       </div>
       <br />
-      <div>
-        <h4 className="text-2xl font-bold">Descripción de la insignia:</h4>
-        <p>
+      <div className="pb-10">
+        <h4 className="text-2xl font-medium pb-2">Descripción de la insignia:</h4>
+        <p className="text-gray-400">
           Todos los parches tendrán el fondo de color arena como la camisa del Uniforme Scout. El
           color de los bordes (interior y exterior) variará dependiendo del color del campo. En su
           interior, lleva un icono que representa el campo al cual pertenece. (Exceptuando la de
@@ -75,7 +75,7 @@ export const Specialties = () => {
           img={servicio}
           specialtie="Servicio a los demás"
           color="red"
-          colorname="blanco"
+          colorname="Rojo"
           about="Este campo comprende lo relacionado al trabajo comunitario y la solidaridad.
         Este campo abarca especialidades como Bombero, Civismo, Coleccionismo, Defensa Civil, Dentista, Guardacostas, Guardavidas, Guía, Intérprete, Primeros Auxilios, Puericultura, Radio operador, Seguridad, Señalización, Servicio Comunitario, Tránsito, Turismo, etc."
         />
