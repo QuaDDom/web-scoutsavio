@@ -5,16 +5,32 @@ import imgManada from '../../assets/ramas/manada.jpg';
 import imgUnidad from '../../assets/ramas/unidad.jpg';
 import imgCaminantes from '../../assets/ramas/caminantes.webp';
 import imgRover from '../../assets/ramas/rover.jpg';
+import { Link } from 'react-router-dom';
+import { FaArrowLeft } from 'react-icons/fa';
 
 export const Branches = () => {
   return (
-    <div>
-      <h2 className="title text-5xl font-bold">Ramas</h2>
-      <div className="branchCardsContainer">
+    <div className="branches-page">
+      <Link to="/guia" className="back-link">
+        <FaArrowLeft /> Volver a la guía
+      </Link>
+
+      <div className="branches-header">
+        <h1>
+          Nuestras <span className="gradient-text">Ramas</span>
+        </h1>
+        <p>
+          Cada rama tiene un programa adaptado a las necesidades y características de cada grupo de
+          edad
+        </p>
+      </div>
+
+      <div className="branches-grid">
         <BranchCard
           rama="Manada"
           img={imgManada}
-          edades={'De 7 a 11 años.'}
+          color="#ff9800"
+          edades="De 7 a 11 años"
           objetivos={[
             'Fomento de la amistad, el compañerismo y el respeto por la naturaleza.',
             'Introducción a la Ley y Promesa Scout.'
@@ -27,7 +43,8 @@ export const Branches = () => {
         <BranchCard
           rama="Unidad"
           img={imgUnidad}
-          edades={'De 11 a 14 años.'}
+          color="#4caf50"
+          edades="De 11 a 14 años"
           objetivos={[
             'Campamentos que incluyen actividades de cocina al aire libre y construcción de refugios.',
             'Proyectos comunitarios para inculcar el espíritu de servicio.'
@@ -40,7 +57,8 @@ export const Branches = () => {
         <BranchCard
           rama="Caminantes"
           img={imgCaminantes}
-          edades={'Edades: De 15 a 18 años.'}
+          color="#2196f3"
+          edades="De 15 a 18 años"
           objetivos={[
             'Excursiones de mayor duración, promoviendo la resistencia y la planificación.',
             'Proyectos sociales más complejos y desafiantes.'
@@ -53,7 +71,8 @@ export const Branches = () => {
         <BranchCard
           rama="Rover"
           img={imgRover}
-          edades={'A partir de los 18 años.'}
+          color="#9c27b0"
+          edades="A partir de los 18 años"
           objetivos={[
             'Liderazgo en eventos scouts y participación en acciones solidarias.',
             'Proyectos personales y grupales orientados al desarrollo social y personal.'

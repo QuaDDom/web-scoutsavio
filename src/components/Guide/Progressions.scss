@@ -1,0 +1,252 @@
+@import '../../styles/variables';
+
+.progressions-page {
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 30px;
+    transition: $transition-normal;
+
+    &:hover {
+      color: $scout-orange;
+      gap: 12px;
+    }
+  }
+
+  .progressions-header {
+    text-align: center;
+    margin-bottom: 40px;
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+
+      .gradient-text {
+        background: $gradient;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+  }
+}
+
+.progressions-intro {
+  margin-bottom: 40px;
+
+  .intro-card {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: $radius-lg !important;
+    max-width: 800px;
+    margin: 0 auto;
+
+    h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.7;
+    }
+  }
+}
+
+.branch-tabs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  [role='tablist'] {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: $radius-lg;
+    padding: 8px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .tab-title {
+    font-weight: 600;
+    padding: 8px 16px;
+  }
+}
+
+.branch-content {
+  width: 100%;
+
+  .branch-description {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 600px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+}
+
+.progressions-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding-top: 10px; // Espacio para que los números no se corten
+
+  @include laptop {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.progression-card {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: $radius-lg !important;
+  text-align: center;
+  position: relative;
+  overflow: visible;
+  transition: $transition-normal;
+  margin-top: 20px; // Espacio para el número
+
+  &:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: $shadow-lg;
+
+    .progression-image img {
+      transform: scale(1.1);
+    }
+  }
+
+  .progression-number {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    z-index: 10;
+    box-shadow: $shadow-md;
+  }
+
+  .progression-image {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px 20px; // Más padding top para el número
+
+    img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      transition: $transition-normal;
+    }
+  }
+
+  h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding: 0 15px;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    padding: 0 15px 20px;
+  }
+}
+
+// ========================================
+// LIGHT MODE STYLES
+// ========================================
+.light,
+[data-theme='light'] {
+  .progressions-page {
+    .back-link {
+      color: rgba(0, 0, 0, 0.65);
+
+      &:hover {
+        color: $scout-red;
+      }
+    }
+
+    .progressions-header {
+      h1 {
+        color: #1a1a2e;
+      }
+
+      p {
+        color: rgba(0, 0, 0, 0.6);
+      }
+    }
+  }
+
+  .progressions-intro {
+    .intro-card {
+      background: #fff !important;
+      border-color: rgba(0, 0, 0, 0.08);
+      box-shadow: $shadow-sm-light;
+
+      h3 {
+        color: #1a1a2e;
+      }
+
+      p {
+        color: rgba(0, 0, 0, 0.65);
+      }
+    }
+  }
+
+  .branch-tabs {
+    [role='tablist'] {
+      background: rgba(0, 0, 0, 0.03);
+    }
+  }
+
+  .branch-content {
+    .branch-description {
+      color: rgba(0, 0, 0, 0.65);
+    }
+  }
+
+  .progression-card {
+    background: #fff !important;
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: $shadow-sm-light;
+
+    &:hover {
+      border-color: rgba($scout-red, 0.2);
+      box-shadow: $shadow-lg-light;
+    }
+
+    h4 {
+      color: #1a1a2e;
+    }
+
+    p {
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+}

@@ -1,37 +1,48 @@
 import React from 'react';
-import { Card, Image, CardBody, Button, Slider } from '@nextui-org/react';
+import { Card, Image, CardBody } from '@nextui-org/react';
+import './BranchCard.scss';
 
-export const BranchCard = ({ img, rama, edades, enfoques, objetivos }) => {
+export const BranchCard = ({ img, rama, edades, enfoques, objetivos, color }) => {
   return (
-    <Card className=" dark:bg-default-100/50 w-[100%] p-5">
+    <Card className="branch-card">
       <CardBody>
-        <div className="grid grid-cols-2 md:grid-cols-12 items-center justify-center">
-          <div className="relative col-span-6 md:col-span-3">
-            <Image isBlurred width={200} src={img} />
+        <div className="branch-card-content">
+          <div className="branch-image">
+            <Image isBlurred src={img} alt={rama} />
+            <div className="branch-badge" style={{ background: color }}>
+              {rama}
+            </div>
           </div>
-          <div className="flex flex-col col-span-6 md:col-span-8 gap-5">
-            <h3 className="text-3xl font-bold">{rama}</h3>
-            <div>
-              <h4 className="font-bold text-lg">Edades:</h4>
-              <div>
-                <p>{edades}</p>
-              </div>
+          <div className="branch-info">
+            <div className="branch-header">
+              <h3>{rama}</h3>
+              <span className="branch-age" style={{ borderColor: color, color: color }}>
+                {edades}
+              </span>
             </div>
-            <div>
-              <h4 className="font-bold text-lg">Enfoque:</h4>
-              <div>
-                {enfoques.map((e) => (
-                  <p key={e}>{e}</p>
+
+            <div className="branch-section">
+              <h4>
+                <span className="section-indicator" style={{ background: color }}></span>
+                Enfoque
+              </h4>
+              <ul>
+                {enfoques.map((e, index) => (
+                  <li key={index}>{e}</li>
                 ))}
-              </div>
+              </ul>
             </div>
-            <div>
-              <h4 className="font-bold text-lg">Objetivos:</h4>
-              <div>
-                {objetivos.map((e) => (
-                  <p key={e}>{e}</p>
+
+            <div className="branch-section">
+              <h4>
+                <span className="section-indicator" style={{ background: color }}></span>
+                Objetivos
+              </h4>
+              <ul>
+                {objetivos.map((e, index) => (
+                  <li key={index}>{e}</li>
                 ))}
-              </div>
+              </ul>
             </div>
           </div>
         </div>

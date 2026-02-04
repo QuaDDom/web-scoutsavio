@@ -1,0 +1,81 @@
+// Variables de colores - Scout Savio
+// Colores primarios: Rojo (principal) y Amarillo (secundario)
+$main: #121b23;
+$main2: rgb(28, 42, 55);
+$main-light: #f5f5f5;
+$main2-light: #ffffff;
+
+// Scout colors - Rojo como principal, amarillo como acento
+$scout-red: #e53935;
+$scout-red-dark: #c62828;
+$scout-orange: #ff6b35;
+$scout-yellow: #f7c531;
+$scout-green: #2d5a27;
+$scout-blue: #1a4f8b;
+
+// Gradientes
+$gradient: linear-gradient(135deg, $scout-red, $scout-orange);
+$gradient-hover: linear-gradient(135deg, $scout-orange, $scout-red);
+$gradient-yellow: linear-gradient(135deg, $scout-red, $scout-yellow);
+
+// Breakpoints
+$mobile: 480px;
+$tablet: 768px;
+$laptop: 1024px;
+$desktop: 1280px;
+
+// Mixins para responsive
+@mixin mobile {
+  @media (max-width: #{$mobile}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: #{$tablet}) {
+    @content;
+  }
+}
+
+@mixin laptop {
+  @media (max-width: #{$laptop}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (max-width: #{$desktop}) {
+    @content;
+  }
+}
+
+// Mixin para light mode
+@mixin light-mode {
+  :global(.light) &,
+  [data-theme='light'] &,
+  .light & {
+    @content;
+  }
+}
+
+// Transiciones
+$transition-fast: 0.2s ease;
+$transition-normal: 0.3s ease;
+$transition-slow: 0.5s ease;
+
+// Sombras
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+$shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+$shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.25);
+
+// Sombras para light mode
+$shadow-sm-light: 0 2px 4px rgba(0, 0, 0, 0.05);
+$shadow-md-light: 0 4px 12px rgba(0, 0, 0, 0.08);
+$shadow-lg-light: 0 8px 24px rgba(0, 0, 0, 0.1);
+
+// Border radius
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 20px;
+$radius-xl: 30px;

@@ -1,18 +1,202 @@
+@import '../../styles/variables';
+
+.specialties-page {
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-weight: 500;
+    margin-bottom: 30px;
+    transition: $transition-normal;
+
+    &:hover {
+      color: $scout-orange;
+      gap: 12px;
+    }
+  }
+
+  .specialties-header {
+    text-align: center;
+    margin-bottom: 50px;
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+
+      .gradient-text {
+        background: $gradient;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+  }
+}
+
+.specialties-intro {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 60px;
+
+  @include tablet {
+    grid-template-columns: 1fr;
+  }
+
+  .intro-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: $radius-lg;
+    padding: 30px;
+    transition: $transition-normal;
+
+    &:hover {
+      border-color: rgba($scout-orange, 0.3);
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #fff;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .highlight {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: rgba($scout-orange, 0.1);
+      border-radius: $radius-sm;
+      border-left: 3px solid $scout-orange;
+
+      strong {
+        color: $scout-orange;
+      }
+    }
+  }
+}
+
+.specialties-categories {
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+
+    .gradient-text {
+      background: $gradient;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+
+    @include tablet {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+// Color classes
 .bg-purple {
-    background-color: #9025bb; 
+  background-color: #9025bb !important;
 }
 .bg-lightblue {
-    background-color: #00bfff; 
+  background-color: #00bfff !important;
 }
 .bg-red {
-    background-color: #e71b1b; 
+  background-color: #e71b1b !important;
 }
 .bg-blue {
-    background-color: #0e0d5d; 
+  background-color: #0e0d5d !important;
 }
 .bg-green {
-    background-color: #1f6a2a; 
+  background-color: #1f6a2a !important;
 }
 .bg-yellow {
-    background-color: #f0e000; 
+  background-color: #f0e000 !important;
+}
+
+// ========================================
+// LIGHT MODE STYLES
+// ========================================
+.light,
+[data-theme='light'] {
+  .specialties-page {
+    .back-link {
+      color: rgba(0, 0, 0, 0.65);
+
+      &:hover {
+        color: $scout-red;
+      }
+    }
+
+    .specialties-header {
+      h1 {
+        color: #1a1a2e;
+      }
+
+      p {
+        color: rgba(0, 0, 0, 0.6);
+      }
+    }
+  }
+
+  .specialties-intro {
+    .intro-card {
+      background: #fff;
+      border-color: rgba(0, 0, 0, 0.08);
+      box-shadow: $shadow-sm-light;
+
+      &:hover {
+        border-color: rgba($scout-red, 0.3);
+      }
+
+      h3 {
+        color: #1a1a2e;
+      }
+
+      p {
+        color: rgba(0, 0, 0, 0.6);
+      }
+
+      .highlight {
+        background: rgba($scout-red, 0.08);
+        border-left-color: $scout-red;
+
+        strong {
+          color: $scout-red;
+        }
+      }
+    }
+  }
+
+  .specialties-categories {
+    h2 {
+      color: #1a1a2e;
+    }
+  }
 }

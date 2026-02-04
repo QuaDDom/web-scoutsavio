@@ -1,0 +1,144 @@
+@import '../../styles/variables';
+
+.specialty-card {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: $radius-lg !important;
+  transition: $transition-normal;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: $shadow-lg;
+
+    .specialty-image img {
+      transform: scale(1.1);
+    }
+  }
+
+  .specialty-image {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    overflow: hidden;
+
+    img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      transition: $transition-normal;
+    }
+  }
+
+  h4 {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0 10px 20px;
+  }
+
+  .specialty-color {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+  }
+}
+
+.specialty-modal {
+  background: rgba($main, 0.98) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: $radius-xl !important;
+
+  .specialty-modal-header {
+    padding: 24px 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+  }
+
+  .specialty-modal-body {
+    padding: 30px;
+
+    .modal-image-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 24px;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: $radius-lg;
+
+      img {
+        width: 180px;
+        height: 180px;
+        object-fit: contain;
+      }
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.8;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+  }
+}
+
+// ========================================
+// LIGHT MODE STYLES
+// ========================================
+.light,
+[data-theme='light'] {
+  .specialty-card {
+    background: #fff !important;
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: $shadow-sm-light;
+
+    &:hover {
+      border-color: rgba(0, 0, 0, 0.15);
+      box-shadow: $shadow-lg-light;
+    }
+
+    h4 {
+      color: #1a1a2e;
+    }
+  }
+
+  .specialty-modal {
+    background: #fff !important;
+    border-color: rgba(0, 0, 0, 0.1);
+
+    .specialty-modal-header {
+      border-bottom-color: rgba(0, 0, 0, 0.1);
+
+      h3 {
+        color: #1a1a2e;
+      }
+    }
+
+    .specialty-modal-body {
+      .modal-image-container {
+        background: rgba(0, 0, 0, 0.03);
+      }
+
+      p {
+        color: rgba(0, 0, 0, 0.7);
+      }
+    }
+  }
+}

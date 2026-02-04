@@ -1,45 +1,348 @@
-.aboutusContainer {
-    width: 100%;
-    min-height: 100vh;
-    .aboutus{
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 13.5vh;
-        bottom: 0;
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        color: #fff;
-        .panoletaContainer {
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            height: 300px;
-            img{
-                width: 300px;
-                position: absolute;
-                top: 10vh;
-            }
-        }
-        .cardImage{
-            height: 300px;
-            width: 230px;
-            object-fit: cover;
-            background-size: cover;
-        }
-        .content {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            margin-top: 190px;
-            gap: 55px;
-        }
-        p {
-            height: 80px;
-            font-size: 1.1em;
-        }
+@import './variables';
+
+// About Hero
+.about-hero {
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: linear-gradient(135deg, rgba($scout-orange, 0.15), rgba($scout-yellow, 0.1));
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 50%, rgba($scout-orange, 0.1), transparent 50%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 120px 20px 60px;
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+
+      .gradient-text {
+        background: $gradient;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
     }
+
+    p {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+}
+
+// Pañoleta Section
+.panoleta-section {
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .panoleta-container {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+
+    @include tablet {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .panoleta-img {
+      width: 280px;
+      height: auto;
+      animation: float 4s ease-in-out infinite;
+
+      @include mobile {
+        width: 200px;
+      }
+    }
+
+    .panoleta-info {
+      flex: 1;
+
+      h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+      }
+
+      p {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 1.1rem;
+        line-height: 1.7;
+      }
+    }
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(3deg);
+  }
+}
+
+// Values Section
+.values-section {
+  padding: 100px 20px;
+  background: rgba(255, 255, 255, 0.02);
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-weight: 700;
+
+      .gradient-text {
+        background: $gradient;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
+  }
+
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    @include laptop {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .value-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: $radius-lg;
+    padding: 40px 30px;
+    text-align: center;
+    transition: $transition-normal;
+
+    &:hover {
+      transform: translateY(-8px);
+      border-color: rgba($scout-orange, 0.4);
+      background: rgba(255, 255, 255, 0.05);
+
+      .value-icon {
+        transform: scale(1.1);
+        background: $gradient;
+      }
+    }
+
+    .value-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba($scout-orange, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      transition: $transition-normal;
+
+      svg {
+        font-size: 32px;
+        color: $scout-orange;
+      }
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.6;
+    }
+  }
+}
+
+// History Section
+.history-section {
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  .history-card {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: $radius-xl !important;
+    overflow: hidden;
+    padding: 20px;
+
+    &:hover {
+      border-color: rgba($scout-orange, 0.3);
+    }
+  }
+
+  .history-content {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+
+    @include tablet {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+
+  .reverse .history-content {
+    flex-direction: row-reverse;
+
+    @include tablet {
+      flex-direction: column;
+    }
+  }
+
+  .history-image {
+    flex-shrink: 0;
+
+    .card-image {
+      width: 280px;
+      height: 350px;
+      object-fit: cover;
+      border-radius: $radius-lg;
+
+      @include mobile {
+        width: 100%;
+        max-width: 280px;
+        height: 300px;
+      }
+    }
+  }
+
+  .history-text {
+    flex: 1;
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+
+      .gradient-text {
+        background: $gradient;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.8;
+      margin-bottom: 16px;
+      font-size: 1.05rem;
+    }
+  }
+}
+
+// ========================================
+// LIGHT MODE STYLES
+// ========================================
+.light,
+[data-theme='light'] {
+  .about-hero {
+    background: linear-gradient(135deg, rgba($scout-red, 0.1), rgba($scout-yellow, 0.08));
+
+    .hero-content p {
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  .panoleta-section {
+    .panoleta-info {
+      h2 {
+        color: #1a1a2e;
+      }
+
+      p {
+        color: rgba(0, 0, 0, 0.65);
+      }
+    }
+  }
+
+  .values-section {
+    background: rgba(0, 0, 0, 0.02);
+
+    .section-header h2 {
+      color: #1a1a2e;
+    }
+
+    .value-card {
+      background: #fff;
+      border-color: rgba(0, 0, 0, 0.08);
+      box-shadow: $shadow-sm-light;
+
+      &:hover {
+        border-color: rgba($scout-red, 0.4);
+        box-shadow: $shadow-md-light;
+      }
+
+      .value-icon {
+        background: rgba($scout-red, 0.12);
+
+        svg {
+          color: $scout-red;
+        }
+      }
+
+      h3 {
+        color: #1a1a2e;
+      }
+
+      p {
+        color: rgba(0, 0, 0, 0.6);
+      }
+    }
+  }
+
+  .history-section {
+    .history-card {
+      background: #fff !important;
+      border-color: rgba(0, 0, 0, 0.08);
+      box-shadow: $shadow-sm-light;
+
+      &:hover {
+        border-color: rgba($scout-red, 0.3);
+      }
+    }
+
+    .history-text {
+      h2 {
+        color: #1a1a2e;
+      }
+
+      p {
+        color: rgba(0, 0, 0, 0.65);
+      }
+    }
+  }
 }

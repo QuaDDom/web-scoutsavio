@@ -1,5 +1,204 @@
-.cardsContainer{
+@import './variables';
+
+// Guide Hero
+.guide-hero {
+  min-height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba($scout-orange, 0.1), rgba($scout-yellow, 0.05));
+  padding: 120px 20px 60px;
+
+  .hero-content {
+    text-align: center;
+
+    .hero-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: $gradient;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+
+      svg {
+        font-size: 32px;
+        color: #fff;
+      }
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+
+      .gradient-text {
+        background: $gradient;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+}
+
+// Cards Section
+.guide-cards-section {
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+
+    @include tablet {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .guide-link {
+    text-decoration: none;
+  }
+}
+
+// Info Section
+.guide-info-section {
+  padding: 80px 20px;
+  background: rgba(255, 255, 255, 0.02);
+
+  .info-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+
+    h2 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    > p {
+      color: rgba(255, 255, 255, 0.7);
+      max-width: 700px;
+      margin: 0 auto 50px;
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+  }
+
+  .info-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+
+    @include tablet {
+      grid-template-columns: 1fr;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+  }
+
+  .feature {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    gap: 16px;
+    text-align: left;
+    padding: 24px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: $radius-lg;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: $transition-normal;
+
+    &:hover {
+      border-color: rgba($scout-orange, 0.3);
+      transform: translateY(-5px);
+    }
+
+    .number {
+      font-size: 2rem;
+      font-weight: 800;
+      background: $gradient;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+
+    h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+    }
+  }
+}
+
+// Subpage styles
+.guide-subpage {
+  padding: 100px 20px 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// ========================================
+// LIGHT MODE STYLES
+// ========================================
+.light,
+[data-theme='light'] {
+  .guide-hero {
+    background: linear-gradient(135deg, rgba($scout-red, 0.08), rgba($scout-yellow, 0.04));
+
+    .hero-content p {
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  .guide-info-section {
+    background: rgba(0, 0, 0, 0.02);
+
+    .info-content {
+      h2 {
+        color: #1a1a2e;
+      }
+
+      > p {
+        color: rgba(0, 0, 0, 0.65);
+      }
+    }
+
+    .feature {
+      background: #fff;
+      border-color: rgba(0, 0, 0, 0.08);
+      box-shadow: $shadow-sm-light;
+
+      &:hover {
+        border-color: rgba($scout-red, 0.3);
+        box-shadow: $shadow-md-light;
+      }
+
+      h4 {
+        color: #1a1a2e;
+      }
+
+      p {
+        color: rgba(0, 0, 0, 0.6);
+      }
+    }
+  }
 }

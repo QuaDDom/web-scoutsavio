@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Nav.scss';
-import scoutLogo from '../assets/lis.svg';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { MdMenu, MdClose } from 'react-icons/md';
 import { MdDarkMode, MdLightMode } from 'react-icons/md';
 import {
@@ -12,100 +11,76 @@ import {
   NavbarItem,
   NavbarMenuToggle,
   NavbarMenu,
-  NavbarMenuItem,
-  Link as LinkContainer
+  NavbarMenuItem
 } from '@nextui-org/react';
 import { useTheme } from 'next-themes';
 import whiteLogo from '../assets/logo/whitelogo.png';
 
 export const Nav = () => {
-  const [mobile, setMobile] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { theme, setTheme } = useTheme();
+  const location = useLocation();
 
-  const handleClick = () => setOpen(!open);
   const handleChangeTheme = () => (theme === 'light' ? setTheme('dark') : setTheme('light'));
 
+  const navLinks = [
+    { to: '/sobre', label: 'Quiénes somos' },
+    { to: '/guia', label: 'Guía' },
+    { to: '/galeria', label: 'Galería' },
+    { to: '/contacto', label: 'Contacto' }
+  ];
+
   useEffect(() => {
-    const handleResize = () => {
-      setMobile(window.innerWidth <= 768);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location]);
+
   return (
-    <Navbar className="navContainer" maxWidth="xl">
-      <NavbarBrand className="logo">
-        <Link to="/" className="logo">
-          <img
-            src={whiteLogo}
-            alt="Grupo Scout Savio - Logo"
-            width={'40px'}
-            className="savioLogo"
-          />
-          <h3 className="logoTitle"> Savio</h3>
-        </Link>
-      </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-4" justify="end">
-        {!mobile ? (
-          <>
-            <NavbarItem>
-              <Link to="/sobre">
-                <li className="link">Quiénes somos</li>
-              </Link>
-            </NavbarItem>
-            <NavbarItem>
-              <Link to="/guia">
-                <li className="link">Guía</li>
-              </Link>
-            </NavbarItem>
-            <NavbarItem>
-              <Link to="/galeria">
-                <li className="link">Galería</li>
-              </Link>
-            </NavbarItem>
-            <NavbarItem>
-              <Link to="/contacto">
-                <li className="link">Contacto</li>
-              </Link>
-            </NavbarItem>
-          </>
-        ) : (
-          <>
-            {open && (
-              <ul className={`sitesMobile`} onClick={handleClick}>
-                <Link to="/sobre">
-                  <li className="link">Quiénes somos</li>
-                </Link>
-                <Link to="/guia">
-                  <li className="link">Secciones</li>
-                </Link>
-                <Link to="/galeria">
-                  <li className="link">Galería</li>
-                </Link>
-                <Link to="/contacto">
-                  <li className="link">Contacto</li>
-                </Link>
-              </ul>
-            )}
-          </>
-        )}
-        {mobile && (
-          <button className="mobileMenuBtn" onClick={handleClick}>
-            {!open ? <MdMenu /> : <MdClose />}
-          </button>
-        )}
+    <Navbar
+      className={`navContainer ${scrolled ? 'scrolled' : ''}`}
+      maxWidth="xl"
+      isMenuOpen={isMenuOpen}
+      onMenuOpenChange={setIsMenuOpen}
+      shouldHideOnScroll={false}>
+      <NavbarContent className="nav-left">
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+          className="mobile-toggle"
+        />
+        <NavbarBrand>
+          <Link to="/" className="logo">
+            <img src={whiteLogo} alt="Grupo Scout Savio - Logo" className="savioLogo" />
+            <span className="logoTitle">Savio</span>
+          </Link>
+        </NavbarBrand>
       </NavbarContent>
-      <NavbarContent justify="end">
+
+      <NavbarContent className="nav-links" justify="center">
+        {navLinks.map((link) => (
+          <NavbarItem key={link.to}>
+            <Link
+              to={link.to}
+              className={`nav-link ${location.pathname.startsWith(link.to) ? 'active' : ''}`}>
+              {link.label}
+            </Link>
+          </NavbarItem>
+        ))}
+      </NavbarContent>
+
+      <NavbarContent justify="end" className="nav-right">
         <Switch
           onClick={handleChangeTheme}
           size="lg"
-          color="danger"
+          color="warning"
           thumbIcon={({ isSelected, className }) =>
             theme === 'light' ? (
               <MdLightMode className={className} />
@@ -115,6 +90,19 @@ export const Nav = () => {
           }
         />
       </NavbarContent>
+
+      <NavbarMenu className="mobile-menu">
+        {navLinks.map((link, index) => (
+          <NavbarMenuItem key={link.to}>
+            <Link
+              to={link.to}
+              className={`mobile-link ${location.pathname.startsWith(link.to) ? 'active' : ''}`}
+              style={{ animationDelay: `${index * 0.1}s` }}>
+              {link.label}
+            </Link>
+          </NavbarMenuItem>
+        ))}
+      </NavbarMenu>
     </Navbar>
   );
 };

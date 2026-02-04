@@ -1,16 +1,159 @@
+@import './styles/variables';
 
-$main: #121b23;
-$main2:rgb(28, 42, 55);
-$gradient: linear-gradient(165deg,red, yellow);
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@700&family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@700&family=Poppins:ital,wght@0,200;0,300;0,400;0,500;0,600;1,200;1,300;1,400;1,500;1,600&display=swap');
 * {
-    margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    box-sizing: border-box;
-}  
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+}
 
-p, h1, h2, h3, h4, h5, h6 {
-    transition: 0.5s;
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  transition: $transition-normal;
+}
+
+// Mejoras de accesibilidad
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid $scout-red;
+  outline-offset: 2px;
+}
+
+// Scrollbar personalizado - Dark mode
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: $main;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $scout-red;
+  border-radius: 5px;
+
+  &:hover {
+    background: $scout-orange;
+  }
+}
+
+// Scrollbar Light mode
+.light ::-webkit-scrollbar-track,
+[data-theme='light'] ::-webkit-scrollbar-track {
+  background: #e0e0e0;
+}
+
+// Container global
+.container-fluid {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  @include tablet {
+    padding: 0 15px;
+  }
+}
+
+// Gradient text global
+.gradient-text {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Animaciones globales
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+.animate-slideLeft {
+  animation: slideInLeft 0.6s ease forwards;
+}
+
+.animate-slideRight {
+  animation: slideInRight 0.6s ease forwards;
+}
+
+// ========================================
+// ESTILOS ESPECÍFICOS PARA LIGHT MODE
+// ========================================
+
+// Textos en light mode - usar colores oscuros
+.light,
+[data-theme='light'] {
+  // Colores de texto generales
+  color: #1a1a2e;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: #1a1a2e;
+  }
+
+  p {
+    color: #333;
+  }
 }
