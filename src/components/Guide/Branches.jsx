@@ -1,6 +1,7 @@
 import React from 'react';
 import { BranchCard } from './BranchCard';
 import './Branches.scss';
+import { SEO } from '../SEO';
 import imgManada from '../../assets/ramas/manada.jpg';
 import imgUnidad from '../../assets/ramas/unidad.jpg';
 import imgCaminantes from '../../assets/ramas/caminantes.webp';
@@ -11,6 +12,12 @@ import { FaArrowLeft } from 'react-icons/fa';
 export const Branches = () => {
   return (
     <div className="branches-page">
+      <SEO
+        title="Ramas Scouts"
+        description="Conoce las 4 ramas del escultismo: Manada (7-11 años), Unidad (11-14 años), Caminantes (15-18 años) y Rover (+18 años). Cada rama con programas adaptados a cada edad."
+        keywords="ramas scouts, manada scout, unidad scout, caminantes scout, rover, edades scouts, programa scout"
+        url="/guia/branches"
+      />
       <Link to="/guia" className="back-link">
         <FaArrowLeft /> Volver a la guía
       </Link>

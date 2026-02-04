@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/guide.scss';
 import { PageContainer } from '../components/PageContainer';
 import { Footer } from '../components/Footer';
+import { SEO } from '../components/SEO';
 import { GuideCards } from '../components/GuideCards';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import imgPertenencia from '../assets/guideimages/pertenenciarama.png';
@@ -15,6 +16,12 @@ export const Guide = () => {
   if (pathname === '/guia') {
     return (
       <PageContainer>
+        <SEO
+          title="Guía Scout"
+          description="Guía completa del escultismo: especialidades, progresiones y ramas scouts. Todo lo que necesitas saber sobre el movimiento scout en el Grupo Scout 331 Savio."
+          keywords="guía scout, especialidades scout, progresiones scout, ramas scouts, manada, unidad, caminantes, rover, insignias scout"
+          url="/guia"
+        />
         {/* Hero Section */}
         <section className="guide-hero">
           <div className="hero-content">

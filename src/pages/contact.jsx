@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { PageContainer } from '../components/PageContainer';
 import { Footer } from '../components/Footer';
+import { SEO } from '../components/SEO';
 import { Button, Input, Textarea, Card, CardBody } from '@nextui-org/react';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaPaperPlane, FaWhatsapp } from 'react-icons/fa';
 import '../styles/contact.scss';
@@ -9,6 +10,12 @@ import '../styles/contact.scss';
 export const Contact = () => {
   return (
     <PageContainer>
+      <SEO
+        title="Contacto"
+        description="Contacta al Grupo Scout 331 Savio en Río Tercero, Córdoba. Reuniones los sábados de 15:00 a 18:00. WhatsApp: 0351 656-4243. Email: scoutsavio331@gmail.com"
+        keywords="contacto scouts, grupo scout río tercero contacto, unirse a scouts, inscripción scouts, horarios scouts"
+        url="/contacto"
+      />
       {/* Hero Section */}
       <section className="contact-hero">
         <div className="hero-content">

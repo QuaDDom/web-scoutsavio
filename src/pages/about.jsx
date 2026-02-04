@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/about.scss';
 import { PageContainer } from '../components/PageContainer';
 import { Footer } from '../components/Footer';
+import { SEO } from '../components/SEO';
 import imgPanoleta from '../assets/pañoleta.png';
 import { Image, Card, CardBody } from '@nextui-org/react';
 import imgWalle from '../assets/walle.jpg';
@@ -11,6 +12,12 @@ import { FaUsers, FaHeart, FaGlobeAmericas, FaHandsHelping } from 'react-icons/f
 export const About = () => {
   return (
     <PageContainer>
+      <SEO
+        title="Quiénes Somos"
+        description="Conoce la historia del Grupo Scout 331 Gral. Manuel Nicolás Savio. Desde 1982 formando jóvenes en Río Tercero, Córdoba. Pertenecemos a Scouts de Argentina Asociación Civil (SAAC)."
+        keywords="historia scout savio, quienes somos scouts, grupo scout río tercero historia, scouts de argentina, SAAC"
+        url="/sobre"
+      />
       {/* Hero Section */}
       <section className="about-hero">
         <div className="hero-overlay"></div>

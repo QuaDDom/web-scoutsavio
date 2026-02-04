@@ -1,0 +1,21 @@
+{
+    "name": "Grupo Scout 331 Gral. Manuel Nicolás Savio",
+    "short_name": "Scout Savio",
+    "description": "Formando líderes del mañana desde 1982",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#121b23",
+    "theme_color": "#e53935",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+# Robots.txt para Grupo Scout 331 Savio
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://scoutsavio.vercel.app/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 10

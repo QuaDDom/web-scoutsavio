@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 import { Card, CardBody, Image, Tabs, Tab } from '@nextui-org/react';
+import { SEO } from '../SEO';
 import './Progressions.scss';
 
 // Manada progressions
@@ -123,6 +124,12 @@ export const Progressions = () => {
 
   return (
     <div className="progressions-page">
+      <SEO
+        title="Progresiones Scout"
+        description="Sistema de progresiones scout: Pata Tierna, Saltador, Rastreador, Cazador (Manada), Pista, Senda, Rumbo, Travesía (Unidad) y más."
+        keywords="progresiones scout, insignias scout, pata tierna, saltador, rastreador, cazador, pista, senda, rumbo"
+        url="/guia/progressions"
+      />
       <Link to="/guia" className="back-link">
         <FaArrowLeft /> Volver a la guía
       </Link>

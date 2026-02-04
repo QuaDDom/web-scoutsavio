@@ -3,6 +3,7 @@ import { useState } from 'react';
 import '../styles/gallery.scss';
 import { PageContainer } from '../components/PageContainer';
 import { Footer } from '../components/Footer';
+import { SEO } from '../components/SEO';
 import img1 from '../assets/galleryimages/img1.jpg';
 import img2 from '../assets/galleryimages/img2.jpg';
 import img3 from '../assets/galleryimages/img3.jpg';
@@ -51,6 +52,12 @@ export const Gallery = () => {
 
   return (
     <PageContainer>
+      <SEO
+        title="Galería"
+        description="Galería de fotos del Grupo Scout 331 Savio. Revive los mejores momentos de nuestros campamentos, actividades, excursiones y eventos scouts en Río Tercero."
+        keywords="fotos scouts, galería scout, campamentos scouts, actividades scouts, eventos scouts, excursiones"
+        url="/galeria"
+      />
       {/* Hero Section */}
       <section className="gallery-hero">
         <div className="hero-content">

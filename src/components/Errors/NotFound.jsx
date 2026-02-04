@@ -1,5 +1,6 @@
 import React from 'react';
 import { PageContainer } from '../PageContainer';
+import { SEO } from '../SEO';
 import { Link } from 'react-router-dom';
 import { Button } from '@nextui-org/react';
 import { FaHome, FaCompass, FaArrowLeft } from 'react-icons/fa';
@@ -8,6 +9,11 @@ import './NotFound.scss';
 export const NotFound = () => {
   return (
     <PageContainer>
+      <SEO
+        title="Página no encontrada"
+        description="La página que buscas no existe. Vuelve al inicio del Grupo Scout 331 Savio."
+        url="/404"
+      />
       <div className="not-found-container">
         <div className="not-found-content">
           <div className="error-icon">

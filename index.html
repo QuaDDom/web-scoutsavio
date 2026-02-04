@@ -1,14 +1,141 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg" href="favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Grupo Scout Savio</title>
+
+    <!-- Primary Meta Tags -->
+    <title>Grupo Scout 331 Gral. Manuel Nicolás Savio | Río Tercero, Córdoba</title>
+    <meta
+      name="title"
+      content="Grupo Scout 331 Gral. Manuel Nicolás Savio | Río Tercero, Córdoba"
+    />
+    <meta
+      name="description"
+      content="Grupo Scout 331 en Río Tercero, Córdoba. Formando líderes del mañana desde 1982 a través de la aventura, el servicio y los valores scout. Únete a nuestra familia scout."
+    />
+    <meta
+      name="keywords"
+      content="scouts, grupo scout, scout savio, río tercero, córdoba, argentina, scouts de argentina, campamentos, actividades scouts, manada, unidad, caminantes, rover, escultismo, educación no formal, liderazgo juvenil"
+    />
+    <meta name="author" content="Grupo Scout 331 Gral. Manuel Nicolás Savio" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="Spanish" />
+    <meta name="revisit-after" content="7 days" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://scoutsavio.vercel.app/" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#e53935" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://scoutsavio.vercel.app/" />
+    <meta property="og:title" content="Grupo Scout 331 Gral. Manuel Nicolás Savio | Río Tercero" />
+    <meta
+      property="og:description"
+      content="Formando líderes del mañana desde 1982 a través de la aventura, el servicio y los valores scout. Únete a nuestra familia scout en Río Tercero, Córdoba."
+    />
+    <meta property="og:image" content="https://scoutsavio.vercel.app/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:site_name" content="Scout Savio 331" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://scoutsavio.vercel.app/" />
+    <meta
+      property="twitter:title"
+      content="Grupo Scout 331 Gral. Manuel Nicolás Savio | Río Tercero"
+    />
+    <meta
+      property="twitter:description"
+      content="Formando líderes del mañana desde 1982 a través de la aventura, el servicio y los valores scout."
+    />
+    <meta property="twitter:image" content="https://scoutsavio.vercel.app/og-image.jpg" />
+
+    <!-- Geo Tags -->
+    <meta name="geo.region" content="AR-X" />
+    <meta name="geo.placename" content="Río Tercero, Córdoba" />
+    <meta name="geo.position" content="-32.1735;-64.1137" />
+    <meta name="ICBM" content="-32.1735, -64.1137" />
+
+    <!-- Structured Data - Organization -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Grupo Scout 331 Gral. Manuel Nicolás Savio",
+        "alternateName": "Scout Savio",
+        "url": "https://scoutsavio.vercel.app",
+        "logo": "https://scoutsavio.vercel.app/logo.png",
+        "description": "Grupo Scout en Río Tercero, Córdoba. Formando líderes del mañana desde 1982 a través de la aventura, el servicio y los valores scout.",
+        "foundingDate": "1982",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Río Tercero",
+          "addressRegion": "Córdoba",
+          "addressCountry": "AR"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+54-351-656-4243",
+          "contactType": "customer service",
+          "email": "scoutsavio331@gmail.com",
+          "availableLanguage": "Spanish"
+        },
+        "sameAs": [
+          "https://www.facebook.com/scoutsavio/",
+          "https://www.instagram.com/gruposcout_savio331/"
+        ],
+        "memberOf": {
+          "@type": "Organization",
+          "name": "Scouts de Argentina Asociación Civil",
+          "url": "https://scouts.org.ar"
+        }
+      }
+    </script>
+
+    <!-- Structured Data - Local Business -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "Grupo Scout 331 Gral. Manuel Nicolás Savio",
+        "image": "https://scoutsavio.vercel.app/og-image.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Río Tercero",
+          "addressRegion": "Córdoba",
+          "postalCode": "5850",
+          "addressCountry": "AR"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": -32.1735,
+          "longitude": -64.1137
+        },
+        "url": "https://scoutsavio.vercel.app",
+        "telephone": "+54-351-656-4243",
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "15:00",
+          "closes": "18:00"
+        }
+      }
+    </script>
+
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    <script defer src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY&libraries=places"></script>
   </body>
 </html>

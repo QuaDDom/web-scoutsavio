@@ -1,6 +1,7 @@
 import React from 'react';
 import { SpecialtiesModal } from './SpecialtiesModal';
 import './Specialties.scss';
+import { SEO } from '../SEO';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 import arte from '../../assets/specialties/arte.png';
@@ -13,6 +14,12 @@ import servicio from '../../assets/specialties/servicio.png';
 export const Specialties = () => {
   return (
     <div className="specialties-page">
+      <SEO
+        title="Especialidades Scout"
+        description="Descubre las 6 categorías de especialidades scout: Arte, Ciencia y Tecnología, Deporte, Servicio a los demás, Naturaleza y Espiritualidad."
+        keywords="especialidades scout, insignias especialidades, arte scout, ciencia scout, deporte scout, naturaleza scout"
+        url="/guia/specialties"
+      />
       <Link to="/guia" className="back-link">
         <FaArrowLeft /> Volver a la guía
       </Link>

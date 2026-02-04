@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/home.scss';
 import { PageContainer } from '../components/PageContainer';
 import { Footer } from '../components/Footer';
+import { SEO } from '../components/SEO';
 import { Link } from 'react-router-dom';
 import { Button, Card, CardBody } from '@nextui-org/react';
 import {
@@ -18,6 +19,12 @@ import {
 export const Home = () => {
   return (
     <PageContainer>
+      <SEO
+        title="Inicio"
+        description="Grupo Scout 331 Gral. Manuel Nicolás Savio en Río Tercero, Córdoba. Formando líderes del mañana desde 1982 a través de la aventura, el servicio y los valores scout."
+        keywords="grupo scout río tercero, scouts córdoba, actividades scouts, campamentos scouts, educación scout, manada, unidad, caminantes, rover"
+        url="/"
+      />
       {/* Hero Section */}
       <section className="hero">
         <div className="hero-overlay"></div>
