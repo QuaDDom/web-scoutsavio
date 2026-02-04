@@ -14,7 +14,7 @@ import {
   NavbarMenuItem
 } from '@nextui-org/react';
 import { useTheme } from 'next-themes';
-import whiteLogo from '../assets/logo/whitelogo.png';
+import whiteLogo from '../assets/logo/whiteLogo.png';
 
 export const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

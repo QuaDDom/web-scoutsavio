@@ -9,7 +9,7 @@ import {
   FaMapMarkerAlt,
   FaPhone
 } from 'react-icons/fa';
-import whiteLogo from '../assets/logo/whitelogo.png';
+import whiteLogo from '../assets/logo/whiteLogo.png';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
