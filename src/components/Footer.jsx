@@ -101,11 +101,11 @@ export const Footer = () => {
               </li>
               <li>
                 <FaPhone />
-                <span>+54 351 421-2345</span>
+                <span>0351 656-4243</span>
               </li>
               <li>
                 <FaEnvelope />
-                <span>info@gruposcout331.com.ar</span>
+                <span>scoutsavio331@gmail.com</span>
               </li>
             </ul>
           </div>

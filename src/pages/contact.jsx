@@ -46,7 +46,7 @@ export const Contact = () => {
                 </div>
                 <div className="info-content">
                   <h4>Teléfono</h4>
-                  <p>+54 351 421-2345</p>
+                  <p>0351 656-4243</p>
                 </div>
               </div>
 
@@ -56,7 +56,7 @@ export const Contact = () => {
                 </div>
                 <div className="info-content">
                   <h4>Email</h4>
-                  <p>info@gruposcout331.com.ar</p>
+                  <p>scoutsavio331@gmail.com</p>
                 </div>
               </div>
 
@@ -66,7 +66,7 @@ export const Contact = () => {
                 </div>
                 <div className="info-content">
                   <h4>WhatsApp</h4>
-                  <p>+54 351 421-2345</p>
+                  <p>0351 656-4243</p>
                 </div>
               </div>
             </div>
