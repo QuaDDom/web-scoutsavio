@@ -14,7 +14,7 @@ import {
   NavbarMenuItem
 } from '@nextui-org/react';
 import { useTheme } from 'next-themes';
-import whiteLogo from '../assets/logo/whiteLogo.png';
+import savioLogo from '../assets/logo/scoutsaviologo.png';
 
 export const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -58,7 +58,7 @@ export const Nav = () => {
         />
         <NavbarBrand>
           <Link to="/" className="logo">
-            <img src={whiteLogo} alt="Grupo Scout Savio - Logo" className="savioLogo" />
+            <img src={savioLogo} alt="Grupo Scout Savio - Logo" className="savioLogo" />
             <span className="logoTitle">Savio</span>
           </Link>
         </NavbarBrand>

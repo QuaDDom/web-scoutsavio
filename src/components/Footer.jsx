@@ -9,7 +9,7 @@ import {
   FaMapMarkerAlt,
   FaPhone
 } from 'react-icons/fa';
-import whiteLogo from '../assets/logo/whiteLogo.png';
+import savioLogo from '../assets/logo/scoutsaviologo.png';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -21,7 +21,7 @@ export const Footer = () => {
           {/* Brand Section */}
           <div className="footer-brand">
             <div className="brand-logo">
-              <img src={whiteLogo} alt="Scout Savio Logo" />
+              <img src={savioLogo} alt="Scout Savio Logo" />
               <span>Scout Savio</span>
             </div>
             <p className="brand-description">
