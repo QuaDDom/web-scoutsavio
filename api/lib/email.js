@@ -1,12 +1,19 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Solo inicializar Resend si hay API key configurada
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 const FROM_EMAIL = 'Grupo Scout Savio <noreply@scoutsavio.vercel.app>';
 const ADMIN_EMAIL = 'scoutsavio331@gmail.com';
 
 // Notificar a admins de nueva subida
 export async function notifyAdminsNewUpload(uploaderName, photosCount, category) {
+  // Si no hay Resend configurado, salir silenciosamente
+  if (!resend) {
+    console.log('Email notifications disabled (no RESEND_API_KEY)');
+    return { success: true, skipped: true };
+  }
+
   try {
     await resend.emails.send({
       from: FROM_EMAIL,
@@ -44,6 +51,11 @@ export async function notifyAdminsNewUpload(uploaderName, photosCount, category)
 
 // Notificar al usuario que sus fotos fueron aprobadas
 export async function notifyUserApproved(userEmail, userName, photosCount) {
+  if (!resend) {
+    console.log('Email notifications disabled (no RESEND_API_KEY)');
+    return { success: true, skipped: true };
+  }
+
   try {
     await resend.emails.send({
       from: FROM_EMAIL,
@@ -81,6 +93,11 @@ export async function notifyUserApproved(userEmail, userName, photosCount) {
 
 // Notificar al usuario que sus fotos fueron rechazadas
 export async function notifyUserRejected(userEmail, userName, reason) {
+  if (!resend) {
+    console.log('Email notifications disabled (no RESEND_API_KEY)');
+    return { success: true, skipped: true };
+  }
+
   try {
     await resend.emails.send({
       from: FROM_EMAIL,
