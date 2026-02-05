@@ -61,7 +61,10 @@ export const authService = {
   // Obtener sesión actual - directo sin caché
   async getSession() {
     try {
-      const { data: { session }, error } = await supabase.auth.getSession();
+      const {
+        data: { session },
+        error
+      } = await supabase.auth.getSession();
       if (error) {
         console.error('Error getting session:', error);
         return null;
