@@ -31,7 +31,6 @@
 - [🛠️ Stack Tecnológico](#️-stack-tecnológico)
 - [📁 Estructura del Proyecto](#-estructura-del-proyecto)
 - [🚀 Instalación](#-instalación)
-- [⚙️ Configuración](#️-configuración)
 - [📱 Páginas](#-páginas)
 - [🔐 Panel de Administración](#-panel-de-administración)
 - [🗄️ Base de Datos](#️-base-de-datos)
@@ -220,51 +219,6 @@ npm run dev
 
 ---
 
-## ⚙️ Configuración
-
-### Variables de Entorno
-
-Crear un archivo `.env` en la raíz del proyecto:
-
-```env
-# Supabase Configuration
-SUPABASE_URL=https://tu-proyecto.supabase.co
-SUPABASE_ANON_KEY=tu-anon-key
-SUPABASE_SERVICE_KEY=tu-service-key
-
-# Vite (frontend) - se exponen al cliente
-VITE_SUPABASE_URL=https://tu-proyecto.supabase.co
-VITE_SUPABASE_ANON_KEY=tu-anon-key
-
-# Resend (opcional - para emails)
-RESEND_API_KEY=tu-resend-api-key
-```
-
-### Configuración en Vercel
-
-Agregar las mismas variables en **Settings → Environment Variables**:
-
-| Variable                 | Entornos                         |
-| ------------------------ | -------------------------------- |
-| `SUPABASE_URL`           | Production, Preview, Development |
-| `SUPABASE_ANON_KEY`      | Production, Preview, Development |
-| `SUPABASE_SERVICE_KEY`   | Production, Preview, Development |
-| `VITE_SUPABASE_URL`      | Production, Preview, Development |
-| `VITE_SUPABASE_ANON_KEY` | Production, Preview, Development |
-| `RESEND_API_KEY`         | Production (opcional)            |
-
-### Configuración en Supabase
-
-1. **Authentication → URL Configuration**:
-   - Site URL: `https://tu-dominio.vercel.app`
-   - Redirect URLs: `http://localhost:5173`, `https://tu-dominio.vercel.app`
-
-2. **Authentication → Providers**:
-   - Habilitar Google OAuth
-
-3. **Storage**:
-   - Crear bucket `gallery-photos` (público)
-
 ---
 
 ## 📱 Páginas
@@ -288,10 +242,7 @@ Agregar las mismas variables en **Settings → Environment Variables**:
 
 ## 🔐 Panel de Administración
 
-Acceso restringido a emails autorizados:
-
-- `scoutsavio331@gmail.com`
-- `matquadev@gmail.com`
+Acceso restringido a administradores autorizados del grupo.
 
 ### Funcionalidades
 
