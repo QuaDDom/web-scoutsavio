@@ -43,10 +43,16 @@ export default async function handler(req, res) {
   try {
     const { fields, files } = await parseForm(req);
 
-    const uploaderName = Array.isArray(fields.uploader_name) ? fields.uploader_name[0] : fields.uploader_name;
-    const uploaderEmail = Array.isArray(fields.uploader_email) ? fields.uploader_email[0] : fields.uploader_email;
+    const uploaderName = Array.isArray(fields.uploader_name)
+      ? fields.uploader_name[0]
+      : fields.uploader_name;
+    const uploaderEmail = Array.isArray(fields.uploader_email)
+      ? fields.uploader_email[0]
+      : fields.uploader_email;
     const category = Array.isArray(fields.category) ? fields.category[0] : fields.category;
-    const description = Array.isArray(fields.description) ? fields.description[0] : (fields.description || '');
+    const description = Array.isArray(fields.description)
+      ? fields.description[0]
+      : fields.description || '';
 
     // Validaciones
     if (!uploaderName || !uploaderEmail || !category) {
@@ -58,7 +64,7 @@ export default async function handler(req, res) {
     if (!fileList) {
       return res.status(400).json({ error: 'No files provided' });
     }
-    
+
     // Ensure it's an array
     if (!Array.isArray(fileList)) {
       fileList = [fileList];
