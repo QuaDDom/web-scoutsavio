@@ -712,7 +712,7 @@ const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLo
                         portalContainer: document.body
                       }}>
                       {categories.map((cat) => (
-                        <SelectItem key={cat} value={cat}>
+                        <SelectItem key={cat} value={cat} textValue={cat}>
                           {cat}
                         </SelectItem>
                       ))}

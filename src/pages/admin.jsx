@@ -732,16 +732,16 @@ export const Admin = () => {
                   }}
                   className="filter-select"
                   size="sm">
-                  <SelectItem key="all" value="all">
+                  <SelectItem key="all" value="all" textValue="Todas">
                     Todas
                   </SelectItem>
-                  <SelectItem key="approved" value="approved">
+                  <SelectItem key="approved" value="approved" textValue="Aprobadas">
                     Aprobadas
                   </SelectItem>
-                  <SelectItem key="pending" value="pending">
+                  <SelectItem key="pending" value="pending" textValue="Pendientes">
                     Pendientes
                   </SelectItem>
-                  <SelectItem key="rejected" value="rejected">
+                  <SelectItem key="rejected" value="rejected" textValue="Rechazadas">
                     Rechazadas
                   </SelectItem>
                 </Select>
@@ -1189,7 +1189,7 @@ export const Admin = () => {
                     portalContainer: document.body
                   }}>
                   {Object.entries(branchesData).map(([key, data]) => (
-                    <SelectItem key={key} value={key}>
+                    <SelectItem key={key} value={key} textValue={data.name}>
                       {data.name}
                     </SelectItem>
                   ))}
@@ -1254,10 +1254,10 @@ export const Admin = () => {
                     classNames: { content: 'z-[9999]' },
                     portalContainer: document.body
                   }}>
-                  <SelectItem key="progression" value="progression">
+                  <SelectItem key="progression" value="progression" textValue="Progresión">
                     Progresión
                   </SelectItem>
-                  <SelectItem key="specialty" value="specialty">
+                  <SelectItem key="specialty" value="specialty" textValue="Especialidad">
                     Especialidad
                   </SelectItem>
                 </Select>
@@ -1275,7 +1275,7 @@ export const Admin = () => {
                       portalContainer: document.body
                     }}>
                     {branchesData[selectedUser.branch]?.progressions.map((prog) => (
-                      <SelectItem key={prog} value={prog}>
+                      <SelectItem key={prog} value={prog} textValue={prog}>
                         {prog}
                       </SelectItem>
                     ))}
@@ -1300,13 +1300,13 @@ export const Admin = () => {
                         classNames: { content: 'z-[9999]' },
                         portalContainer: document.body
                       }}>
-                      <SelectItem key="basic" value="basic">
+                      <SelectItem key="basic" value="basic" textValue="Básico">
                         Básico
                       </SelectItem>
-                      <SelectItem key="advanced" value="advanced">
+                      <SelectItem key="advanced" value="advanced" textValue="Avanzado">
                         Avanzado
                       </SelectItem>
-                      <SelectItem key="master" value="master">
+                      <SelectItem key="master" value="master" textValue="Maestro">
                         Maestro
                       </SelectItem>
                     </Select>
@@ -1356,7 +1356,7 @@ export const Admin = () => {
                   portalContainer: document.body
                 }}>
                 {notificationTypes.map((type) => (
-                  <SelectItem key={type.key} value={type.key}>
+                  <SelectItem key={type.key} value={type.key} textValue={type.label}>
                     {type.icon} {type.label}
                   </SelectItem>
                 ))}

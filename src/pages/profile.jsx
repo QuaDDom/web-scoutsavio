@@ -708,7 +708,7 @@ export const Profile = () => {
                   portalContainer: document.body
                 }}>
                 {Object.entries(branchesData).map(([key, data]) => (
-                  <SelectItem key={key} value={key}>
+                  <SelectItem key={key} value={key} textValue={`${data.name} (${data.age})`}>
                     {data.icon} {data.name} ({data.age})
                   </SelectItem>
                 ))}
