@@ -289,6 +289,62 @@ const GalleryImage = ({ id, imgSrc, title, category }) => {
   );
 };
 
+// Función para comprimir imágenes antes de subir
+const compressImage = (file, maxWidth = 1920, maxHeight = 1920, quality = 0.8) => {
+  return new Promise((resolve) => {
+    // Si no es imagen, devolver el archivo original
+    if (!file.type.startsWith('image/')) {
+      resolve(file);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new window.Image();
+      img.onload = () => {
+        // Calcular nuevas dimensiones manteniendo el aspect ratio
+        let { width, height } = img;
+        
+        if (width > maxWidth || height > maxHeight) {
+          const ratio = Math.min(maxWidth / width, maxHeight / height);
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+        }
+
+        // Crear canvas para redimensionar
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Convertir a blob comprimido
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              // Crear nuevo File con el blob comprimido
+              const compressedFile = new File([blob], file.name, {
+                type: 'image/jpeg',
+                lastModified: Date.now()
+              });
+              resolve(compressedFile);
+            } else {
+              resolve(file); // Si falla, devolver original
+            }
+          },
+          'image/jpeg',
+          quality
+        );
+      };
+      img.onerror = () => resolve(file); // Si falla, devolver original
+      img.src = e.target.result;
+    };
+    reader.onerror = () => resolve(file); // Si falla, devolver original
+    reader.readAsDataURL(file);
+  });
+};
+
 // Upload Modal Component
 const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLoadPhotos }) => {
   const [files, setFiles] = useState([]);
@@ -298,6 +354,7 @@ const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLo
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const [authLoading, setAuthLoading] = useState(false);
+  const [isCompressing, setIsCompressing] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleSignIn = async () => {
@@ -340,14 +397,39 @@ const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLo
     addFiles(selectedFiles);
   };
 
-  const addFiles = (newFiles) => {
-    const filesWithPreview = newFiles.map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-      id: Math.random().toString(36).substr(2, 9),
-      title: file.name.replace(/\.[^/.]+$/, '') // Nombre sin extensión como título inicial
-    }));
-    setFiles((prev) => [...prev, ...filesWithPreview].slice(0, 10)); // Max 10 files
+  const addFiles = async (newFiles) => {
+    setIsCompressing(true);
+    
+    try {
+      // Comprimir todas las imágenes en paralelo
+      const compressedFiles = await Promise.all(
+        newFiles.map(async (file) => {
+          const compressed = await compressImage(file);
+          return {
+            file: compressed,
+            originalSize: file.size,
+            compressedSize: compressed.size,
+            preview: URL.createObjectURL(compressed),
+            id: Math.random().toString(36).substr(2, 9),
+            title: file.name.replace(/\.[^/.]+$/, '') // Nombre sin extensión como título inicial
+          };
+        })
+      );
+      
+      setFiles((prev) => [...prev, ...compressedFiles].slice(0, 10)); // Max 10 files
+    } catch (error) {
+      console.error('Error compressing files:', error);
+      // Fallback: agregar sin comprimir
+      const filesWithPreview = newFiles.map((file) => ({
+        file,
+        preview: URL.createObjectURL(file),
+        id: Math.random().toString(36).substr(2, 9),
+        title: file.name.replace(/\.[^/.]+$/, '')
+      }));
+      setFiles((prev) => [...prev, ...filesWithPreview].slice(0, 10));
+    }
+    
+    setIsCompressing(false);
   };
 
   const updateFileTitle = (id, title) => {
@@ -517,12 +599,12 @@ const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLo
                 <>
                   {/* Drop Zone */}
                   <div
-                    className={`drop-zone ${dragActive ? 'active' : ''} ${files.length > 0 ? 'has-files' : ''}`}
+                    className={`drop-zone ${dragActive ? 'active' : ''} ${files.length > 0 ? 'has-files' : ''} ${isCompressing ? 'compressing' : ''}`}
                     onDragEnter={handleDrag}
                     onDragLeave={handleDrag}
                     onDragOver={handleDrag}
                     onDrop={handleDrop}
-                    onClick={() => fileInputRef.current?.click()}>
+                    onClick={() => !isCompressing && fileInputRef.current?.click()}>
                     <input
                       ref={fileInputRef}
                       type="file"
@@ -531,12 +613,43 @@ const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLo
                       onChange={handleFileSelect}
                       style={{ display: 'none' }}
                     />
-                    <FaImage className="drop-icon" />
-                    <p className="drop-text">
-                      Arrastrá tus fotos aquí o hacé clic para seleccionar
-                    </p>
-                    <span className="drop-hint">Máximo 10 fotos • JPG, PNG o WebP</span>
+                    {isCompressing ? (
+                      <>
+                        <FaSpinner className="drop-icon spin" />
+                        <p className="drop-text">Comprimiendo imágenes...</p>
+                        <span className="drop-hint">Optimizando para menor tamaño</span>
+                      </>
+                    ) : (
+                      <>
+                        <FaImage className="drop-icon" />
+                        <p className="drop-text">
+                          Arrastrá tus fotos aquí o hacé clic para seleccionar
+                        </p>
+                        <span className="drop-hint">Máximo 10 fotos • JPG, PNG o WebP • Se comprimen automáticamente</span>
+                      </>
+                    )}
                   </div>
+
+                  {/* Compression Stats */}
+                  {files.length > 0 && files.some(f => f.originalSize) && (
+                    <div className="compression-stats">
+                      <span className="stat-label">💾 Ahorro por compresión:</span>
+                      <span className="stat-value">
+                        {(() => {
+                          const totalOriginal = files.reduce((acc, f) => acc + (f.originalSize || f.file.size), 0);
+                          const totalCompressed = files.reduce((acc, f) => acc + f.file.size, 0);
+                          const savedBytes = totalOriginal - totalCompressed;
+                          const savedPercent = ((savedBytes / totalOriginal) * 100).toFixed(0);
+                          const formatSize = (bytes) => {
+                            if (bytes < 1024) return `${bytes} B`;
+                            if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+                            return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+                          };
+                          return `${formatSize(savedBytes)} (${savedPercent}% menos)`;
+                        })()}
+                      </span>
+                    </div>
+                  )}
 
                   {/* Preview Grid */}
                   {files.length > 0 && (
