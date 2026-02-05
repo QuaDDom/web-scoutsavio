@@ -399,7 +399,8 @@ const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLo
       <Modal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        size="md"
+        size="2xl"
+        scrollBehavior="inside"
         classNames={{
           backdrop: 'bg-black/80 backdrop-blur-sm'
         }}>

@@ -1,198 +1,466 @@
 @import '../styles/variables';
 
+// ========================================
+// FORUM - REDDIT STYLE DESIGN
+// ========================================
+
 .forum-page {
-  padding: 120px 20px 60px;
-  max-width: 1000px;
+  padding: 100px 20px 60px;
+  max-width: 900px;
   margin: 0 auto;
   min-height: 100vh;
 }
 
+// ========================================
+// HEADER
+// ========================================
 .forum-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding: 24px;
+  background: linear-gradient(135deg, rgba($scout-orange, 0.15) 0%, rgba($main2, 0.8) 100%);
+  border-radius: $radius-lg;
+  border: 1px solid rgba($scout-orange, 0.2);
 
   .header-info {
     h1 {
       font-size: clamp(1.5rem, 4vw, 2rem);
-      font-weight: 700;
-      color: $scout-orange;
-      margin-bottom: 4px;
+      font-weight: 800;
+      background: $gradient;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .header-icon {
+        font-size: 1.5rem;
+        color: $scout-orange;
+        -webkit-text-fill-color: $scout-orange;
+      }
     }
 
     p {
       color: rgba(255, 255, 255, 0.6);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+    }
+  }
+
+  .create-btn {
+    background: $gradient;
+    font-weight: 600;
+    padding: 0 24px;
+    height: 44px;
+    border-radius: 22px;
+    box-shadow: 0 4px 15px rgba($scout-orange, 0.3);
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba($scout-orange, 0.4);
+    }
+  }
+
+  @include mobile {
+    flex-direction: column;
+    gap: 16px;
+
+    .create-btn {
+      width: 100%;
     }
   }
 }
 
+// ========================================
+// CATEGORIES / FILTER BAR
+// ========================================
 .categories-bar {
   display: flex;
   gap: 8px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: rgba($main2, 0.6);
+  border-radius: $radius-md;
+  border: 1px solid rgba(255, 255, 255, 0.06);
   flex-wrap: wrap;
+  align-items: center;
+
+  .filter-label {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-right: 8px;
+    font-weight: 500;
+  }
 
   .cat-chip {
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: all 0.2s ease;
+    font-weight: 500;
 
     &:hover {
       transform: scale(1.05);
     }
+
+    &.active {
+      box-shadow: 0 0 0 2px rgba($scout-orange, 0.5);
+    }
   }
 }
 
-// Topics List
+// ========================================
+// TOPICS LIST - REDDIT STYLE
+// ========================================
 .topics-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0;
+  background: rgba($main2, 0.4);
+  border-radius: $radius-lg;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
 }
 
 .topic-card {
-  background: rgba($main2, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition:
-    transform 0.2s,
-    border-color 0.2s;
+  background: transparent !important;
+  border-radius: 0 !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  transition: background 0.2s ease;
+  box-shadow: none !important;
 
-  &:hover {
-    transform: translateX(4px);
-    border-color: $scout-orange;
+  &:last-child {
+    border-bottom: none !important;
   }
 
-  &.main {
-    margin-bottom: 24px;
-
-    .topic-header {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 16px;
-
-      .topic-meta {
-        flex: 1;
-
-        h1 {
-          font-size: 1.5rem;
-          font-weight: 700;
-          margin-bottom: 8px;
-        }
-
-        .meta-info {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          flex-wrap: wrap;
-
-          .author {
-            font-weight: 600;
-          }
-
-          .date {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.85rem;
-          }
-        }
-      }
-    }
-
-    .topic-content {
-      p {
-        line-height: 1.7;
-        white-space: pre-wrap;
-      }
-    }
+  &:hover {
+    background: rgba(255, 255, 255, 0.03) !important;
   }
 
   .topic-row {
     display: flex;
-    align-items: center;
-    gap: 16px;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 4px 0;
+  }
 
-    .topic-avatar {
+  // Vote Section (Reddit style)
+  .vote-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 40px;
+    padding: 8px 0;
+
+    .vote-btn {
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
+      padding: 0;
+      border-radius: 4px;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.4);
+      transition: all 0.15s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: $scout-orange;
+      }
+
+      &.active {
+        color: $scout-orange;
+      }
+
+      &.downvote:hover {
+        color: #7193ff;
+      }
+    }
+
+    .vote-count {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
+
+  // Topic Content
+  .topic-content-wrapper {
+    flex: 1;
+    min-width: 0;
+    padding: 12px 0;
+  }
+
+  .topic-header-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+
+    .category-tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .author-info {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.5);
+
+      .author-name {
+        color: rgba(255, 255, 255, 0.7);
+        font-weight: 500;
+
+        &:hover {
+          text-decoration: underline;
+          color: $scout-orange;
+        }
+      }
+
+      .separator {
+        margin: 0 4px;
+      }
+    }
+  }
+
+  .topic-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: $scout-orange;
+    }
+  }
+
+  .topic-preview {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+
+  // Action Bar
+  .topic-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.5);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      svg {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  // Menu Button
+  .topic-menu {
+    align-self: flex-start;
+    margin-top: 12px;
+  }
+}
+
+// ========================================
+// TOPIC VIEW (DETAIL PAGE)
+// ========================================
+.topic-view {
+  .back-btn {
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.7);
+
+    &:hover {
+      color: $scout-orange;
+    }
+  }
+}
+
+.topic-card.main {
+  background: rgba($main2, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: $radius-lg !important;
+  margin-bottom: 24px;
+
+  .topic-main-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    .author-avatar {
       flex-shrink: 0;
     }
 
-    .topic-info {
+    .header-content {
       flex: 1;
-      min-width: 0;
 
-      h3 {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 6px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      .topic-category {
+        margin-bottom: 8px;
       }
 
-      .topic-meta {
+      h1 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        line-height: 1.3;
+        margin-bottom: 12px;
+      }
+
+      .meta-row {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         flex-wrap: wrap;
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.6);
 
-        .author {
-          font-size: 0.85rem;
-          color: rgba(255, 255, 255, 0.8);
+        .author-name {
+          font-weight: 600;
+          color: rgba(255, 255, 255, 0.9);
         }
 
-        .date {
+        .meta-dot {
+          width: 3px;
+          height: 3px;
+          background: rgba(255, 255, 255, 0.4);
+          border-radius: 50%;
+        }
+
+        .meta-item {
           display: flex;
           align-items: center;
           gap: 4px;
-          font-size: 0.8rem;
-          color: rgba(255, 255, 255, 0.5);
         }
       }
     }
+  }
 
-    .topic-stats {
+  .topic-body {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .topic-stats-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+    .stat-item {
       display: flex;
-      gap: 16px;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 6px;
+      transition: all 0.15s ease;
 
-      .stat {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        font-size: 0.85rem;
-        color: rgba(255, 255, 255, 0.6);
+      &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: $scout-orange;
+      }
+
+      &.liked {
+        color: $scout-orange;
       }
     }
   }
 }
 
-// Replies
+// ========================================
+// REPLIES SECTION
+// ========================================
 .replies-section {
-  h3 {
+  .replies-header {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 1.1rem;
-    margin-bottom: 16px;
-    color: rgba(255, 255, 255, 0.8);
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid $scout-orange;
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .replies-count {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 400;
+    }
   }
 }
 
 .replies-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0;
   margin-bottom: 24px;
+
+  .no-replies {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 32px 20px;
+    font-size: 0.95rem;
+  }
 }
 
 .reply-card {
-  background: rgba($main2, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  margin-left: 20px;
-  border-left: 3px solid $scout-orange;
+  background: rgba($main2, 0.4) !important;
+  border: none !important;
+  border-left: 3px solid rgba($scout-orange, 0.5) !important;
+  border-radius: 0 $radius-md $radius-md 0 !important;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-left-color: $scout-orange !important;
+    background: rgba($main2, 0.6) !important;
+  }
 
   .reply-header {
     display: flex;
@@ -200,53 +468,123 @@
     gap: 10px;
     margin-bottom: 10px;
 
-    .reply-meta {
-      flex: 1;
+    .reply-avatar {
+      width: 32px;
+      height: 32px;
+    }
 
-      .author {
+    .reply-info {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+
+      .reply-author {
         font-weight: 600;
         font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.9);
       }
 
-      .date {
+      .reply-date {
         font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.5);
-        margin-left: 8px;
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      .op-badge {
+        font-size: 0.65rem;
+        padding: 2px 6px;
+        background: $scout-orange;
+        color: #fff;
+        border-radius: 4px;
+        font-weight: 700;
+        text-transform: uppercase;
       }
     }
   }
 
-  .reply-content {
-    line-height: 1.6;
+  .reply-body {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.8);
     white-space: pre-wrap;
+    padding-left: 42px;
   }
 }
 
+// Reply Form
 .reply-form-card {
-  background: rgba($main2, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba($main2, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: $radius-lg !important;
 
-  .reply-btn {
+  .reply-form-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+
+    span {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+
+  .reply-input {
+    border-radius: $radius-md;
+  }
+
+  .reply-form-footer {
+    display: flex;
+    justify-content: flex-end;
     margin-top: 12px;
+
+    .reply-submit-btn {
+      background: $gradient;
+      font-weight: 600;
+      padding: 0 24px;
+    }
   }
 }
 
-.back-btn {
-  margin-bottom: 16px;
+// ========================================
+// NEW TOPIC MODAL
+// ========================================
+.new-topic-modal {
+  .modal-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+
+    svg {
+      color: $scout-orange;
+    }
+  }
 }
 
-// New Topic Form
 .new-topic-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
+
+  .form-group {
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 8px;
+    }
+  }
 
   .category-select {
     label {
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 8px;
       display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 10px;
     }
 
     .category-options {
@@ -256,17 +594,24 @@
 
       .cat-option {
         cursor: pointer;
-        transition: transform 0.2s;
+        transition: all 0.2s ease;
+        font-weight: 500;
 
         &:hover {
           transform: scale(1.05);
+        }
+
+        &.selected {
+          box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
         }
       }
     }
   }
 }
 
-// Empty & Loading
+// ========================================
+// EMPTY & LOADING STATES
+// ========================================
 .forum-loading {
   display: flex;
   flex-direction: column;
@@ -292,26 +637,41 @@
 
 .forum-empty {
   text-align: center;
-  padding: 60px 20px;
+  padding: 80px 20px;
+  background: rgba($main2, 0.4);
+  border-radius: $radius-lg;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 
   .empty-icon {
-    font-size: 56px;
+    font-size: 64px;
     color: $scout-orange;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+    opacity: 0.8;
   }
 
   h2 {
     font-size: 1.5rem;
+    font-weight: 700;
     margin-bottom: 8px;
   }
 
   p {
     color: rgba(255, 255, 255, 0.6);
-    margin-bottom: 24px;
+    margin-bottom: 28px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .empty-btn {
+    background: $gradient;
+    font-weight: 600;
   }
 }
 
-// Login
+// ========================================
+// LOGIN STATE
+// ========================================
 .forum-login {
   min-height: 100vh;
   display: flex;
@@ -320,31 +680,38 @@
   padding: 100px 20px;
 
   .login-card {
-    max-width: 400px;
+    max-width: 420px;
     width: 100%;
-    background: rgba($main2, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba($main2, 0.8) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: $radius-xl !important;
+    backdrop-filter: blur(10px);
   }
 
   .login-content {
     text-align: center;
-    padding: 40px 20px;
+    padding: 48px 32px;
 
     .login-icon {
-      font-size: 64px;
+      font-size: 72px;
       color: $scout-orange;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
     }
 
     h1 {
-      font-size: 1.8rem;
-      font-weight: 700;
+      font-size: 2rem;
+      font-weight: 800;
       margin-bottom: 12px;
+      background: $gradient;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     p {
       color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 32px;
+      margin-bottom: 36px;
+      font-size: 1rem;
+      line-height: 1.6;
     }
 
     .login-btn {
@@ -352,85 +719,196 @@
       color: #fff;
       font-weight: 600;
       width: 100%;
+      height: 50px;
+      font-size: 1rem;
+      border-radius: 25px;
+      box-shadow: 0 4px 15px rgba($scout-orange, 0.3);
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba($scout-orange, 0.4);
+      }
     }
 
     .login-note {
-      margin-top: 24px;
+      margin-top: 28px;
       font-size: 0.85rem;
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(255, 255, 255, 0.4);
     }
   }
 }
 
-// Light Mode
+// ========================================
+// LIGHT MODE
+// ========================================
 .light,
 [data-theme='light'] {
-  .forum-header .header-info {
-    h1 {
-      color: $scout-orange;
-    }
-    p {
+  .forum-header {
+    background: linear-gradient(
+      135deg,
+      rgba($scout-orange, 0.1) 0%,
+      rgba(255, 255, 255, 0.95) 100%
+    );
+    border-color: rgba($scout-orange, 0.15);
+
+    .header-info p {
       color: rgba(0, 0, 0, 0.6);
     }
   }
 
-  .topic-card,
-  .reply-card,
-  .reply-form-card {
-    background: #fff;
-    border-color: rgba(0, 0, 0, 0.1);
+  .categories-bar {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.08);
 
-    .topic-info h3 {
-      color: #1a1a2e;
-    }
-    .topic-meta .author {
-      color: rgba(0, 0, 0, 0.8);
-    }
-    .topic-meta .date {
+    .filter-label {
       color: rgba(0, 0, 0, 0.5);
     }
-    .topic-stats .stat {
+  }
+
+  .topics-list {
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .topic-card {
+    border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.02) !important;
+    }
+
+    .vote-section {
+      .vote-count {
+        color: rgba(0, 0, 0, 0.8);
+      }
+      .vote-btn {
+        color: rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    .topic-header-row .author-info {
+      color: rgba(0, 0, 0, 0.5);
+      .author-name {
+        color: rgba(0, 0, 0, 0.7);
+      }
+    }
+
+    .topic-title {
+      color: #1a1a2e;
+    }
+
+    .topic-preview {
       color: rgba(0, 0, 0, 0.6);
+    }
+
+    .topic-actions .action-btn {
+      color: rgba(0, 0, 0, 0.5);
+      &:hover {
+        background: rgba(0, 0, 0, 0.05);
+        color: rgba(0, 0, 0, 0.8);
+      }
     }
   }
 
-  .topic-card.main .topic-content p {
-    color: rgba(0, 0, 0, 0.8);
+  .topic-card.main {
+    background: #fff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+
+    .topic-main-header {
+      border-bottom-color: rgba(0, 0, 0, 0.08);
+
+      .header-content h1 {
+        color: #1a1a2e;
+      }
+
+      .meta-row {
+        color: rgba(0, 0, 0, 0.6);
+        .author-name {
+          color: rgba(0, 0, 0, 0.9);
+        }
+        .meta-dot {
+          background: rgba(0, 0, 0, 0.3);
+        }
+      }
+    }
+
+    .topic-body {
+      color: rgba(0, 0, 0, 0.8);
+    }
+
+    .topic-stats-bar {
+      border-top-color: rgba(0, 0, 0, 0.08);
+      .stat-item {
+        color: rgba(0, 0, 0, 0.6);
+        &:hover {
+          background: rgba(0, 0, 0, 0.05);
+        }
+      }
+    }
   }
 
-  .reply-card .reply-content {
-    color: rgba(0, 0, 0, 0.8);
+  .replies-section .replies-header h3 {
+    color: #1a1a2e;
   }
 
-  .replies-section h3 {
-    color: rgba(0, 0, 0, 0.8);
+  .reply-card {
+    background: rgba(0, 0, 0, 0.02) !important;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.04) !important;
+    }
+
+    .reply-info .reply-author {
+      color: rgba(0, 0, 0, 0.9);
+    }
+
+    .reply-body {
+      color: rgba(0, 0, 0, 0.8);
+    }
+  }
+
+  .reply-form-card {
+    background: #fff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
   }
 
   .forum-empty {
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.1);
+
     h2 {
       color: #1a1a2e;
     }
+
     p {
       color: rgba(0, 0, 0, 0.6);
     }
   }
 
   .forum-login .login-card {
-    background: #fff;
-    border-color: rgba(0, 0, 0, 0.1);
+    background: #fff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
 
     h1 {
+      -webkit-text-fill-color: initial;
       color: #1a1a2e;
+      background: none;
     }
+
     p {
       color: rgba(0, 0, 0, 0.6);
     }
+
     .login-note {
-      color: rgba(0, 0, 0, 0.5);
+      color: rgba(0, 0, 0, 0.4);
     }
   }
 
-  .new-topic-form .category-select label {
-    color: rgba(0, 0, 0, 0.7);
+  .new-topic-form {
+    .form-group label,
+    .category-select label {
+      color: rgba(0, 0, 0, 0.8);
+    }
   }
 }

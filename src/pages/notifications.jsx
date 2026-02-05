@@ -85,7 +85,6 @@ export const Notifications = () => {
     setLoadingNotifications(true);
     try {
       const data = await notificationService.getUserNotifications(user.id);
-      console.log('Notifications loaded:', data);
       setNotifications(data);
     } catch (error) {
       console.error('Error loading notifications:', error);

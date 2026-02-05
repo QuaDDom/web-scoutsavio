@@ -177,18 +177,27 @@ export const userService = {
 
   // Obtener fotos subidas por un usuario
   async getUserPhotos(userId) {
-    const { data, error } = await supabase
-      .from('photos')
-      .select('*')
-      .eq('uploader_id', userId)
-      .order('created_at', { ascending: false });
+    try {
+      // Buscar por email del usuario en lugar de ID
+      const { data: userData } = await supabase.auth.getUser();
+      if (!userData?.user?.email) return [];
 
-    if (error) {
-      console.error('Error fetching user photos:', error);
+      const { data, error } = await supabase
+        .from('photos')
+        .select('*')
+        .eq('uploader_email', userData.user.email)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching user photos:', error);
+        return [];
+      }
+
+      return data || [];
+    } catch (err) {
+      console.error('Error in getUserPhotos:', err);
       return [];
     }
-
-    return data;
   }
 };
 
@@ -898,6 +907,22 @@ export const forumService = {
     } catch (error) {
       console.error('Error toggling like:', error);
       return { success: false };
+    }
+  },
+
+  // Obtener likes del usuario
+  async getUserLikes(userId) {
+    try {
+      const { data, error } = await supabase
+        .from('forum_likes')
+        .select('topic_id')
+        .eq('user_id', userId);
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching user likes:', error);
+      return [];
     }
   }
 };

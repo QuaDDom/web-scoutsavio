@@ -1,6 +1,12 @@
 @import '../../styles/variables';
 
+// ========================================
+// PROGRESSIONS PAGE - REDESIGNED
+// ========================================
+
 .progressions-page {
+  padding-bottom: 60px;
+
   .back-link {
     display: inline-flex;
     align-items: center;
@@ -10,10 +16,16 @@
     font-weight: 500;
     margin-bottom: 30px;
     transition: $transition-normal;
+    padding: 8px 16px;
+    border-radius: $radius-md;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 
     &:hover {
       color: $scout-orange;
       gap: 12px;
+      background: rgba($scout-orange, 0.1);
+      border-color: rgba($scout-orange, 0.3);
     }
   }
 
@@ -38,6 +50,7 @@
       color: rgba(255, 255, 255, 0.6);
       max-width: 500px;
       margin: 0 auto;
+      font-size: 1.1rem;
     }
   }
 }
@@ -56,6 +69,13 @@
       font-size: 1.3rem;
       font-weight: 600;
       margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      &::before {
+        content: '🏅';
+      }
     }
 
     p {
@@ -65,38 +85,68 @@
   }
 }
 
+// ========================================
+// BRANCH TABS
+// ========================================
 .branch-tabs {
   display: flex;
   flex-direction: column;
   align-items: center;
 
   [role='tablist'] {
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: $radius-lg;
-    padding: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: $radius-xl;
+    padding: 6px;
     margin-bottom: 30px;
     flex-wrap: wrap;
     justify-content: center;
+    gap: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  [role='tab'] {
+    border-radius: $radius-lg !important;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    &[data-selected='true'] {
+      background: rgba($scout-orange, 0.2) !important;
+    }
   }
 
   .tab-title {
     font-weight: 600;
-    padding: 8px 16px;
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+
+  [role='tabpanel'] {
+    width: 100%;
   }
 }
 
+// ========================================
+// BRANCH CONTENT
+// ========================================
 .branch-content {
   width: 100%;
 
   .branch-subtitle {
     text-align: center;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 600;
     color: $scout-orange;
     margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 
     &::before {
-      content: '📅 ';
+      content: '📅';
     }
   }
 
@@ -106,51 +156,74 @@
     max-width: 600px;
     margin: 0 auto 40px;
     line-height: 1.6;
+    font-size: 1rem;
   }
 }
 
+// ========================================
+// PROGRESSIONS GRID - FIXED LAYOUT
+// ========================================
 .progressions-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
-  padding-top: 10px; // Espacio para que los números no se corten
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  padding: 20px 0;
+  max-width: 1200px;
+  margin: 0 auto;
 
-  @include laptop {
-    grid-template-columns: repeat(3, 1fr);
+  // For 5 items - special layout
+  @media (min-width: 1100px) {
+    grid-template-columns: repeat(5, 1fr);
   }
 
-  @include tablet {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @include mobile {
-    grid-template-columns: 1fr;
+  // For 4 items branch (rovers)
+  &:has(.progression-card:nth-child(4):last-child) {
+    @media (min-width: 900px) {
+      grid-template-columns: repeat(4, 1fr);
+      max-width: 900px;
+    }
   }
 }
 
+// ========================================
+// PROGRESSION CARDS - NEW DESIGN
+// ========================================
 .progression-card {
-  background: rgba(255, 255, 255, 0.03) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: $radius-lg !important;
+  background: rgba($main2, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: $radius-xl !important;
   text-align: center;
   position: relative;
-  overflow: visible;
-  transition: $transition-normal;
-  margin-top: 20px; // Espacio para el número
+  transition: all 0.3s ease;
+  overflow: visible !important;
+
+  // Make card body handle overflow
+  > div {
+    overflow: visible !important;
+    padding-top: 28px !important;
+  }
 
   &:hover {
     transform: translateY(-8px);
-    border-color: rgba(255, 255, 255, 0.15);
-    box-shadow: $shadow-lg;
+    border-color: rgba($scout-orange, 0.4) !important;
+    box-shadow:
+      0 20px 40px rgba(0, 0, 0, 0.3),
+      0 0 30px rgba($scout-orange, 0.15);
 
     .progression-image img {
-      transform: scale(1.1);
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .progression-number {
+      transform: translateX(-50%) scale(1.1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     }
   }
 
+  // Number Badge - Always visible
   .progression-number {
     position: absolute;
-    top: -18px;
+    top: -16px;
     left: 50%;
     transform: translateX(-50%);
     width: 36px;
@@ -160,37 +233,79 @@
     align-items: center;
     justify-content: center;
     color: #fff;
-    font-weight: 700;
+    font-weight: 800;
     font-size: 1rem;
-    z-index: 10;
-    box-shadow: $shadow-md;
+    z-index: 20;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    border: 3px solid rgba(255, 255, 255, 0.2);
   }
 
+  // Image Container
   .progression-image {
     display: flex;
     justify-content: center;
-    padding: 40px 20px 20px; // Más padding top para el número
+    padding: 24px 16px 16px;
+    min-height: 140px;
+    align-items: center;
 
     img {
       width: 100px;
       height: 100px;
       object-fit: contain;
-      transition: $transition-normal;
+      transition: all 0.4s ease;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
     }
   }
 
+  // Title
   h4 {
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 700;
     margin-bottom: 10px;
-    padding: 0 15px;
+    padding: 0 12px;
+    line-height: 1.3;
+    color: #fff;
   }
 
+  // Description
   p {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.85rem;
     line-height: 1.5;
-    padding: 0 15px 20px;
+    padding: 0 14px 20px;
+  }
+}
+
+// ========================================
+// MOBILE RESPONSIVE
+// ========================================
+@include mobile {
+  .progressions-grid {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .progression-card {
+    .progression-image img {
+      width: 90px;
+      height: 90px;
+    }
+  }
+
+  .branch-tabs {
+    .tab-title {
+      padding: 8px 12px;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+@include tablet {
+  .progressions-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
   }
 }
 
@@ -202,9 +317,13 @@
   .progressions-page {
     .back-link {
       color: rgba(0, 0, 0, 0.65);
+      background: rgba(0, 0, 0, 0.03);
+      border-color: rgba(0, 0, 0, 0.1);
 
       &:hover {
         color: $scout-red;
+        background: rgba($scout-red, 0.08);
+        border-color: rgba($scout-red, 0.2);
       }
     }
 
@@ -238,6 +357,15 @@
   .branch-tabs {
     [role='tablist'] {
       background: rgba(0, 0, 0, 0.03);
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+
+    [role='tab']:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    [role='tab'][data-selected='true'] {
+      background: rgba($scout-orange, 0.15) !important;
     }
   }
 
@@ -249,12 +377,14 @@
 
   .progression-card {
     background: #fff !important;
-    border-color: rgba(0, 0, 0, 0.08);
-    box-shadow: $shadow-sm-light;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 
     &:hover {
-      border-color: rgba($scout-red, 0.2);
-      box-shadow: $shadow-lg-light;
+      border-color: rgba($scout-orange, 0.3) !important;
+      box-shadow:
+        0 16px 32px rgba(0, 0, 0, 0.12),
+        0 0 20px rgba($scout-orange, 0.1);
     }
 
     h4 {
@@ -263,6 +393,10 @@
 
     p {
       color: rgba(0, 0, 0, 0.6);
+    }
+
+    .progression-image img {
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
     }
   }
 }

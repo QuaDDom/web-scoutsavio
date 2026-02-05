@@ -28,15 +28,21 @@ import {
   FaComments,
   FaReply,
   FaClock,
-  FaUser,
   FaEllipsisV,
   FaTrash,
-  FaEdit,
-  FaLock,
   FaArrowLeft,
   FaSignInAlt,
-  FaThumbsUp
+  FaRegThumbsUp,
+  FaThumbsUp,
+  FaRegCommentAlt,
+  FaShare,
+  FaBookmark,
+  FaEye,
+  FaArrowUp,
+  FaArrowDown,
+  FaFire
 } from 'react-icons/fa';
+import { HiSparkles } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 
 export const Forum = () => {
@@ -48,6 +54,7 @@ export const Forum = () => {
   const [replies, setReplies] = useState([]);
   const [loadingReplies, setLoadingReplies] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [likedTopics, setLikedTopics] = useState(new Set());
 
   // Forms
   const [newTopicTitle, setNewTopicTitle] = useState('');
@@ -63,11 +70,11 @@ export const Forum = () => {
   const navigate = useNavigate();
 
   const categories = [
-    { key: 'general', label: 'General', color: 'default' },
-    { key: 'actividades', label: 'Actividades', color: 'success' },
-    { key: 'campamentos', label: 'Campamentos', color: 'warning' },
-    { key: 'ideas', label: 'Ideas y Propuestas', color: 'primary' },
-    { key: 'ayuda', label: 'Ayuda', color: 'secondary' }
+    { key: 'general', label: 'General', color: 'default', emoji: '💬' },
+    { key: 'actividades', label: 'Actividades', color: 'success', emoji: '🏕️' },
+    { key: 'campamentos', label: 'Campamentos', color: 'warning', emoji: '⛺' },
+    { key: 'ideas', label: 'Ideas', color: 'primary', emoji: '💡' },
+    { key: 'ayuda', label: 'Ayuda', color: 'secondary', emoji: '🙋' }
   ];
 
   useEffect(() => {
@@ -99,8 +106,14 @@ export const Forum = () => {
     setLoadingTopics(true);
     try {
       const data = await forumService.getTopics();
-      console.log('Topics loaded:', data);
       setTopics(data);
+      // Cargar likes del usuario
+      if (user) {
+        const userLikes = await forumService.getUserLikes(user.id);
+        if (userLikes) {
+          setLikedTopics(new Set(userLikes.map((l) => l.topic_id)));
+        }
+      }
     } catch (error) {
       console.error('Error loading topics:', error);
       setTopics([]);
@@ -168,7 +181,8 @@ export const Forum = () => {
     setProcessing(false);
   };
 
-  const handleDeleteTopic = async (topicId) => {
+  const handleDeleteTopic = async (topicId, e) => {
+    e?.stopPropagation();
     if (!confirm('¿Eliminar este tema y todas sus respuestas?')) return;
     const result = await forumService.deleteTopic(topicId);
     if (result.success) {
@@ -183,9 +197,26 @@ export const Forum = () => {
     if (result.success) loadReplies(selectedTopic.id);
   };
 
-  const handleLikeTopic = async (topicId) => {
+  const handleLikeTopic = async (topicId, e) => {
+    e?.stopPropagation();
     await forumService.toggleLike(topicId, user.id);
-    loadTopics();
+    setLikedTopics((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(topicId)) {
+        newSet.delete(topicId);
+      } else {
+        newSet.add(topicId);
+      }
+      return newSet;
+    });
+    // Actualizar contador local
+    setTopics((prev) =>
+      prev.map((t) =>
+        t.id === topicId
+          ? { ...t, likes_count: (t.likes_count || 0) + (likedTopics.has(topicId) ? -1 : 1) }
+          : t
+      )
+    );
   };
 
   const formatDate = (date) => {
@@ -193,19 +224,21 @@ export const Forum = () => {
     const now = new Date();
     const diff = now - d;
 
-    if (diff < 60000) return 'Hace un momento';
-    if (diff < 3600000) return `Hace ${Math.floor(diff / 60000)} min`;
-    if (diff < 86400000) return `Hace ${Math.floor(diff / 3600000)} h`;
-    if (diff < 604800000) return `Hace ${Math.floor(diff / 86400000)} días`;
-    return d.toLocaleDateString('es-AR');
+    if (diff < 60000) return 'ahora';
+    if (diff < 3600000) return `${Math.floor(diff / 60000)}m`;
+    if (diff < 86400000) return `${Math.floor(diff / 3600000)}h`;
+    if (diff < 604800000) return `${Math.floor(diff / 86400000)}d`;
+    return d.toLocaleDateString('es-AR', { day: 'numeric', month: 'short' });
   };
+
+  const getCategoryInfo = (key) => categories.find((c) => c.key === key) || categories[0];
 
   if (loading) {
     return (
       <PageContainer>
         <div className="forum-loading">
           <Spinner size="lg" color="warning" />
-          <p>Cargando...</p>
+          <p>Cargando foro...</p>
         </div>
       </PageContainer>
     );
@@ -214,14 +247,17 @@ export const Forum = () => {
   if (!user) {
     return (
       <PageContainer>
-        <SEO title="Foro" url="/foro" />
+        <SEO title="Foro Scout" url="/foro" />
         <div className="forum-login">
           <Card className="login-card">
             <CardBody>
               <div className="login-content">
                 <FaComments className="login-icon" />
                 <h1>Foro Scout</h1>
-                <p>Inicia sesión para participar en las discusiones del grupo</p>
+                <p>
+                  Unite a las conversaciones del grupo. Compartí ideas, hacé preguntas y participá
+                  con otros scouts.
+                </p>
                 <Button
                   className="login-btn"
                   onPress={() => authService.signInWithGoogle('/foro')}
@@ -240,6 +276,7 @@ export const Forum = () => {
 
   // Vista de tema seleccionado
   if (selectedTopic) {
+    const topicCat = getCategoryInfo(selectedTopic.category);
     return (
       <PageContainer>
         <SEO title={`${selectedTopic.title} - Foro`} url="/foro" />
@@ -255,91 +292,142 @@ export const Forum = () => {
 
             <Card className="topic-card main">
               <CardBody>
-                <div className="topic-header">
-                  <Avatar src={selectedTopic.author_avatar} showFallback size="lg" />
-                  <div className="topic-meta">
+                <div className="topic-main-header">
+                  <Avatar
+                    src={selectedTopic.author_avatar}
+                    showFallback
+                    size="lg"
+                    className="author-avatar"
+                  />
+                  <div className="header-content">
+                    <Chip size="sm" color={topicCat.color} className="topic-category">
+                      {topicCat.emoji} {topicCat.label}
+                    </Chip>
                     <h1>{selectedTopic.title}</h1>
-                    <div className="meta-info">
-                      <span className="author">{selectedTopic.author_name}</span>
-                      <span className="date">
+                    <div className="meta-row">
+                      <span className="author-name">{selectedTopic.author_name}</span>
+                      <span className="meta-dot">•</span>
+                      <span className="meta-item">
                         <FaClock /> {formatDate(selectedTopic.created_at)}
                       </span>
-                      <Chip
-                        size="sm"
-                        color={categories.find((c) => c.key === selectedTopic.category)?.color}>
-                        {categories.find((c) => c.key === selectedTopic.category)?.label}
-                      </Chip>
+                      <span className="meta-dot">•</span>
+                      <span className="meta-item">
+                        <FaEye /> {selectedTopic.views_count || 0} vistas
+                      </span>
                     </div>
                   </div>
                 </div>
-                <div className="topic-content">
-                  <p>{selectedTopic.content}</p>
+
+                <div className="topic-body">{selectedTopic.content}</div>
+
+                <div className="topic-stats-bar">
+                  <button
+                    className={`stat-item ${likedTopics.has(selectedTopic.id) ? 'liked' : ''}`}
+                    onClick={() => handleLikeTopic(selectedTopic.id)}>
+                    {likedTopics.has(selectedTopic.id) ? <FaThumbsUp /> : <FaRegThumbsUp />}
+                    {selectedTopic.likes_count || 0}
+                  </button>
+                  <span className="stat-item">
+                    <FaRegCommentAlt /> {selectedTopic.replies_count || 0} comentarios
+                  </span>
+                  <button className="stat-item">
+                    <FaShare /> Compartir
+                  </button>
+                  <button className="stat-item">
+                    <FaBookmark /> Guardar
+                  </button>
                 </div>
               </CardBody>
             </Card>
 
             <div className="replies-section">
-              <h3>
-                <FaComments /> {selectedTopic.replies_count || 0} Respuestas
-              </h3>
+              <div className="replies-header">
+                <h3>
+                  <FaRegCommentAlt /> Comentarios
+                </h3>
+                <span className="replies-count">({selectedTopic.replies_count || 0})</span>
+              </div>
 
               {loadingReplies ? (
                 <div className="loading-inline">
-                  <Spinner size="sm" />
+                  <Spinner size="sm" color="warning" />
                 </div>
               ) : (
                 <div className="replies-list">
-                  {replies.map((reply) => (
-                    <Card key={reply.id} className="reply-card">
-                      <CardBody>
-                        <div className="reply-header">
-                          <Avatar src={reply.author_avatar} showFallback size="sm" />
-                          <div className="reply-meta">
-                            <span className="author">{reply.author_name}</span>
-                            <span className="date">{formatDate(reply.created_at)}</span>
+                  {replies.length === 0 ? (
+                    <p className="no-replies">No hay comentarios todavía. ¡Sé el primero!</p>
+                  ) : (
+                    replies.map((reply) => (
+                      <Card key={reply.id} className="reply-card">
+                        <CardBody>
+                          <div className="reply-header">
+                            <Avatar
+                              src={reply.author_avatar}
+                              showFallback
+                              size="sm"
+                              className="reply-avatar"
+                            />
+                            <div className="reply-info">
+                              <span className="reply-author">{reply.author_name}</span>
+                              {reply.author_id === selectedTopic.author_id && (
+                                <span className="op-badge">OP</span>
+                              )}
+                              <span className="reply-date">{formatDate(reply.created_at)}</span>
+                            </div>
+                            {reply.author_id === user.id && (
+                              <Dropdown>
+                                <DropdownTrigger>
+                                  <Button isIconOnly variant="light" size="sm">
+                                    <FaEllipsisV />
+                                  </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu>
+                                  <DropdownItem
+                                    key="delete"
+                                    color="danger"
+                                    startContent={<FaTrash />}
+                                    onPress={() => handleDeleteReply(reply.id)}>
+                                    Eliminar
+                                  </DropdownItem>
+                                </DropdownMenu>
+                              </Dropdown>
+                            )}
                           </div>
-                          {reply.author_id === user.id && (
-                            <Dropdown>
-                              <DropdownTrigger>
-                                <Button isIconOnly variant="light" size="sm">
-                                  <FaEllipsisV />
-                                </Button>
-                              </DropdownTrigger>
-                              <DropdownMenu>
-                                <DropdownItem
-                                  key="delete"
-                                  color="danger"
-                                  startContent={<FaTrash />}
-                                  onPress={() => handleDeleteReply(reply.id)}>
-                                  Eliminar
-                                </DropdownItem>
-                              </DropdownMenu>
-                            </Dropdown>
-                          )}
-                        </div>
-                        <p className="reply-content">{reply.content}</p>
-                      </CardBody>
-                    </Card>
-                  ))}
+                          <p className="reply-body">{reply.content}</p>
+                        </CardBody>
+                      </Card>
+                    ))
+                  )}
                 </div>
               )}
 
               <Card className="reply-form-card">
                 <CardBody>
+                  <div className="reply-form-header">
+                    <Avatar src={user.user_metadata?.avatar_url} showFallback size="sm" />
+                    <span>
+                      Comentar como{' '}
+                      <strong>{user.user_metadata?.full_name || user.email.split('@')[0]}</strong>
+                    </span>
+                  </div>
                   <Textarea
-                    placeholder="Escribe tu respuesta..."
+                    placeholder="¿Qué pensás?"
                     value={replyContent}
                     onValueChange={setReplyContent}
                     minRows={3}
+                    className="reply-input"
                   />
-                  <Button
-                    color="warning"
-                    onPress={handleReply}
-                    isDisabled={!replyContent.trim() || processing}
-                    startContent={<FaReply />}
-                    className="reply-btn">
-                    {processing ? 'Enviando...' : 'Responder'}
-                  </Button>
+                  <div className="reply-form-footer">
+                    <Button
+                      color="warning"
+                      onPress={handleReply}
+                      isDisabled={!replyContent.trim() || processing}
+                      isLoading={processing}
+                      startContent={!processing && <FaReply />}
+                      className="reply-submit-btn">
+                      Comentar
+                    </Button>
+                  </div>
                 </CardBody>
               </Card>
             </div>
@@ -356,18 +444,22 @@ export const Forum = () => {
       <div className="forum-page">
         <div className="forum-header">
           <div className="header-info">
-            <h1>Foro Scout</h1>
-            <p>Comparte ideas, haz preguntas y participa con el grupo</p>
+            <h1>
+              <FaFire className="header-icon" />
+              Foro Scout
+            </h1>
+            <p>Compartí ideas, hacé preguntas y participá con el grupo</p>
           </div>
-          <Button color="warning" startContent={<FaPlus />} onPress={onNewTopicOpen}>
-            Nuevo Tema
+          <Button className="create-btn" startContent={<FaPlus />} onPress={onNewTopicOpen}>
+            Crear Post
           </Button>
         </div>
 
         <div className="categories-bar">
+          <span className="filter-label">Filtrar:</span>
           {categories.map((cat) => (
             <Chip key={cat.key} color={cat.color} variant="flat" className="cat-chip">
-              {cat.label}
+              {cat.emoji} {cat.label}
             </Chip>
           ))}
         </div>
@@ -378,91 +470,126 @@ export const Forum = () => {
           </div>
         ) : topics.length === 0 ? (
           <div className="forum-empty">
-            <FaComments className="empty-icon" />
-            <h2>No hay temas todavía</h2>
-            <p>¡Sé el primero en crear un tema de discusión!</p>
-            <Button color="warning" startContent={<FaPlus />} onPress={onNewTopicOpen}>
-              Crear primer tema
+            <HiSparkles className="empty-icon" />
+            <h2>¡Empezá la conversación!</h2>
+            <p>Todavía no hay posts. Sé el primero en crear uno y compartir algo con el grupo.</p>
+            <Button className="empty-btn" startContent={<FaPlus />} onPress={onNewTopicOpen}>
+              Crear primer post
             </Button>
           </div>
         ) : (
           <div className="topics-list">
-            {topics.map((topic) => (
-              <Card
-                key={topic.id}
-                className="topic-card"
-                isPressable
-                onPress={() => handleSelectTopic(topic)}>
-                <CardBody>
-                  <div className="topic-row">
-                    <Avatar src={topic.author_avatar} showFallback className="topic-avatar" />
-                    <div className="topic-info">
-                      <h3>{topic.title}</h3>
-                      <div className="topic-meta">
-                        <span className="author">{topic.author_name}</span>
-                        <span className="date">
-                          <FaClock /> {formatDate(topic.created_at)}
-                        </span>
-                        <Chip
-                          size="sm"
-                          color={categories.find((c) => c.key === topic.category)?.color}
-                          variant="flat">
-                          {categories.find((c) => c.key === topic.category)?.label}
-                        </Chip>
+            {topics.map((topic) => {
+              const cat = getCategoryInfo(topic.category);
+              const isLiked = likedTopics.has(topic.id);
+              return (
+                <Card
+                  key={topic.id}
+                  className="topic-card"
+                  isPressable
+                  onPress={() => handleSelectTopic(topic)}>
+                  <CardBody>
+                    <div className="topic-row">
+                      {/* Vote section */}
+                      <div className="vote-section">
+                        <Button
+                          isIconOnly
+                          className={`vote-btn ${isLiked ? 'active' : ''}`}
+                          onClick={(e) => handleLikeTopic(topic.id, e)}>
+                          <FaArrowUp />
+                        </Button>
+                        <span className="vote-count">{topic.likes_count || 0}</span>
+                        <Button isIconOnly className="vote-btn downvote">
+                          <FaArrowDown />
+                        </Button>
                       </div>
+
+                      {/* Content */}
+                      <div className="topic-content-wrapper">
+                        <div className="topic-header-row">
+                          <Chip size="sm" color={cat.color} className="category-tag">
+                            {cat.emoji} {cat.label}
+                          </Chip>
+                          <span className="author-info">
+                            Publicado por <span className="author-name">{topic.author_name}</span>
+                            <span className="separator">•</span>
+                            {formatDate(topic.created_at)}
+                          </span>
+                        </div>
+
+                        <h3 className="topic-title">{topic.title}</h3>
+
+                        {topic.content && <p className="topic-preview">{topic.content}</p>}
+
+                        <div className="topic-actions">
+                          <button className="action-btn">
+                            <FaRegCommentAlt /> {topic.replies_count || 0} Comentarios
+                          </button>
+                          <button className="action-btn">
+                            <FaShare /> Compartir
+                          </button>
+                          <button className="action-btn">
+                            <FaBookmark /> Guardar
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Menu */}
+                      {topic.author_id === user.id && (
+                        <div className="topic-menu">
+                          <Dropdown>
+                            <DropdownTrigger>
+                              <Button
+                                isIconOnly
+                                variant="light"
+                                size="sm"
+                                onClick={(e) => e.stopPropagation()}>
+                                <FaEllipsisV />
+                              </Button>
+                            </DropdownTrigger>
+                            <DropdownMenu>
+                              <DropdownItem
+                                key="delete"
+                                color="danger"
+                                startContent={<FaTrash />}
+                                onPress={(e) => handleDeleteTopic(topic.id, e)}>
+                                Eliminar
+                              </DropdownItem>
+                            </DropdownMenu>
+                          </Dropdown>
+                        </div>
+                      )}
                     </div>
-                    <div className="topic-stats">
-                      <div className="stat">
-                        <FaComments /> {topic.replies_count || 0}
-                      </div>
-                      <div className="stat">
-                        <FaThumbsUp /> {topic.likes_count || 0}
-                      </div>
-                    </div>
-                    {topic.author_id === user.id && (
-                      <Dropdown>
-                        <DropdownTrigger>
-                          <Button
-                            isIconOnly
-                            variant="light"
-                            size="sm"
-                            onClick={(e) => e.stopPropagation()}>
-                            <FaEllipsisV />
-                          </Button>
-                        </DropdownTrigger>
-                        <DropdownMenu>
-                          <DropdownItem
-                            key="delete"
-                            color="danger"
-                            startContent={<FaTrash />}
-                            onPress={() => handleDeleteTopic(topic.id)}>
-                            Eliminar
-                          </DropdownItem>
-                        </DropdownMenu>
-                      </Dropdown>
-                    )}
-                  </div>
-                </CardBody>
-              </Card>
-            ))}
+                  </CardBody>
+                </Card>
+              );
+            })}
           </div>
         )}
       </div>
 
       {/* Modal Nuevo Tema */}
-      <Modal isOpen={isNewTopicOpen} onClose={onNewTopicClose} size="2xl">
+      <Modal
+        isOpen={isNewTopicOpen}
+        onClose={onNewTopicClose}
+        size="2xl"
+        className="new-topic-modal">
         <ModalContent>
           <ModalHeader>
-            <FaPlus /> Nuevo Tema
+            <span className="modal-title">
+              <FaPlus /> Crear nuevo post
+            </span>
           </ModalHeader>
           <ModalBody>
             <div className="new-topic-form">
               <Input
                 label="Título"
-                placeholder="¿De qué quieres hablar?"
+                placeholder="Un título interesante para tu post..."
                 value={newTopicTitle}
                 onValueChange={setNewTopicTitle}
+                size="lg"
               />
+
               <div className="category-select">
                 <label>Categoría</label>
                 <div className="category-options">
@@ -471,19 +598,20 @@ export const Forum = () => {
                       key={cat.key}
                       color={cat.color}
                       variant={newTopicCategory === cat.key ? 'solid' : 'flat'}
-                      className="cat-option"
+                      className={`cat-option ${newTopicCategory === cat.key ? 'selected' : ''}`}
                       onClick={() => setNewTopicCategory(cat.key)}>
-                      {cat.label}
+                      {cat.emoji} {cat.label}
                     </Chip>
                   ))}
                 </div>
               </div>
+
               <Textarea
                 label="Contenido"
-                placeholder="Describe tu tema, pregunta o idea..."
+                placeholder="¿Qué querés compartir o preguntar?"
                 value={newTopicContent}
                 onValueChange={setNewTopicContent}
-                minRows={5}
+                minRows={6}
               />
             </div>
           </ModalBody>
@@ -494,8 +622,9 @@ export const Forum = () => {
             <Button
               color="warning"
               onPress={handleCreateTopic}
-              isDisabled={!newTopicTitle.trim() || !newTopicContent.trim() || processing}>
-              {processing ? 'Creando...' : 'Crear Tema'}
+              isDisabled={!newTopicTitle.trim() || !newTopicContent.trim() || processing}
+              isLoading={processing}>
+              {processing ? 'Publicando...' : 'Publicar'}
             </Button>
           </ModalFooter>
         </ModalContent>

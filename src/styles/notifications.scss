@@ -1,17 +1,28 @@
 @import '../styles/variables';
 
+// ========================================
+// NOTIFICATIONS PAGE - REDESIGNED
+// ========================================
+
 .notifications-page {
-  padding: 120px 20px 60px;
+  padding: 100px 20px 60px;
   max-width: 900px;
   margin: 0 auto;
   min-height: 100vh;
 }
 
+// ========================================
+// HEADER
+// ========================================
 .notifications-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 24px;
+  padding: 24px;
+  background: linear-gradient(135deg, rgba($scout-orange, 0.12) 0%, rgba($main2, 0.8) 100%);
+  border-radius: $radius-lg;
+  border: 1px solid rgba($scout-orange, 0.15);
   flex-wrap: wrap;
   gap: 16px;
 
@@ -19,53 +30,127 @@
     h1 {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       font-size: clamp(1.5rem, 4vw, 2rem);
-      font-weight: 700;
-      color: $scout-orange;
-      margin-bottom: 4px;
+      font-weight: 800;
+      background: $gradient;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+
+      svg {
+        color: $scout-orange;
+        -webkit-text-fill-color: $scout-orange;
+        font-size: 1.5em;
+      }
 
       .unread-badge {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 4px 10px;
+        -webkit-text-fill-color: #fff;
       }
     }
 
     p {
       color: rgba(255, 255, 255, 0.6);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+    }
+  }
+
+  button {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    font-weight: 600;
+
+    &:hover {
+      background: rgba($scout-orange, 0.15);
+      border-color: rgba($scout-orange, 0.3);
+    }
+  }
+
+  @include mobile {
+    flex-direction: column;
+
+    button {
+      width: 100%;
     }
   }
 }
 
+// ========================================
+// FILTER TABS
+// ========================================
 .filter-tabs {
   margin-bottom: 24px;
+
+  [role='tablist'] {
+    background: rgba($main2, 0.5);
+    border-radius: $radius-lg;
+    padding: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  [role='tab'] {
+    font-weight: 600;
+    border-radius: $radius-md;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    &[data-selected='true'] {
+      background: rgba($scout-orange, 0.15) !important;
+    }
+  }
 }
 
-// Notifications List
+// ========================================
+// NOTIFICATIONS LIST
+// ========================================
 .notifications-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0;
+  background: rgba($main2, 0.4);
+  border-radius: $radius-lg;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
 }
 
 .notification-card {
-  background: rgba($main2, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition:
-    transform 0.2s,
-    border-color 0.2s;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transition: all 0.2s ease;
+
+  &:last-child {
+    border-bottom: none !important;
+  }
 
   &:hover {
-    transform: translateX(4px);
-    border-color: rgba($scout-orange, 0.5);
+    background: rgba(255, 255, 255, 0.03) !important;
+
+    .notification-icon {
+      transform: scale(1.1);
+    }
   }
 
   &.unread {
-    background: rgba($main2, 0.8);
-    border-left: 4px solid $scout-orange;
+    background: rgba($scout-orange, 0.05) !important;
+    border-left: 4px solid $scout-orange !important;
 
     .notification-content h3 {
       font-weight: 700;
+      color: #fff;
+    }
+
+    &:hover {
+      background: rgba($scout-orange, 0.08) !important;
     }
   }
 
@@ -73,70 +158,106 @@
     display: flex;
     align-items: flex-start;
     gap: 16px;
+    padding: 4px 0;
 
     .notification-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       flex-shrink: 0;
+      transition: transform 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 
       &.default {
-        background: rgba(255, 255, 255, 0.1);
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.15) 0%,
+          rgba(255, 255, 255, 0.05) 100%
+        );
         color: #fff;
       }
       &.warning {
-        background: rgba(255, 152, 0, 0.2);
-        color: #ff9800;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 152, 0, 0.3) 0%,
+          rgba(255, 152, 0, 0.15) 100%
+        );
+        color: #ffb74d;
       }
       &.primary {
-        background: rgba(33, 150, 243, 0.2);
-        color: #2196f3;
+        background: linear-gradient(
+          135deg,
+          rgba(33, 150, 243, 0.3) 0%,
+          rgba(33, 150, 243, 0.15) 100%
+        );
+        color: #64b5f6;
       }
       &.secondary {
-        background: rgba(156, 39, 176, 0.2);
-        color: #9c27b0;
+        background: linear-gradient(
+          135deg,
+          rgba(156, 39, 176, 0.3) 0%,
+          rgba(156, 39, 176, 0.15) 100%
+        );
+        color: #ba68c8;
       }
       &.danger {
-        background: rgba(244, 67, 54, 0.2);
-        color: #f44336;
+        background: linear-gradient(
+          135deg,
+          rgba(244, 67, 54, 0.3) 0%,
+          rgba(244, 67, 54, 0.15) 100%
+        );
+        color: #ef5350;
       }
       &.success {
-        background: rgba(76, 175, 80, 0.2);
-        color: #4caf50;
+        background: linear-gradient(
+          135deg,
+          rgba(76, 175, 80, 0.3) 0%,
+          rgba(76, 175, 80, 0.15) 100%
+        );
+        color: #81c784;
       }
     }
 
     .notification-content {
       flex: 1;
       min-width: 0;
+      padding: 4px 0;
 
       .notification-header {
         display: flex;
         align-items: center;
         gap: 10px;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
+        flex-wrap: wrap;
 
         h3 {
-          font-size: 1rem;
+          font-size: 1.05rem;
           font-weight: 600;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          color: rgba(255, 255, 255, 0.95);
+          line-height: 1.3;
+        }
+
+        .nextui-chip {
+          font-size: 0.7rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.3px;
         }
       }
 
       .notification-preview {
         font-size: 0.9rem;
-        color: rgba(255, 255, 255, 0.7);
-        margin-bottom: 8px;
+        color: rgba(255, 255, 255, 0.65);
+        margin-bottom: 10px;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        line-height: 1.5;
       }
 
       .notification-meta {
@@ -144,72 +265,99 @@
         align-items: center;
         gap: 16px;
         font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.5);
+        color: rgba(255, 255, 255, 0.45);
 
         .date,
         .attachments {
           display: flex;
           align-items: center;
-          gap: 4px;
+          gap: 5px;
+
+          svg {
+            font-size: 0.85rem;
+          }
+        }
+
+        .attachments {
+          color: $scout-orange;
         }
       }
     }
 
     .notification-status {
       flex-shrink: 0;
+      padding-top: 8px;
 
       .read-icon {
-        color: rgba(255, 255, 255, 0.3);
-        font-size: 1.25rem;
+        color: rgba(255, 255, 255, 0.25);
+        font-size: 1.3rem;
       }
 
       .unread-icon {
         color: $scout-orange;
-        font-size: 1.25rem;
+        font-size: 1.3rem;
+        filter: drop-shadow(0 0 8px rgba($scout-orange, 0.5));
       }
     }
   }
 }
 
-// Modal Detail
+// ========================================
+// MODAL DETAIL
+// ========================================
 .notification-modal-header {
   display: flex;
   gap: 16px;
   align-items: flex-start;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
   .type-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     flex-shrink: 0;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
 
     &.default {
-      background: rgba(255, 255, 255, 0.1);
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.15) 0%,
+        rgba(255, 255, 255, 0.05) 100%
+      );
       color: #fff;
     }
     &.warning {
-      background: rgba(255, 152, 0, 0.2);
-      color: #ff9800;
+      background: linear-gradient(135deg, rgba(255, 152, 0, 0.35) 0%, rgba(255, 152, 0, 0.15) 100%);
+      color: #ffb74d;
     }
     &.primary {
-      background: rgba(33, 150, 243, 0.2);
-      color: #2196f3;
+      background: linear-gradient(
+        135deg,
+        rgba(33, 150, 243, 0.35) 0%,
+        rgba(33, 150, 243, 0.15) 100%
+      );
+      color: #64b5f6;
     }
     &.secondary {
-      background: rgba(156, 39, 176, 0.2);
-      color: #9c27b0;
+      background: linear-gradient(
+        135deg,
+        rgba(156, 39, 176, 0.35) 0%,
+        rgba(156, 39, 176, 0.15) 100%
+      );
+      color: #ba68c8;
     }
     &.danger {
-      background: rgba(244, 67, 54, 0.2);
-      color: #f44336;
+      background: linear-gradient(135deg, rgba(244, 67, 54, 0.35) 0%, rgba(244, 67, 54, 0.15) 100%);
+      color: #ef5350;
     }
     &.success {
-      background: rgba(76, 175, 80, 0.2);
-      color: #4caf50;
+      background: linear-gradient(135deg, rgba(76, 175, 80, 0.35) 0%, rgba(76, 175, 80, 0.15) 100%);
+      color: #81c784;
     }
   }
 
@@ -217,90 +365,117 @@
     flex: 1;
 
     h2 {
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       font-weight: 700;
-      margin-bottom: 6px;
+      margin-bottom: 10px;
+      line-height: 1.3;
     }
 
     .header-meta {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
+      flex-wrap: wrap;
 
       .date {
         font-size: 0.85rem;
         color: rgba(255, 255, 255, 0.6);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        &::before {
+          content: '📅';
+          font-size: 0.9rem;
+        }
       }
     }
   }
 }
 
 .notification-detail-content {
+  padding-top: 8px;
+
   .message {
-    font-size: 1rem;
-    line-height: 1.7;
+    font-size: 1.05rem;
+    line-height: 1.8;
     white-space: pre-wrap;
     margin-bottom: 24px;
+    color: rgba(255, 255, 255, 0.85);
   }
 
   .attachments-section {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: $radius-md;
-    padding: 16px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: $radius-lg;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 
     h4 {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.95rem;
-      margin-bottom: 12px;
-      color: rgba(255, 255, 255, 0.8);
+      gap: 10px;
+      font-size: 1rem;
+      margin-bottom: 16px;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 600;
+
+      svg {
+        color: $scout-orange;
+      }
     }
 
     .attachments-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .attachment-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 12px;
+      gap: 12px;
+      padding: 14px 16px;
       background: rgba(255, 255, 255, 0.05);
-      border-radius: $radius-sm;
+      border-radius: $radius-md;
       text-decoration: none;
       color: inherit;
-      transition: background 0.2s;
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255, 255, 255, 0.06);
 
       &:hover {
-        background: rgba($scout-orange, 0.1);
+        background: rgba($scout-orange, 0.12);
+        border-color: rgba($scout-orange, 0.3);
+        transform: translateX(4px);
 
         .download-icon {
           color: $scout-orange;
+          transform: translateY(2px);
         }
       }
 
       .file-icon {
-        font-size: 1.25rem;
+        font-size: 1.4rem;
         color: $scout-orange;
       }
 
       .file-name {
         flex: 1;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
+        font-weight: 500;
       }
 
       .download-icon {
-        color: rgba(255, 255, 255, 0.5);
-        transition: color 0.2s;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 1rem;
+        transition: all 0.2s ease;
       }
     }
   }
 }
 
-// Empty & Loading
+// ========================================
+// EMPTY & LOADING STATES
+// ========================================
 .notifications-loading {
   display: flex;
   flex-direction: column;
@@ -320,25 +495,35 @@
 
 .notifications-empty {
   text-align: center;
-  padding: 60px 20px;
+  padding: 80px 20px;
+  background: rgba($main2, 0.4);
+  border-radius: $radius-lg;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 
   .empty-icon {
-    font-size: 56px;
+    font-size: 72px;
     color: $scout-orange;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+    opacity: 0.8;
   }
 
   h2 {
     font-size: 1.5rem;
-    margin-bottom: 8px;
+    font-weight: 700;
+    margin-bottom: 10px;
   }
 
   p {
     color: rgba(255, 255, 255, 0.6);
+    max-width: 350px;
+    margin: 0 auto;
+    line-height: 1.5;
   }
 }
 
-// Login
+// ========================================
+// LOGIN STATE
+// ========================================
 .notifications-login {
   min-height: 100vh;
   display: flex;
@@ -347,31 +532,38 @@
   padding: 100px 20px;
 
   .login-card {
-    max-width: 400px;
+    max-width: 420px;
     width: 100%;
-    background: rgba($main2, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba($main2, 0.8) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: $radius-xl !important;
+    backdrop-filter: blur(10px);
   }
 
   .login-content {
     text-align: center;
-    padding: 40px 20px;
+    padding: 48px 32px;
 
     .login-icon {
-      font-size: 64px;
+      font-size: 80px;
       color: $scout-orange;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
     }
 
     h1 {
-      font-size: 1.8rem;
-      font-weight: 700;
+      font-size: 2rem;
+      font-weight: 800;
       margin-bottom: 12px;
+      background: $gradient;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     p {
       color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 32px;
+      margin-bottom: 36px;
+      font-size: 1rem;
+      line-height: 1.6;
     }
 
     .login-btn {
@@ -379,28 +571,77 @@
       color: #fff;
       font-weight: 600;
       width: 100%;
+      height: 50px;
+      font-size: 1rem;
+      border-radius: 25px;
+      box-shadow: 0 4px 15px rgba($scout-orange, 0.3);
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba($scout-orange, 0.4);
+      }
     }
   }
 }
 
-// Light Mode
+// ========================================
+// LIGHT MODE
+// ========================================
 .light,
 [data-theme='light'] {
-  .notifications-header .header-info {
-    h1 {
-      color: $scout-orange;
-    }
-    p {
+  .notifications-header {
+    background: linear-gradient(
+      135deg,
+      rgba($scout-orange, 0.08) 0%,
+      rgba(255, 255, 255, 0.95) 100%
+    );
+    border-color: rgba($scout-orange, 0.12);
+
+    .header-info p {
       color: rgba(0, 0, 0, 0.6);
+    }
+
+    button {
+      background: rgba(0, 0, 0, 0.04);
+      border-color: rgba(0, 0, 0, 0.1);
+      color: rgba(0, 0, 0, 0.7);
+
+      &:hover {
+        background: rgba($scout-orange, 0.1);
+      }
     }
   }
 
-  .notification-card {
+  .filter-tabs {
+    [role='tablist'] {
+      background: rgba(0, 0, 0, 0.03);
+      border-color: rgba(0, 0, 0, 0.06);
+    }
+
+    [role='tab']:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  .notifications-list {
     background: #fff;
     border-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .notification-card {
+    border-bottom-color: rgba(0, 0, 0, 0.06) !important;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.02) !important;
+    }
 
     &.unread {
-      background: #fff;
+      background: rgba($scout-orange, 0.04) !important;
+
+      .notification-content h3 {
+        color: #1a1a2e;
+      }
     }
 
     .notification-content {
@@ -408,7 +649,7 @@
         color: #1a1a2e;
       }
       .notification-preview {
-        color: rgba(0, 0, 0, 0.7);
+        color: rgba(0, 0, 0, 0.65);
       }
       .notification-meta {
         color: rgba(0, 0, 0, 0.5);
@@ -416,16 +657,20 @@
     }
 
     .notification-status .read-icon {
-      color: rgba(0, 0, 0, 0.3);
+      color: rgba(0, 0, 0, 0.2);
     }
   }
 
-  .notification-modal-header .header-text {
-    h2 {
-      color: #1a1a2e;
-    }
-    .date {
-      color: rgba(0, 0, 0, 0.6);
+  .notification-modal-header {
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+
+    .header-text {
+      h2 {
+        color: #1a1a2e;
+      }
+      .date {
+        color: rgba(0, 0, 0, 0.6);
+      }
     }
   }
 
@@ -435,26 +680,36 @@
     }
 
     .attachments-section {
-      background: rgba(0, 0, 0, 0.05);
+      background: rgba(0, 0, 0, 0.04);
+      border-color: rgba(0, 0, 0, 0.08);
 
       h4 {
-        color: rgba(0, 0, 0, 0.8);
+        color: rgba(0, 0, 0, 0.85);
       }
 
       .attachment-item {
         background: rgba(0, 0, 0, 0.03);
+        border-color: rgba(0, 0, 0, 0.06);
 
         .file-name {
           color: #1a1a2e;
         }
         .download-icon {
-          color: rgba(0, 0, 0, 0.5);
+          color: rgba(0, 0, 0, 0.4);
+        }
+
+        &:hover {
+          background: rgba($scout-orange, 0.08);
+          border-color: rgba($scout-orange, 0.2);
         }
       }
     }
   }
 
   .notifications-empty {
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.1);
+
     h2 {
       color: #1a1a2e;
     }
@@ -464,11 +719,13 @@
   }
 
   .notifications-login .login-card {
-    background: #fff;
-    border-color: rgba(0, 0, 0, 0.1);
+    background: #fff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
 
     h1 {
+      -webkit-text-fill-color: initial;
       color: #1a1a2e;
+      background: none;
     }
     p {
       color: rgba(0, 0, 0, 0.6);
