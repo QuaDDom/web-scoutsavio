@@ -15,9 +15,55 @@ function getSupabaseClient() {
           autoRefreshToken: true,
           detectSessionInUrl: true,
           storage: window.localStorage,
-          storageKey: 'sb-aitmwinwufnvelqrurjz-auth-token'
+          storageKey: 'sb-aitmwinwufnvelqrurjz-auth-token',
+          // Ajustar el tiempo de flow antes de expiración para evitar problemas de tokens
+          flowType: 'pkce'
         }
       });
+
+      // Manejar cambios de visibilidad de la página para reconectar cuando el usuario vuelve
+      // Esto soluciona el problema de perder conexión al cambiar de pestaña
+      if (typeof document !== 'undefined') {
+        let lastVisibilityChange = Date.now();
+
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') {
+            const now = Date.now();
+            // Solo refrescar si pasaron más de 5 segundos desde el último cambio
+            // para evitar refreshes excesivos
+            if (now - lastVisibilityChange > 5000) {
+              // Intentar refrescar la sesión cuando el tab vuelve a ser visible
+              window[SUPABASE_KEY].auth
+                .getSession()
+                .then(({ data: { session } }) => {
+                  if (session) {
+                    // La sesión existe, verificar si necesita refresh
+                    const expiresAt = session.expires_at;
+                    const nowSeconds = Math.floor(Date.now() / 1000);
+                    // Si expira en menos de 5 minutos, forzar refresh
+                    if (expiresAt && expiresAt - nowSeconds < 300) {
+                      window[SUPABASE_KEY].auth.refreshSession();
+                    }
+                  }
+                })
+                .catch(() => {
+                  // Silenciar errores - el usuario probablemente no está autenticado
+                });
+            }
+            lastVisibilityChange = now;
+          }
+        });
+
+        // También manejar cuando la ventana recupera el foco
+        window.addEventListener('focus', () => {
+          // Dar un pequeño delay para evitar conflictos con visibilitychange
+          setTimeout(() => {
+            window[SUPABASE_KEY].auth.getSession().catch(() => {
+              // Silenciar errores
+            });
+          }, 100);
+        });
+      }
     }
     return window[SUPABASE_KEY];
   }

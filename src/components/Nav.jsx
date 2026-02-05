@@ -69,20 +69,29 @@ export const Nav = () => {
     };
     checkUser();
 
+    // IMPORTANTE: No usar async/await directamente en el callback de onAuthStateChange
+    // Esto puede causar dead-locks cuando el usuario cambia de pestaña y vuelve
+    // Usar setTimeout para diferir las operaciones asíncronas
     const {
       data: { subscription }
-    } = authService.onAuthStateChange(async (event, session) => {
+    } = authService.onAuthStateChange((event, session) => {
+      // Actualizar estado inmediatamente (síncrono)
       setUser(session?.user || null);
-      if (session?.user) {
+
+      if (!session?.user) {
+        setUnreadCount(0);
+        return;
+      }
+
+      // Diferir operaciones asíncronas con setTimeout para evitar dead-locks
+      setTimeout(async () => {
         try {
           const count = await notificationService.getUnreadCount(session.user.id);
           setUnreadCount(count);
         } catch (error) {
           if (error.name !== 'AbortError') console.error(error);
         }
-      } else {
-        setUnreadCount(0);
-      }
+      }, 0);
     });
 
     return () => subscription?.unsubscribe();
