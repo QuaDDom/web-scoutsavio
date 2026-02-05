@@ -93,14 +93,16 @@ export const Forum = () => {
       }
     };
 
-    // Timeout de seguridad: si después de 3 segundos sigue loading, quitarlo
-    const safetyTimeout = setTimeout(() => {
-      if (isMounted && loading) {
-        console.warn('Auth check taking too long, forcing load');
+    // Manejar cuando la pestaña vuelve a estar visible
+    const handleVisibilityChange = async () => {
+      if (document.visibilityState === 'visible' && isMounted) {
+        const currentUser = await authService.getCurrentUser();
+        setUser(currentUser);
         setLoading(false);
       }
-    }, 3000);
+    };
 
+    document.addEventListener('visibilitychange', handleVisibilityChange);
     initAuth();
 
     const {
@@ -115,7 +117,7 @@ export const Forum = () => {
 
     return () => {
       isMounted = false;
-      clearTimeout(safetyTimeout);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       subscription?.unsubscribe();
     };
   }, []);
