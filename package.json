@@ -13,6 +13,7 @@
     "@nextui-org/react": "^2.2.9",
     "@supabase/supabase-js": "^2.94.1",
     "@vercel/analytics": "^1.6.1",
+    "formidable": "^3.5.4",
     "framer-motion": "^11.0.3",
     "install": "^0.13.0",
     "localforage": "^1.10.0",

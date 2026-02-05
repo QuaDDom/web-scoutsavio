@@ -1,38 +1,30 @@
-import { supabaseAdmin } from '../../lib/supabase.js';
-import { verifyAdmin, corsHeaders } from '../../lib/auth.js';
-import { notifyUserApproved } from '../../lib/email.js';
+import { supabaseAdmin } from '../lib/supabase.js';
+import { verifyAdmin, setCorsHeaders } from '../lib/auth.js';
+import { notifyUserApproved } from '../lib/email.js';
 
-export default async function handler(req) {
-  // Handle CORS preflight
+export default async function handler(req, res) {
+  // Handle CORS
+  setCorsHeaders(res);
+
   if (req.method === 'OPTIONS') {
-    return new Response(null, { status: 200, headers: corsHeaders });
+    return res.status(200).end();
   }
 
   if (req.method !== 'PUT') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-      status: 405,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   // Verificar autenticación
   const auth = await verifyAdmin(req);
   if (!auth.authorized) {
-    return new Response(JSON.stringify({ error: 'Unauthorized', details: auth.error }), {
-      status: 401,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
+    return res.status(401).json({ error: 'Unauthorized', details: auth.error });
   }
 
   try {
-    const body = await req.json();
-    const { photoId } = body;
+    const { photoId } = req.body;
 
     if (!photoId) {
-      return new Response(JSON.stringify({ error: 'Photo ID is required' }), {
-        status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
+      return res.status(400).json({ error: 'Photo ID is required' });
     }
 
     // Obtener info de la foto antes de aprobar
@@ -43,10 +35,7 @@ export default async function handler(req) {
       .single();
 
     if (fetchError || !photo) {
-      return new Response(JSON.stringify({ error: 'Photo not found' }), {
-        status: 404,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
+      return res.status(404).json({ error: 'Photo not found' });
     }
 
     // Aprobar la foto
@@ -63,10 +52,7 @@ export default async function handler(req) {
 
     if (error) {
       console.error('Database error:', error);
-      return new Response(JSON.stringify({ error: 'Error approving photo' }), {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
+      return res.status(500).json({ error: 'Error approving photo' });
     }
 
     // Mover archivo de pending a approved en storage
@@ -83,22 +69,20 @@ export default async function handler(req) {
         .eq('id', photoId);
     }
 
-    // Notificar al usuario
-    await notifyUserApproved(photo.uploader_email, photo.uploader_name, 1);
+    // Notificar al usuario (no bloquear si falla)
+    try {
+      await notifyUserApproved(photo.uploader_email, photo.uploader_name, 1);
+    } catch (e) {
+      console.error('Email notification failed:', e);
+    }
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: 'Photo approved successfully',
-        photo: data
-      }),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
+    return res.status(200).json({
+      success: true,
+      message: 'Photo approved successfully',
+      photo: data
+    });
   } catch (error) {
     console.error('Server error:', error);
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
+    return res.status(500).json({ error: 'Internal server error' });
   }
 }

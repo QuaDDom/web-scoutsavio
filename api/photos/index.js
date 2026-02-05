@@ -1,25 +1,24 @@
 import { supabase } from '../lib/supabase.js';
-import { corsHeaders } from '../lib/auth.js';
 
-export default async function handler(req) {
-  // Handle CORS preflight
+export default async function handler(req, res) {
+  // Handle CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
   if (req.method === 'OPTIONS') {
-    return new Response(null, { status: 200, headers: corsHeaders });
+    return res.status(200).end();
   }
 
   if (req.method !== 'GET') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-      status: 405,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const url = new URL(req.url);
-    const category = url.searchParams.get('category');
-    const page = parseInt(url.searchParams.get('page') || '1');
-    const limit = parseInt(url.searchParams.get('limit') || '20');
-    const offset = (page - 1) * limit;
+    const { category, page = '1', limit = '20' } = req.query;
+    const pageNum = parseInt(page);
+    const limitNum = parseInt(limit);
+    const offset = (pageNum - 1) * limitNum;
 
     // Construir query
     let query = supabase
@@ -27,7 +26,7 @@ export default async function handler(req) {
       .select('id, image_url, thumbnail_url, title, category, created_at', { count: 'exact' })
       .eq('status', 'approved')
       .order('created_at', { ascending: false })
-      .range(offset, offset + limit - 1);
+      .range(offset, offset + limitNum - 1);
 
     // Filtrar por categoría si se especifica
     if (category && category !== 'Todos') {
@@ -38,29 +37,17 @@ export default async function handler(req) {
 
     if (error) {
       console.error('Database error:', error);
-      return new Response(JSON.stringify({ error: 'Error fetching photos' }), {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
+      return res.status(500).json({ error: 'Error fetching photos' });
     }
 
-    return new Response(
-      JSON.stringify({
-        photos: data || [],
-        total: count || 0,
-        page,
-        total_pages: Math.ceil((count || 0) / limit)
-      }),
-      {
-        status: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      }
-    );
+    return res.status(200).json({
+      photos: data || [],
+      total: count || 0,
+      page: pageNum,
+      total_pages: Math.ceil((count || 0) / limitNum)
+    });
   } catch (error) {
     console.error('Server error:', error);
-    return new Response(JSON.stringify({ error: 'Internal server error' }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
+    return res.status(500).json({ error: 'Internal server error', details: error.message });
   }
 }
