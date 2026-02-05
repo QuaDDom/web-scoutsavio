@@ -1,10 +1,6 @@
 import { supabaseAdmin } from '../../lib/supabase.js';
 import { verifyAdmin, corsHeaders } from '../../lib/auth.js';
 
-export const config = {
-  runtime: 'edge'
-};
-
 export default async function handler(req) {
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
