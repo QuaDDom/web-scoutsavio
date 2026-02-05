@@ -79,7 +79,7 @@ export const Forum = () => {
 
   useEffect(() => {
     let isMounted = true;
-    
+
     const initAuth = async () => {
       try {
         const currentUser = await authService.getCurrentUser();
@@ -92,9 +92,9 @@ export const Forum = () => {
         if (isMounted) setLoading(false);
       }
     };
-    
+
     initAuth();
-    
+
     const {
       data: { subscription }
     } = supabase.auth.onAuthStateChange((event, session) => {
@@ -103,7 +103,7 @@ export const Forum = () => {
         setUser(session?.user || null);
       }
     });
-    
+
     return () => {
       isMounted = false;
       subscription?.unsubscribe();

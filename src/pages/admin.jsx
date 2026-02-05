@@ -176,12 +176,14 @@ export const Admin = () => {
 
   useEffect(() => {
     let isMounted = true;
-    
+
     const initSession = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const {
+          data: { session }
+        } = await supabase.auth.getSession();
         if (!isMounted) return;
-        
+
         setUser(session?.user ?? null);
         if (session?.user) {
           loadPendingPhotos(session.access_token);
@@ -192,9 +194,9 @@ export const Admin = () => {
         if (isMounted) setLoading(false);
       }
     };
-    
+
     initSession();
-    
+
     const {
       data: { subscription }
     } = supabase.auth.onAuthStateChange((event, session) => {
@@ -206,7 +208,7 @@ export const Admin = () => {
         }
       }
     });
-    
+
     return () => {
       isMounted = false;
       subscription.unsubscribe();

@@ -78,12 +78,14 @@ export const Gallery = () => {
   // Verificar sesión al cargar
   useEffect(() => {
     let isMounted = true;
-    
+
     const initAuth = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const {
+          data: { session }
+        } = await supabase.auth.getSession();
         if (!isMounted) return;
-        
+
         setUser(session?.user ?? null);
         if (session?.user) {
           const profile = await userService.getOrCreateProfile(session.user);
@@ -93,7 +95,7 @@ export const Gallery = () => {
         console.error('Error checking session:', error);
       }
     };
-    
+
     initAuth();
 
     // Escuchar cambios de autenticación
@@ -101,7 +103,7 @@ export const Gallery = () => {
       data: { subscription }
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (!isMounted) return;
-      
+
       // Solo procesar eventos relevantes
       if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
         setUser(session?.user ?? null);

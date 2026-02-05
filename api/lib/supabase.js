@@ -17,10 +17,7 @@ if (!supabaseServiceKey) {
 export const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '');
 
 // Cliente con permisos de servicio (para operaciones admin)
-export const supabaseAdmin = createClient(
-  supabaseUrl || '',
-  supabaseServiceKey || ''
-);
+export const supabaseAdmin = createClient(supabaseUrl || '', supabaseServiceKey || '');
 
 // Verificar si un email es admin
 export async function isAdmin(email) {

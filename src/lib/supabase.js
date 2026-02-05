@@ -22,7 +22,7 @@ function getSupabaseClient() {
           storageKey: 'supabase-auth-token'
         }
       });
-      
+
       // Limpiar hash de la URL después de procesar el token (solo una vez)
       if (!window[SUPABASE_INIT_KEY] && window.location.hash.includes('access_token')) {
         window[SUPABASE_INIT_KEY] = true;

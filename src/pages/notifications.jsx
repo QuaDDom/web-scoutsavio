@@ -57,7 +57,7 @@ export const Notifications = () => {
 
   useEffect(() => {
     let isMounted = true;
-    
+
     const initAuth = async () => {
       try {
         const currentUser = await authService.getCurrentUser();
@@ -70,9 +70,9 @@ export const Notifications = () => {
         if (isMounted) setLoading(false);
       }
     };
-    
+
     initAuth();
-    
+
     const {
       data: { subscription }
     } = supabase.auth.onAuthStateChange((event, session) => {
@@ -81,7 +81,7 @@ export const Notifications = () => {
         setUser(session?.user || null);
       }
     });
-    
+
     return () => {
       isMounted = false;
       subscription?.unsubscribe();
