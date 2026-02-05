@@ -16,6 +16,12 @@ import {
   FaStar
 } from 'react-icons/fa';
 
+// Logos de las ramas
+import logoManada from '../assets/ramas/logo_manada.webp';
+import logoUnidad from '../assets/ramas/unidad.jpg';
+import logoCaminantes from '../assets/ramas/Logo_Caminantes.png';
+import logoRover from '../assets/ramas/Logo_Rovers-1.png';
+
 export const Home = () => {
   return (
     <PageContainer>
@@ -142,6 +148,7 @@ export const Home = () => {
         </div>
         <div className="branches-grid">
           <div className="branch-item manada">
+            <img src={logoManada} alt="Logo Manada" className="branch-logo" />
             <div className="branch-content">
               <span className="branch-age">7-11 años</span>
               <h3>Manada</h3>
@@ -149,6 +156,7 @@ export const Home = () => {
             </div>
           </div>
           <div className="branch-item unidad">
+            <img src={logoUnidad} alt="Logo Unidad" className="branch-logo" />
             <div className="branch-content">
               <span className="branch-age">11-14 años</span>
               <h3>Unidad</h3>
@@ -156,6 +164,7 @@ export const Home = () => {
             </div>
           </div>
           <div className="branch-item caminantes">
+            <img src={logoCaminantes} alt="Logo Caminantes" className="branch-logo" />
             <div className="branch-content">
               <span className="branch-age">14-17 años</span>
               <h3>Caminantes</h3>
@@ -163,6 +172,7 @@ export const Home = () => {
             </div>
           </div>
           <div className="branch-item rover">
+            <img src={logoRover} alt="Logo Rover" className="branch-logo" />
             <div className="branch-content">
               <span className="branch-age">17-21 años</span>
               <h3>Rover</h3>

@@ -293,4 +293,355 @@
       }
     }
   }
+
+  .upload-modal-content {
+    background: #fff !important;
+
+    .upload-modal-header {
+      h3 {
+        color: #1a1a2e;
+      }
+
+      p {
+        color: rgba(0, 0, 0, 0.6);
+      }
+    }
+
+    .drop-zone {
+      border-color: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.02);
+
+      &:hover,
+      &.active {
+        border-color: $scout-red;
+        background: rgba($scout-red, 0.05);
+      }
+
+      .drop-icon {
+        color: rgba(0, 0, 0, 0.3);
+      }
+
+      .drop-text {
+        color: rgba(0, 0, 0, 0.7);
+      }
+
+      .drop-hint {
+        color: rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    .preview-item {
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .upload-input-wrapper {
+      background: rgba(0, 0, 0, 0.03) !important;
+      border-color: rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .upload-notice {
+      background: rgba($scout-red, 0.08);
+      border-color: rgba($scout-red, 0.2);
+
+      p {
+        color: rgba(0, 0, 0, 0.7);
+      }
+    }
+
+    .cancel-btn {
+      border-color: rgba(0, 0, 0, 0.2);
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    .success-state {
+      h4 {
+        color: #1a1a2e;
+      }
+
+      p {
+        color: rgba(0, 0, 0, 0.6);
+      }
+    }
+  }
+}
+
+// ========================================
+// UPLOAD BUTTON IN HERO
+// ========================================
+.upload-hero-btn {
+  margin-top: 24px;
+  background: $gradient;
+  color: #fff;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: $radius-md;
+  transition: $transition-normal;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+}
+
+// ========================================
+// UPLOAD MODAL STYLES
+// ========================================
+.upload-modal-content {
+  background: rgba($main, 0.98) !important;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: $radius-xl !important;
+}
+
+.upload-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  .header-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: $gradient;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    svg {
+      font-size: 24px;
+      color: #fff;
+    }
+  }
+
+  h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+  }
+}
+
+.upload-modal-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.drop-zone {
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  border-radius: $radius-lg;
+  padding: 40px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: $transition-normal;
+  background: rgba(255, 255, 255, 0.02);
+
+  &:hover,
+  &.active {
+    border-color: $scout-red;
+    background: rgba($scout-red, 0.1);
+
+    .drop-icon {
+      color: $scout-red;
+      transform: scale(1.1);
+    }
+  }
+
+  &.has-files {
+    padding: 24px;
+  }
+
+  .drop-icon {
+    font-size: 48px;
+    color: rgba(255, 255, 255, 0.3);
+    margin-bottom: 16px;
+    transition: $transition-normal;
+  }
+
+  .drop-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 8px;
+  }
+
+  .drop-hint {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+
+  @include tablet {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @include mobile {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.preview-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: $radius-md;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .remove-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.7);
+    border: none;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: $transition-fast;
+    font-size: 10px;
+
+    &:hover {
+      background: $scout-red;
+      transform: scale(1.1);
+    }
+  }
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.upload-input-wrapper {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  transition: $transition-normal !important;
+
+  &:hover {
+    border-color: rgba($scout-red, 0.5) !important;
+  }
+
+  &:focus-within {
+    border-color: $scout-red !important;
+  }
+}
+
+.upload-notice {
+  background: rgba($scout-red, 0.1);
+  border: 1px solid rgba($scout-red, 0.2);
+  border-radius: $radius-md;
+  padding: 16px;
+
+  p {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+.upload-modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+
+  .cancel-btn {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .submit-btn {
+    background: $gradient;
+    color: #fff;
+    font-weight: 600;
+
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+}
+
+.success-state {
+  text-align: center;
+  padding: 40px 20px;
+
+  .success-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #10b981, #059669);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+
+    svg {
+      font-size: 36px;
+      color: #fff;
+    }
+  }
+
+  h4 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}
+
+// Spin animation
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
 }

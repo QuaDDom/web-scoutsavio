@@ -2,10 +2,10 @@ import React from 'react';
 import { BranchCard } from './BranchCard';
 import './Branches.scss';
 import { SEO } from '../SEO';
-import imgManada from '../../assets/ramas/manada.jpg';
+import imgManada from '../../assets/ramas/logo_manada.webp';
 import imgUnidad from '../../assets/ramas/unidad.jpg';
-import imgCaminantes from '../../assets/ramas/caminantes.webp';
-import imgRover from '../../assets/ramas/rover.jpg';
+import imgCaminantes from '../../assets/ramas/Logo_Caminantes.png';
+import imgRover from '../../assets/ramas/Logo_Rovers-1.png';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 
@@ -78,7 +78,7 @@ export const Branches = () => {
         <BranchCard
           rama="Rover"
           img={imgRover}
-          color="#9c27b0"
+          color="#e53935"
           edades="A partir de los 18 años"
           objetivos={[
             'Liderazgo en eventos scouts y participación en acciones solidarias.',
