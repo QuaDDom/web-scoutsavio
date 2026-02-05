@@ -78,29 +78,41 @@ export const Forum = () => {
   ];
 
   useEffect(() => {
-    checkAuth();
+    let isMounted = true;
+    
+    const initAuth = async () => {
+      try {
+        const currentUser = await authService.getCurrentUser();
+        if (isMounted) {
+          setUser(currentUser);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Error checking auth:', error);
+        if (isMounted) setLoading(false);
+      }
+    };
+    
+    initAuth();
+    
     const {
       data: { subscription }
     } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user || null);
+      if (!isMounted) return;
+      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
+        setUser(session?.user || null);
+      }
     });
-    return () => subscription?.unsubscribe();
+    
+    return () => {
+      isMounted = false;
+      subscription?.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
     if (user) loadTopics();
   }, [user]);
-
-  const checkAuth = async () => {
-    try {
-      const currentUser = await authService.getCurrentUser();
-      setUser(currentUser);
-    } catch (error) {
-      console.error('Error checking auth:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const loadTopics = async () => {
     setLoadingTopics(true);

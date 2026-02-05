@@ -1,12 +1,25 @@
 import { createClient } from '@supabase/supabase-js';
 
+// Validar variables de entorno
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('Missing SUPABASE_URL or SUPABASE_ANON_KEY environment variables');
+}
+
+if (!supabaseServiceKey) {
+  console.error('Missing SUPABASE_SERVICE_KEY environment variable');
+}
+
 // Cliente público (para operaciones públicas)
-export const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+export const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '');
 
 // Cliente con permisos de servicio (para operaciones admin)
 export const supabaseAdmin = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY
+  supabaseUrl || '',
+  supabaseServiceKey || ''
 );
 
 // Verificar si un email es admin

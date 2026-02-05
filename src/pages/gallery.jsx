@@ -77,34 +77,48 @@ export const Gallery = () => {
 
   // Verificar sesión al cargar
   useEffect(() => {
-    checkSession();
+    let isMounted = true;
+    
+    const initAuth = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!isMounted) return;
+        
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          const profile = await userService.getOrCreateProfile(session.user);
+          if (isMounted) setUserProfile(profile);
+        }
+      } catch (error) {
+        console.error('Error checking session:', error);
+      }
+    };
+    
+    initAuth();
 
     // Escuchar cambios de autenticación
     const {
       data: { subscription }
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        const profile = await userService.getOrCreateProfile(session.user);
-        setUserProfile(profile);
-      } else {
-        setUserProfile(null);
+      if (!isMounted) return;
+      
+      // Solo procesar eventos relevantes
+      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          const profile = await userService.getOrCreateProfile(session.user);
+          if (isMounted) setUserProfile(profile);
+        } else {
+          setUserProfile(null);
+        }
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
-
-  const checkSession = async () => {
-    const {
-      data: { session }
-    } = await supabase.auth.getSession();
-    setUser(session?.user ?? null);
-    if (session?.user) {
-      const profile = await userService.getOrCreateProfile(session.user);
-      setUserProfile(profile);
-    }
-  };
 
   // Cargar fotos al inicio y cuando cambia el filtro
   useEffect(() => {

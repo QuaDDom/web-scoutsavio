@@ -175,32 +175,43 @@ export const Admin = () => {
   };
 
   useEffect(() => {
-    checkSession();
+    let isMounted = true;
+    
+    const initSession = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!isMounted) return;
+        
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          loadPendingPhotos(session.access_token);
+        }
+      } catch (error) {
+        console.error('Error checking session:', error);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+    
+    initSession();
+    
     const {
       data: { subscription }
     } = supabase.auth.onAuthStateChange((event, session) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        loadPendingPhotos(session.access_token);
+      if (!isMounted) return;
+      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          loadPendingPhotos(session.access_token);
+        }
       }
     });
-    return () => subscription.unsubscribe();
+    
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
-
-  const checkSession = async () => {
-    try {
-      const {
-        data: { session }
-      } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        loadPendingPhotos(session.access_token);
-      }
-    } catch (error) {
-      console.error('Error checking session:', error);
-    }
-    setLoading(false);
-  };
 
   const signInWithGoogle = async () => {
     try {
