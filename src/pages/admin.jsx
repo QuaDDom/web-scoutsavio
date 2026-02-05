@@ -198,10 +198,11 @@ export const Admin = () => {
 
     const {
       data: { subscription }
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = authService.onAuthStateChange((event, session) => {
       if (!isMounted) return;
       if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
         setUser(session?.user ?? null);
+        setLoading(false);
         if (session?.user && session.access_token) {
           loadPendingPhotos(session.access_token);
         }

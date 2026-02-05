@@ -99,7 +99,7 @@ export const Gallery = () => {
     // Escuchar cambios de autenticación
     const {
       data: { subscription }
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
+    } = authService.onAuthStateChange(async (event, session) => {
       if (!isMounted) return;
 
       // Solo procesar eventos relevantes
@@ -116,7 +116,7 @@ export const Gallery = () => {
 
     return () => {
       isMounted = false;
-      subscription.unsubscribe();
+      subscription?.unsubscribe();
     };
   }, []);
 

@@ -56,70 +56,55 @@ const isProduction = import.meta.env.PROD;
 // =============================================
 // Servicio de autenticación de usuarios
 // =============================================
+
+// Cache para evitar llamadas repetidas a getSession
+let sessionCache = null;
+let sessionCacheTime = 0;
+const SESSION_CACHE_TTL = 30000; // 30 segundos
+
 export const authService = {
-  // Obtener sesión actual con timeout
+  // Obtener sesión actual - con caché para evitar cuelgues
   async getSession() {
     try {
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Session timeout')), 5000)
-      );
+      // Si tenemos sesión en caché y no ha expirado, usarla
+      const now = Date.now();
+      if (sessionCache && (now - sessionCacheTime) < SESSION_CACHE_TTL) {
+        return sessionCache;
+      }
 
-      const sessionPromise = supabase.auth.getSession();
-
-      const {
-        data: { session },
-        error
-      } = await Promise.race([sessionPromise, timeoutPromise]);
+      const { data: { session }, error } = await supabase.auth.getSession();
 
       if (error) {
         console.error('Error getting session:', error);
         return null;
       }
+      
+      // Actualizar caché
+      sessionCache = session;
+      sessionCacheTime = now;
+      
       return session;
     } catch (err) {
-      if (err.message === 'Session timeout') {
-        console.warn('Session check timed out');
-        localStorage.removeItem('supabase-auth-token');
-      }
+      console.error('Error in getSession:', err);
+      return sessionCache; // Devolver caché si hay error
+    }
+  },
+
+  // Obtener usuario actual - simplificado sin timeout destructivo
+  async getCurrentUser() {
+    try {
+      const session = await this.getSession();
+      return session?.user || null;
+    } catch (err) {
+      console.error('Error getting user:', err);
       return null;
     }
   },
 
-  // Obtener usuario actual con timeout para evitar cuelgues
-  async getCurrentUser() {
-    try {
-      // Timeout de 5 segundos para evitar cuelgues infinitos
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Auth timeout')), 5000)
-      );
-
-      const sessionPromise = supabase.auth.getSession();
-
-      const {
-        data: { session },
-        error
-      } = await Promise.race([sessionPromise, timeoutPromise]);
-
-      if (error) {
-        console.error('Error getting session:', error);
-        // Si hay error de sesión, limpiar el storage corrupto
-        if (error.message?.includes('invalid') || error.message?.includes('expired')) {
-          localStorage.removeItem('supabase-auth-token');
-        }
-        return null;
-      }
-
-      return session?.user || null;
-    } catch (err) {
-      if (err.message === 'Auth timeout') {
-        console.warn('Auth check timed out, clearing potentially corrupted session');
-        // Limpiar sesión potencialmente corrupta
-        localStorage.removeItem('supabase-auth-token');
-      } else if (err.name !== 'AbortError') {
-        console.error('Unexpected error getting user:', err);
-      }
-      return null;
-    }
+  // Limpiar caché de sesión (llamar en logout o cuando cambia el estado)
+  clearSessionCache() {
+    sessionCache = null;
+    sessionCacheTime = 0;
   },
 
   // Iniciar sesión con Google
@@ -136,13 +121,21 @@ export const authService = {
 
   // Cerrar sesión
   async signOut() {
+    this.clearSessionCache();
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
   },
 
-  // Escuchar cambios de auth
+  // Escuchar cambios de auth - con limpieza de caché automática
   onAuthStateChange(callback) {
-    return supabase.auth.onAuthStateChange(callback);
+    return supabase.auth.onAuthStateChange((event, session) => {
+      // Limpiar caché cuando cambia el estado
+      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
+        sessionCache = session;
+        sessionCacheTime = Date.now();
+      }
+      callback(event, session);
+    });
   }
 };
 

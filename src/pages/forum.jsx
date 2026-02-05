@@ -97,10 +97,12 @@ export const Forum = () => {
 
     const {
       data: { subscription }
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = authService.onAuthStateChange((event, session) => {
       if (!isMounted) return;
       if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
         setUser(session?.user || null);
+        // Si loading aún está en true, quitarlo
+        setLoading(false);
       }
     });
 
