@@ -726,7 +726,10 @@ export const Admin = () => {
                 <Select
                   label="Estado"
                   selectedKeys={[photoFilter]}
-                  onChange={(e) => setPhotoFilter(e.target.value)}
+                  onSelectionChange={(keys) => {
+                    const selected = Array.from(keys)[0];
+                    setPhotoFilter(selected || 'all');
+                  }}
                   className="filter-select"
                   size="sm">
                   <SelectItem key="all" value="all">
@@ -1177,7 +1180,10 @@ export const Admin = () => {
                   label="Rama"
                   placeholder="Seleccionar rama"
                   selectedKeys={userEditForm.branch ? [userEditForm.branch] : []}
-                  onChange={(e) => setUserEditForm({ ...userEditForm, branch: e.target.value })}
+                  onSelectionChange={(keys) => {
+                    const selected = Array.from(keys)[0];
+                    setUserEditForm({ ...userEditForm, branch: selected || '' });
+                  }}
                   popoverProps={{
                     classNames: { content: 'z-[9999]' },
                     portalContainer: document.body
@@ -1240,7 +1246,10 @@ export const Admin = () => {
                 <Select
                   label="Tipo"
                   selectedKeys={[badgeForm.type]}
-                  onChange={(e) => setBadgeForm({ ...badgeForm, type: e.target.value, name: '' })}
+                  onSelectionChange={(keys) => {
+                    const selected = Array.from(keys)[0];
+                    setBadgeForm({ ...badgeForm, type: selected || 'progression', name: '' });
+                  }}
                   popoverProps={{
                     classNames: { content: 'z-[9999]' },
                     portalContainer: document.body
@@ -1257,7 +1266,10 @@ export const Admin = () => {
                     label="Progresión"
                     placeholder="Seleccionar"
                     selectedKeys={badgeForm.name ? [badgeForm.name] : []}
-                    onChange={(e) => setBadgeForm({ ...badgeForm, name: e.target.value })}
+                    onSelectionChange={(keys) => {
+                      const selected = Array.from(keys)[0];
+                      setBadgeForm({ ...badgeForm, name: selected || '' });
+                    }}
                     popoverProps={{
                       classNames: { content: 'z-[9999]' },
                       portalContainer: document.body
@@ -1280,7 +1292,10 @@ export const Admin = () => {
                     <Select
                       label="Nivel"
                       selectedKeys={[badgeForm.level]}
-                      onChange={(e) => setBadgeForm({ ...badgeForm, level: e.target.value })}
+                      onSelectionChange={(keys) => {
+                        const selected = Array.from(keys)[0];
+                        setBadgeForm({ ...badgeForm, level: selected || 'basic' });
+                      }}
                       popoverProps={{
                         classNames: { content: 'z-[9999]' },
                         portalContainer: document.body
@@ -1332,9 +1347,10 @@ export const Admin = () => {
               <Select
                 label="Tipo de notificación"
                 selectedKeys={[notificationForm.type]}
-                onChange={(e) =>
-                  setNotificationForm({ ...notificationForm, type: e.target.value })
-                }
+                onSelectionChange={(keys) => {
+                  const selected = Array.from(keys)[0];
+                  setNotificationForm({ ...notificationForm, type: selected || 'info' });
+                }}
                 popoverProps={{
                   classNames: { content: 'z-[9999]' },
                   portalContainer: document.body

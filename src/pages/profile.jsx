@@ -697,7 +697,10 @@ export const Profile = () => {
                 label="Rama"
                 placeholder="Seleccioná tu rama"
                 selectedKeys={editForm.branch ? [editForm.branch] : []}
-                onChange={(e) => setEditForm({ ...editForm, branch: e.target.value })}
+                onSelectionChange={(keys) => {
+                  const selected = Array.from(keys)[0];
+                  setEditForm({ ...editForm, branch: selected || '' });
+                }}
                 popoverProps={{
                   classNames: {
                     content: 'z-[9999]'
