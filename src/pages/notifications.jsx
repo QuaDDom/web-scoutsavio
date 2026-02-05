@@ -58,28 +58,19 @@ export const Notifications = () => {
   useEffect(() => {
     let isMounted = true;
 
-    const initAuth = async () => {
-      try {
-        const currentUser = await authService.getCurrentUser();
-        if (isMounted) {
-          setUser(currentUser);
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error('Error checking auth:', error);
-        if (isMounted) setLoading(false);
-      }
-    };
-
-    initAuth();
-
+    // Usar onAuthStateChange con callback síncrono (según docs de Supabase)
     const {
       data: { subscription }
     } = authService.onAuthStateChange((event, session) => {
       if (!isMounted) return;
-      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
+
+      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
         setUser(session?.user || null);
         setLoading(false);
+      } else if (event === 'TOKEN_REFRESHED') {
+        if (session?.user) {
+          setUser(session.user);
+        }
       }
     });
 

@@ -116,18 +116,37 @@ export const Profile = () => {
   }, [navigate]);
 
   useEffect(() => {
-    loadUserData();
+    let isMounted = true;
 
-    // Escuchar cambios de auth
+    // Escuchar cambios de auth con callback síncrono
     const {
       data: { subscription }
     } = authService.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_OUT') {
-        navigate('/galeria');
+      if (!isMounted) return;
+
+      if (event === 'INITIAL_SESSION') {
+        if (session?.user) {
+          // Diferir la carga de datos para después del callback
+          setTimeout(() => {
+            if (isMounted) loadUserData();
+          }, 0);
+        } else {
+          // No hay sesión, redirigir a galería
+          setTimeout(() => {
+            if (isMounted) navigate('/galeria');
+          }, 0);
+        }
+      } else if (event === 'SIGNED_OUT') {
+        setTimeout(() => {
+          if (isMounted) navigate('/galeria');
+        }, 0);
       }
     });
 
-    return () => subscription?.unsubscribe();
+    return () => {
+      isMounted = false;
+      subscription?.unsubscribe();
+    };
   }, [loadUserData, navigate]);
 
   // Cerrar sesión

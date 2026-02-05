@@ -79,37 +79,33 @@ export const Gallery = () => {
   useEffect(() => {
     let isMounted = true;
 
-    const initAuth = async () => {
-      try {
-        const currentUser = await authService.getCurrentUser();
-        if (!isMounted) return;
-
-        setUser(currentUser);
-        if (currentUser) {
-          const profile = await userService.getOrCreateProfile(currentUser);
-          if (isMounted) setUserProfile(profile);
-        }
-      } catch (error) {
-        console.error('Error checking session:', error);
-      }
-    };
-
-    initAuth();
-
-    // Escuchar cambios de autenticación
+    // Usar onAuthStateChange con callback síncrono (según docs de Supabase)
+    // INITIAL_SESSION se emite cuando se carga la sesión desde localStorage
     const {
       data: { subscription }
-    } = authService.onAuthStateChange(async (event, session) => {
+    } = authService.onAuthStateChange((event, session) => {
       if (!isMounted) return;
 
-      // Solo procesar eventos relevantes
-      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
+      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
         setUser(session?.user ?? null);
+
+        // Diferir operaciones async para después del callback (evita deadlock)
         if (session?.user) {
-          const profile = await userService.getOrCreateProfile(session.user);
-          if (isMounted) setUserProfile(profile);
+          setTimeout(async () => {
+            if (!isMounted) return;
+            try {
+              const profile = await userService.getOrCreateProfile(session.user);
+              if (isMounted) setUserProfile(profile);
+            } catch (error) {
+              console.error('Error loading profile:', error);
+            }
+          }, 0);
         } else {
           setUserProfile(null);
+        }
+      } else if (event === 'TOKEN_REFRESHED') {
+        if (session?.user) {
+          setUser(session.user);
         }
       }
     });

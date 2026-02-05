@@ -174,34 +174,26 @@ export const Admin = () => {
   useEffect(() => {
     let isMounted = true;
 
-    const initAuth = async () => {
-      try {
-        const currentUser = await authService.getCurrentUser();
-        if (!isMounted) return;
-
-        setUser(currentUser);
-        if (currentUser) {
-          const token = await getToken();
-          if (token) loadPendingPhotos(token);
-        }
-      } catch (error) {
-        console.error('Error checking session:', error);
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
-
-    initAuth();
-
+    // Usar onAuthStateChange con callback síncrono (según docs de Supabase)
+    // Diferir operaciones async con setTimeout para evitar deadlocks
     const {
       data: { subscription }
     } = authService.onAuthStateChange((event, session) => {
       if (!isMounted) return;
-      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
+
+      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
         setUser(session?.user ?? null);
         setLoading(false);
+
+        // Diferir la carga de fotos para después del callback (evita deadlock)
         if (session?.user && session.access_token) {
-          loadPendingPhotos(session.access_token);
+          setTimeout(() => {
+            if (isMounted) loadPendingPhotos(session.access_token);
+          }, 0);
+        }
+      } else if (event === 'TOKEN_REFRESHED') {
+        if (session?.user) {
+          setUser(session.user);
         }
       }
     });
