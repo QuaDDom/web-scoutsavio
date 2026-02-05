@@ -79,34 +79,27 @@ export const Gallery = () => {
   useEffect(() => {
     let isMounted = true;
 
-    // Usar onAuthStateChange con callback síncrono (según docs de Supabase)
-    // INITIAL_SESSION se emite cuando se carga la sesión desde localStorage
+    // Patrón exacto de la documentación de Supabase
     const {
       data: { subscription }
     } = authService.onAuthStateChange((event, session) => {
       if (!isMounted) return;
 
-      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
-        setUser(session?.user ?? null);
-
-        // Diferir operaciones async para después del callback (evita deadlock)
-        if (session?.user) {
-          setTimeout(async () => {
-            if (!isMounted) return;
-            try {
-              const profile = await userService.getOrCreateProfile(session.user);
-              if (isMounted) setUserProfile(profile);
-            } catch (error) {
-              console.error('Error loading profile:', error);
-            }
-          }, 0);
-        } else {
-          setUserProfile(null);
-        }
-      } else if (event === 'TOKEN_REFRESHED') {
-        if (session?.user) {
-          setUser(session.user);
-        }
+      if (event === 'SIGNED_OUT') {
+        setUser(null);
+        setUserProfile(null);
+      } else if (session) {
+        setUser(session.user);
+        // Diferir operaciones de Supabase para después del callback
+        setTimeout(async () => {
+          if (!isMounted) return;
+          try {
+            const profile = await userService.getOrCreateProfile(session.user);
+            if (isMounted) setUserProfile(profile);
+          } catch (error) {
+            console.error('Error loading profile:', error);
+          }
+        }, 0);
       }
     });
 

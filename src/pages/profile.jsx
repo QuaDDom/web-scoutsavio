@@ -118,25 +118,24 @@ export const Profile = () => {
   useEffect(() => {
     let isMounted = true;
 
-    // Escuchar cambios de auth con callback síncrono
+    // Patrón exacto de la documentación de Supabase
     const {
       data: { subscription }
     } = authService.onAuthStateChange((event, session) => {
       if (!isMounted) return;
 
-      if (event === 'INITIAL_SESSION') {
-        if (session?.user) {
-          // Diferir la carga de datos para después del callback
-          setTimeout(() => {
-            if (isMounted) loadUserData();
-          }, 0);
-        } else {
-          // No hay sesión, redirigir a galería
-          setTimeout(() => {
-            if (isMounted) navigate('/galeria');
-          }, 0);
-        }
-      } else if (event === 'SIGNED_OUT') {
+      if (event === 'SIGNED_OUT') {
+        // Diferir navegación para después del callback
+        setTimeout(() => {
+          if (isMounted) navigate('/galeria');
+        }, 0);
+      } else if (session) {
+        // Diferir carga de datos para después del callback
+        setTimeout(() => {
+          if (isMounted) loadUserData();
+        }, 0);
+      } else {
+        // Sin sesión, redirigir
         setTimeout(() => {
           if (isMounted) navigate('/galeria');
         }, 0);

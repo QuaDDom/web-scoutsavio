@@ -80,24 +80,21 @@ export const Forum = () => {
   useEffect(() => {
     let isMounted = true;
 
-    // Usar onAuthStateChange con callback síncrono (según docs de Supabase)
-    // INITIAL_SESSION se emite al cargar la sesión desde storage
+    // Patrón exacto de la documentación de Supabase
     const {
       data: { subscription }
     } = authService.onAuthStateChange((event, session) => {
       if (!isMounted) return;
 
-      // INITIAL_SESSION: sesión cargada desde localStorage
-      // SIGNED_IN: usuario inició sesión o refocused tab
-      // SIGNED_OUT: usuario cerró sesión
-      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
-        setUser(session?.user || null);
+      if (event === 'SIGNED_OUT') {
+        setUser(null);
         setLoading(false);
-      } else if (event === 'TOKEN_REFRESHED') {
-        // Token refrescado, actualizar usuario si existe
-        if (session?.user) {
-          setUser(session.user);
-        }
+      } else if (session) {
+        setUser(session.user);
+        setLoading(false);
+      } else {
+        // INITIAL_SESSION sin sesión = no logueado
+        setLoading(false);
       }
     });
 

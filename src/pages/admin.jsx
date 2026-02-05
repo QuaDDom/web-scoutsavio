@@ -174,27 +174,26 @@ export const Admin = () => {
   useEffect(() => {
     let isMounted = true;
 
-    // Usar onAuthStateChange con callback síncrono (según docs de Supabase)
-    // Diferir operaciones async con setTimeout para evitar deadlocks
+    // Patrón exacto de la documentación de Supabase
     const {
       data: { subscription }
     } = authService.onAuthStateChange((event, session) => {
       if (!isMounted) return;
 
-      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
-        setUser(session?.user ?? null);
+      if (event === 'SIGNED_OUT') {
+        setUser(null);
         setLoading(false);
-
-        // Diferir la carga de fotos para después del callback (evita deadlock)
-        if (session?.user && session.access_token) {
-          setTimeout(() => {
-            if (isMounted) loadPendingPhotos(session.access_token);
-          }, 0);
-        }
-      } else if (event === 'TOKEN_REFRESHED') {
-        if (session?.user) {
-          setUser(session.user);
-        }
+      } else if (session) {
+        setUser(session.user);
+        setLoading(false);
+        // Diferir operaciones de Supabase para después del callback
+        setTimeout(() => {
+          if (isMounted && session.access_token) {
+            loadPendingPhotos(session.access_token);
+          }
+        }, 0);
+      } else {
+        setLoading(false);
       }
     });
 
