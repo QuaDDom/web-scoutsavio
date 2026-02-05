@@ -2,7 +2,15 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
-const ADMIN_EMAILS = ['scoutsavio331@gmail.com', 'matquadev@gmail.com'];
+const ADMIN_EMAILS = [
+  'scoutsavio331@gmail.com',
+  'matquadev@gmail.com',
+  'burgosagostina60@gmail.com',
+  'vickyrivero.scout@gmail.com',
+  'monjesana@gmail.com',
+  'psicocecirodriguez@gmail.com',
+  'leitogottero@gmail.com'
+];
 
 async function verifyAdmin(token) {
   const {

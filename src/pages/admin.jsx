@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './admin.scss';
 import { PageContainer } from '../components/PageContainer';
 import { SEO } from '../components/SEO';
-import { supabase, adminService, notificationService } from '../lib/supabase';
+import { supabase, adminService, notificationService, authService } from '../lib/supabase';
 import {
   Button,
   Card,
@@ -177,16 +177,15 @@ export const Admin = () => {
   useEffect(() => {
     let isMounted = true;
 
-    const initSession = async () => {
+    const initAuth = async () => {
       try {
-        const {
-          data: { session }
-        } = await supabase.auth.getSession();
+        const currentUser = await authService.getCurrentUser();
         if (!isMounted) return;
 
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          loadPendingPhotos(session.access_token);
+        setUser(currentUser);
+        if (currentUser) {
+          const token = await getToken();
+          if (token) loadPendingPhotos(token);
         }
       } catch (error) {
         console.error('Error checking session:', error);
@@ -195,7 +194,7 @@ export const Admin = () => {
       }
     };
 
-    initSession();
+    initAuth();
 
     const {
       data: { subscription }
@@ -203,7 +202,7 @@ export const Admin = () => {
       if (!isMounted) return;
       if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
         setUser(session?.user ?? null);
-        if (session?.user) {
+        if (session?.user && session.access_token) {
           loadPendingPhotos(session.access_token);
         }
       }
@@ -211,7 +210,7 @@ export const Admin = () => {
 
     return () => {
       isMounted = false;
-      subscription.unsubscribe();
+      subscription?.unsubscribe();
     };
   }, []);
 

@@ -57,35 +57,65 @@ const isProduction = import.meta.env.PROD;
 // Servicio de autenticación de usuarios
 // =============================================
 export const authService = {
-  // Obtener sesión actual
+  // Obtener sesión actual con timeout
   async getSession() {
-    const {
-      data: { session },
-      error
-    } = await supabase.auth.getSession();
-    if (error) {
-      console.error('Error getting session:', error);
-      return null;
-    }
-    return session;
-  },
-
-  // Obtener usuario actual
-  async getCurrentUser() {
     try {
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Session timeout')), 5000)
+      );
+
+      const sessionPromise = supabase.auth.getSession();
+
       const {
         data: { session },
         error
-      } = await supabase.auth.getSession();
+      } = await Promise.race([sessionPromise, timeoutPromise]);
 
       if (error) {
         console.error('Error getting session:', error);
         return null;
       }
+      return session;
+    } catch (err) {
+      if (err.message === 'Session timeout') {
+        console.warn('Session check timed out');
+        localStorage.removeItem('supabase-auth-token');
+      }
+      return null;
+    }
+  },
+
+  // Obtener usuario actual con timeout para evitar cuelgues
+  async getCurrentUser() {
+    try {
+      // Timeout de 5 segundos para evitar cuelgues infinitos
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Auth timeout')), 5000)
+      );
+
+      const sessionPromise = supabase.auth.getSession();
+
+      const {
+        data: { session },
+        error
+      } = await Promise.race([sessionPromise, timeoutPromise]);
+
+      if (error) {
+        console.error('Error getting session:', error);
+        // Si hay error de sesión, limpiar el storage corrupto
+        if (error.message?.includes('invalid') || error.message?.includes('expired')) {
+          localStorage.removeItem('supabase-auth-token');
+        }
+        return null;
+      }
 
       return session?.user || null;
     } catch (err) {
-      if (err.name !== 'AbortError') {
+      if (err.message === 'Auth timeout') {
+        console.warn('Auth check timed out, clearing potentially corrupted session');
+        // Limpiar sesión potencialmente corrupta
+        localStorage.removeItem('supabase-auth-token');
+      } else if (err.name !== 'AbortError') {
         console.error('Unexpected error getting user:', err);
       }
       return null;

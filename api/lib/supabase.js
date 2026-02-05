@@ -32,4 +32,12 @@ export async function isAdmin(email) {
 }
 
 // Lista de emails de administradores autorizados
-export const ADMIN_EMAILS = ['scoutsavio331@gmail.com', 'matquadev@gmail.com'];
+export const ADMIN_EMAILS = [
+  'scoutsavio331@gmail.com',
+  'matquadev@gmail.com',
+  'burgosagostina60@gmail.com',
+  'vickyrivero.scout@gmail.com',
+  'monjesana@gmail.com',
+  'psicocecirodriguez@gmail.com',
+  'leitogottero@gmail.com'
+];

@@ -81,14 +81,12 @@ export const Gallery = () => {
 
     const initAuth = async () => {
       try {
-        const {
-          data: { session }
-        } = await supabase.auth.getSession();
+        const currentUser = await authService.getCurrentUser();
         if (!isMounted) return;
 
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          const profile = await userService.getOrCreateProfile(session.user);
+        setUser(currentUser);
+        if (currentUser) {
+          const profile = await userService.getOrCreateProfile(currentUser);
           if (isMounted) setUserProfile(profile);
         }
       } catch (error) {
