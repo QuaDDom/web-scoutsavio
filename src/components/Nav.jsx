@@ -22,8 +22,6 @@ export const Nav = () => {
   const { theme, setTheme } = useTheme();
   const location = useLocation();
 
-  const handleChangeTheme = () => (theme === 'light' ? setTheme('dark') : setTheme('light'));
-
   const navLinks = [
     { to: '/sobre', label: 'Quiénes somos' },
     { to: '/guia', label: 'Guía' },
@@ -78,10 +76,11 @@ export const Nav = () => {
 
       <NavbarContent justify="end" className="nav-right">
         <Switch
-          onClick={handleChangeTheme}
+          isSelected={theme === 'dark'}
+          onValueChange={() => setTheme(theme === 'light' ? 'dark' : 'light')}
           size="lg"
           color="warning"
-          thumbIcon={({ isSelected, className }) =>
+          thumbIcon={({ className }) =>
             theme === 'light' ? (
               <MdLightMode className={className} />
             ) : (

@@ -166,27 +166,25 @@ a {
     &.scrolled {
       background: rgba(255, 255, 255, 0.95) !important;
       box-shadow: $shadow-md-light;
-    }
-  }
 
-  .logo {
-    .logoTitle {
-      background: $gradient;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-  }
+      .nav-link {
+        color: rgba(0, 0, 0, 0.75);
 
-  .nav-link {
-    color: rgba(0, 0, 0, 0.75);
+        &:hover {
+          color: $scout-red;
+          background: rgba(0, 0, 0, 0.05);
+        }
 
-    &:hover {
-      color: $scout-red;
-      background: rgba(0, 0, 0, 0.05);
-    }
+        &.active {
+          color: $scout-red;
+        }
+      }
 
-    &.active {
-      color: $scout-red;
+      .logo .logoTitle {
+        background: $gradient;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
     }
   }
 
