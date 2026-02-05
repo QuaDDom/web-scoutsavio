@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './admin.scss';
 import { PageContainer } from '../components/PageContainer';
 import { SEO } from '../components/SEO';
-import { supabase, adminService, notificationService, authService } from '../lib/supabase';
+import { adminService, notificationService, authService } from '../lib/supabase';
 import {
   Button,
   Card,
@@ -168,10 +168,7 @@ export const Admin = () => {
   ];
 
   const getToken = async () => {
-    const {
-      data: { session }
-    } = await supabase.auth.getSession();
-    return session?.access_token;
+    return await authService.getAccessToken();
   };
 
   useEffect(() => {
@@ -226,11 +223,7 @@ export const Admin = () => {
 
   const signInWithGoogle = async () => {
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: { redirectTo: `${window.location.origin}/admin` }
-      });
-      if (error) throw error;
+      await authService.signInWithGoogle('/admin');
     } catch (error) {
       console.error('Error signing in:', error);
       alert('Error al iniciar sesión');
@@ -238,7 +231,7 @@ export const Admin = () => {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    await authService.signOut();
     setUser(null);
     setPendingPhotos([]);
     setAllPhotos([]);

@@ -219,6 +219,19 @@
       opacity: 0.8;
     }
   }
+
+  // Mobile login button
+  &.mobile-login-btn {
+    background: linear-gradient(135deg, #b82722 0%, #ff6b35 100%);
+    border: none;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    justify-content: center;
+    border-radius: 12px;
+    padding: 16px 20px;
+  }
 }
 
 // Nav Avatar

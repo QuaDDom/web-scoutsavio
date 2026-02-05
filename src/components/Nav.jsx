@@ -18,10 +18,12 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Badge
+  Badge,
+  useDisclosure
 } from '@nextui-org/react';
 import { useTheme } from 'next-themes';
 import { authService, notificationService } from '../lib/supabase';
+import { LoginModal } from './LoginModal';
 import savioLogo from '../assets/logo/scoutsaviologo.png';
 
 export const Nav = () => {
@@ -32,6 +34,7 @@ export const Nav = () => {
   const { theme, setTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
+  const { isOpen: isLoginOpen, onOpen: onLoginOpen, onClose: onLoginClose } = useDisclosure();
 
   const isHomePage = location.pathname === '/';
 
@@ -210,7 +213,7 @@ export const Nav = () => {
             size="sm"
             showFallback
             fallback={<FaUser />}
-            onClick={() => navigate('/perfil')}
+            onClick={onLoginOpen}
           />
         )}
 
@@ -261,32 +264,41 @@ export const Nav = () => {
           ))}
         {/* Profile link in mobile menu */}
         <NavbarMenuItem>
-          <Link
-            to="/perfil"
-            className={`mobile-link mobile-profile-link ${location.pathname === '/perfil' ? 'active' : ''}`}
-            style={{
-              animationDelay: `${(navLinks.length + (user ? userLinks.length : 0)) * 0.1}s`
-            }}>
-            {user ? (
-              <>
-                <Avatar
-                  size="sm"
-                  src={user.user_metadata?.avatar_url}
-                  showFallback
-                  fallback={<FaUser />}
-                  className="mobile-avatar"
-                />
-                Mi Perfil
-              </>
-            ) : (
-              <>
-                <FaUser className="profile-icon" />
-                Iniciar sesión
-              </>
-            )}
-          </Link>
+          {user ? (
+            <Link
+              to="/perfil"
+              className={`mobile-link mobile-profile-link ${location.pathname === '/perfil' ? 'active' : ''}`}
+              style={{
+                animationDelay: `${(navLinks.length + userLinks.length) * 0.1}s`
+              }}>
+              <Avatar
+                size="sm"
+                src={user.user_metadata?.avatar_url}
+                showFallback
+                fallback={<FaUser />}
+                className="mobile-avatar"
+              />
+              Mi Perfil
+            </Link>
+          ) : (
+            <button
+              className="mobile-link mobile-profile-link mobile-login-btn"
+              onClick={() => {
+                setIsMenuOpen(false);
+                onLoginOpen();
+              }}
+              style={{
+                animationDelay: `${navLinks.length * 0.1}s`
+              }}>
+              <FaUser className="profile-icon" />
+              Iniciar sesión
+            </button>
+          )}
         </NavbarMenuItem>
       </NavbarMenu>
+
+      {/* Modal de Login */}
+      <LoginModal isOpen={isLoginOpen} onClose={onLoginClose} />
     </Navbar>
   );
 };

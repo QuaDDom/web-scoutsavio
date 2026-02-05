@@ -68,6 +68,17 @@ export const authService = {
     }
   },
 
+  // Obtener token de acceso para llamadas a la API
+  async getAccessToken() {
+    try {
+      const session = await this.getSession();
+      return session?.access_token || null;
+    } catch (err) {
+      console.error('Error getting access token:', err);
+      return null;
+    }
+  },
+
   // Iniciar sesión con Google
   async signInWithGoogle(redirectPath = '/galeria') {
     const { data, error } = await supabase.auth.signInWithOAuth({

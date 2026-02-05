@@ -1,0 +1,166 @@
+.login-modal {
+  background: var(--nextui-colors-background);
+  border-radius: 20px;
+  overflow: hidden;
+
+  .login-modal-header {
+    padding: 1.5rem 1.5rem 0.5rem;
+    border-bottom: none;
+
+    .header-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+      text-align: center;
+
+      .header-emoji {
+        font-size: 3rem;
+        animation: bounce 2s infinite;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #b82722 0%, #ff6b35 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin: 0;
+      }
+    }
+  }
+
+  .login-modal-body {
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .login-description {
+      text-align: center;
+      color: var(--nextui-colors-foreground);
+      opacity: 0.8;
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .features-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+
+      .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        background: var(--nextui-colors-default-100);
+        border-radius: 10px;
+        font-size: 0.85rem;
+        transition: transform 0.2s, background 0.2s;
+
+        &:hover {
+          transform: translateY(-2px);
+          background: var(--nextui-colors-default-200);
+        }
+
+        .feature-icon {
+          font-size: 1.2rem;
+        }
+      }
+    }
+
+    .login-divider {
+      margin: 0.5rem 0;
+    }
+
+    .google-login-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #b82722 0%, #ff6b35 100%);
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(184, 39, 34, 0.3);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+
+    .login-note {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--nextui-colors-foreground);
+      opacity: 0.5;
+      margin-top: 0.5rem;
+    }
+  }
+
+  .login-modal-footer {
+    padding: 0.5rem 1.5rem 1.5rem;
+    justify-content: center;
+
+    .cancel-btn {
+      opacity: 0.7;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.login-modal-backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+// Dark mode adjustments
+[data-theme='dark'] {
+  .login-modal {
+    .features-list .feature-item {
+      background: rgba(255, 255, 255, 0.05);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+}
+
+// Mobile adjustments
+@media (max-width: 480px) {
+  .login-modal {
+    .features-list {
+      grid-template-columns: 1fr;
+    }
+
+    .login-modal-header .header-content h2 {
+      font-size: 1.25rem;
+    }
+  }
+}
