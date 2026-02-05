@@ -70,13 +70,13 @@ export default async function handler(req) {
     }
 
     // Mover archivo de pending a approved en storage
-    const oldPath = photo.image_url.split('/gallery/')[1];
+    const oldPath = photo.image_url.split('/gallery-photos/')[1];
     if (oldPath && oldPath.startsWith('pending/')) {
       const newPath = oldPath.replace('pending/', 'approved/');
-      await supabaseAdmin.storage.from('gallery').move(oldPath, newPath);
+      await supabaseAdmin.storage.from('gallery-photos').move(oldPath, newPath);
 
       // Actualizar URL
-      const { data: urlData } = supabaseAdmin.storage.from('gallery').getPublicUrl(newPath);
+      const { data: urlData } = supabaseAdmin.storage.from('gallery-photos').getPublicUrl(newPath);
       await supabaseAdmin
         .from('photos')
         .update({ image_url: urlData.publicUrl, thumbnail_url: urlData.publicUrl })

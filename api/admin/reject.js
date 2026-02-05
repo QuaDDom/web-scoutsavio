@@ -71,9 +71,9 @@ export default async function handler(req) {
     }
 
     // Eliminar archivo del storage
-    const oldPath = photo.image_url.split('/gallery/')[1];
+    const oldPath = photo.image_url.split('/gallery-photos/')[1];
     if (oldPath) {
-      await supabaseAdmin.storage.from('gallery').remove([oldPath]);
+      await supabaseAdmin.storage.from('gallery-photos').remove([oldPath]);
     }
 
     // Notificar al usuario

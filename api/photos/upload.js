@@ -67,7 +67,7 @@ export default async function handler(req) {
 
       // Subir a Supabase Storage
       const { data: uploadData, error: uploadError } = await supabaseAdmin.storage
-        .from('gallery')
+        .from('gallery-photos')
         .upload(filePath, file, {
           contentType: file.type,
           cacheControl: '3600'
@@ -79,7 +79,7 @@ export default async function handler(req) {
       }
 
       // Obtener URL pública
-      const { data: urlData } = supabaseAdmin.storage.from('gallery').getPublicUrl(filePath);
+      const { data: urlData } = supabaseAdmin.storage.from('gallery-photos').getPublicUrl(filePath);
 
       // Crear registro en la base de datos
       const { data: photoData, error: dbError } = await supabaseAdmin
