@@ -4,12 +4,9 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // Singleton pattern para evitar múltiples instancias de GoTrueClient
-// Esto es necesario porque Vite HMR recarga el módulo y crea nuevas instancias
 const SUPABASE_KEY = '__supabase_client__';
-const SUPABASE_INIT_KEY = '__supabase_initialized__';
 
 function getSupabaseClient() {
-  // En desarrollo, reutilizar la instancia global para evitar múltiples clientes
   if (typeof window !== 'undefined') {
     if (!window[SUPABASE_KEY]) {
       window[SUPABASE_KEY] = createClient(supabaseUrl, supabaseAnonKey, {
@@ -17,37 +14,21 @@ function getSupabaseClient() {
           persistSession: true,
           autoRefreshToken: true,
           detectSessionInUrl: true,
-          flowType: 'implicit',
-          // Evitar problemas de clock skew
-          storageKey: 'supabase-auth-token'
+          storageKey: 'sb-auth-token'
         }
       });
-
-      // Limpiar hash de la URL después de procesar el token (solo una vez)
-      if (!window[SUPABASE_INIT_KEY] && window.location.hash.includes('access_token')) {
-        window[SUPABASE_INIT_KEY] = true;
-        // Dar tiempo a que Supabase procese el token antes de limpiar
-        setTimeout(() => {
-          const url = new URL(window.location.href);
-          url.hash = '';
-          window.history.replaceState({}, document.title, url.pathname + url.search);
-        }, 100);
-      }
     }
     return window[SUPABASE_KEY];
   }
 
-  // SSR o entorno sin window
   return createClient(supabaseUrl, supabaseAnonKey, {
     auth: {
       persistSession: true,
       autoRefreshToken: true,
-      detectSessionInUrl: true,
-      flowType: 'implicit'
+      detectSessionInUrl: true
     }
   });
 }
-
 export const supabase = getSupabaseClient();
 
 // Detectar si estamos en producción (Vercel) o desarrollo local
