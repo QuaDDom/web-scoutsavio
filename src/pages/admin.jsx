@@ -1177,7 +1177,11 @@ export const Admin = () => {
                   label="Rama"
                   placeholder="Seleccionar rama"
                   selectedKeys={userEditForm.branch ? [userEditForm.branch] : []}
-                  onChange={(e) => setUserEditForm({ ...userEditForm, branch: e.target.value })}>
+                  onChange={(e) => setUserEditForm({ ...userEditForm, branch: e.target.value })}
+                  popoverProps={{
+                    classNames: { content: 'z-[9999]' },
+                    portalContainer: document.body
+                  }}>
                   {Object.entries(branchesData).map(([key, data]) => (
                     <SelectItem key={key} value={key}>
                       {data.name}
@@ -1236,7 +1240,11 @@ export const Admin = () => {
                 <Select
                   label="Tipo"
                   selectedKeys={[badgeForm.type]}
-                  onChange={(e) => setBadgeForm({ ...badgeForm, type: e.target.value, name: '' })}>
+                  onChange={(e) => setBadgeForm({ ...badgeForm, type: e.target.value, name: '' })}
+                  popoverProps={{
+                    classNames: { content: 'z-[9999]' },
+                    portalContainer: document.body
+                  }}>
                   <SelectItem key="progression" value="progression">
                     Progresión
                   </SelectItem>
@@ -1249,7 +1257,11 @@ export const Admin = () => {
                     label="Progresión"
                     placeholder="Seleccionar"
                     selectedKeys={badgeForm.name ? [badgeForm.name] : []}
-                    onChange={(e) => setBadgeForm({ ...badgeForm, name: e.target.value })}>
+                    onChange={(e) => setBadgeForm({ ...badgeForm, name: e.target.value })}
+                    popoverProps={{
+                      classNames: { content: 'z-[9999]' },
+                      portalContainer: document.body
+                    }}>
                     {branchesData[selectedUser.branch]?.progressions.map((prog) => (
                       <SelectItem key={prog} value={prog}>
                         {prog}
@@ -1268,7 +1280,11 @@ export const Admin = () => {
                     <Select
                       label="Nivel"
                       selectedKeys={[badgeForm.level]}
-                      onChange={(e) => setBadgeForm({ ...badgeForm, level: e.target.value })}>
+                      onChange={(e) => setBadgeForm({ ...badgeForm, level: e.target.value })}
+                      popoverProps={{
+                        classNames: { content: 'z-[9999]' },
+                        portalContainer: document.body
+                      }}>
                       <SelectItem key="basic" value="basic">
                         Básico
                       </SelectItem>
@@ -1318,7 +1334,11 @@ export const Admin = () => {
                 selectedKeys={[notificationForm.type]}
                 onChange={(e) =>
                   setNotificationForm({ ...notificationForm, type: e.target.value })
-                }>
+                }
+                popoverProps={{
+                  classNames: { content: 'z-[9999]' },
+                  portalContainer: document.body
+                }}>
                 {notificationTypes.map((type) => (
                   <SelectItem key={type.key} value={type.key}>
                     {type.icon} {type.label}

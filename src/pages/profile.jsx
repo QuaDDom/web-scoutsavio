@@ -697,7 +697,13 @@ export const Profile = () => {
                 label="Rama"
                 placeholder="Seleccioná tu rama"
                 selectedKeys={editForm.branch ? [editForm.branch] : []}
-                onChange={(e) => setEditForm({ ...editForm, branch: e.target.value })}>
+                onChange={(e) => setEditForm({ ...editForm, branch: e.target.value })}
+                popoverProps={{
+                  classNames: {
+                    content: 'z-[9999]'
+                  },
+                  portalContainer: document.body
+                }}>
                 {Object.entries(branchesData).map(([key, data]) => (
                   <SelectItem key={key} value={key}>
                     {data.icon} {data.name} ({data.age})

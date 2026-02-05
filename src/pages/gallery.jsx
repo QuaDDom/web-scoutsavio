@@ -304,7 +304,7 @@ const compressImage = (file, maxWidth = 1920, maxHeight = 1920, quality = 0.8) =
       img.onload = () => {
         // Calcular nuevas dimensiones manteniendo el aspect ratio
         let { width, height } = img;
-        
+
         if (width > maxWidth || height > maxHeight) {
           const ratio = Math.min(maxWidth / width, maxHeight / height);
           width = Math.round(width * ratio);
@@ -315,7 +315,7 @@ const compressImage = (file, maxWidth = 1920, maxHeight = 1920, quality = 0.8) =
         const canvas = document.createElement('canvas');
         canvas.width = width;
         canvas.height = height;
-        
+
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
 
@@ -399,7 +399,7 @@ const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLo
 
   const addFiles = async (newFiles) => {
     setIsCompressing(true);
-    
+
     try {
       // Comprimir todas las imágenes en paralelo
       const compressedFiles = await Promise.all(
@@ -415,7 +415,7 @@ const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLo
           };
         })
       );
-      
+
       setFiles((prev) => [...prev, ...compressedFiles].slice(0, 10)); // Max 10 files
     } catch (error) {
       console.error('Error compressing files:', error);
@@ -428,7 +428,7 @@ const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLo
       }));
       setFiles((prev) => [...prev, ...filesWithPreview].slice(0, 10));
     }
-    
+
     setIsCompressing(false);
   };
 
@@ -625,18 +625,23 @@ const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLo
                         <p className="drop-text">
                           Arrastrá tus fotos aquí o hacé clic para seleccionar
                         </p>
-                        <span className="drop-hint">Máximo 10 fotos • JPG, PNG o WebP • Se comprimen automáticamente</span>
+                        <span className="drop-hint">
+                          Máximo 10 fotos • JPG, PNG o WebP • Se comprimen automáticamente
+                        </span>
                       </>
                     )}
                   </div>
 
                   {/* Compression Stats */}
-                  {files.length > 0 && files.some(f => f.originalSize) && (
+                  {files.length > 0 && files.some((f) => f.originalSize) && (
                     <div className="compression-stats">
                       <span className="stat-label">💾 Ahorro por compresión:</span>
                       <span className="stat-value">
                         {(() => {
-                          const totalOriginal = files.reduce((acc, f) => acc + (f.originalSize || f.file.size), 0);
+                          const totalOriginal = files.reduce(
+                            (acc, f) => acc + (f.originalSize || f.file.size),
+                            0
+                          );
                           const totalCompressed = files.reduce((acc, f) => acc + f.file.size, 0);
                           const savedBytes = totalOriginal - totalCompressed;
                           const savedPercent = ((savedBytes / totalOriginal) * 100).toFixed(0);
@@ -699,6 +704,12 @@ const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLo
                       isRequired
                       classNames={{
                         trigger: 'upload-input-wrapper'
+                      }}
+                      popoverProps={{
+                        classNames: {
+                          content: 'z-[9999]'
+                        },
+                        portalContainer: document.body
                       }}>
                       {categories.map((cat) => (
                         <SelectItem key={cat} value={cat}>
