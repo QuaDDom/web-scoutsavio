@@ -57,40 +57,23 @@ const isProduction = import.meta.env.PROD;
 // Servicio de autenticación de usuarios
 // =============================================
 
-// Cache para evitar llamadas repetidas a getSession
-let sessionCache = null;
-let sessionCacheTime = 0;
-const SESSION_CACHE_TTL = 30000; // 30 segundos
-
 export const authService = {
-  // Obtener sesión actual - con caché para evitar cuelgues
+  // Obtener sesión actual - directo sin caché
   async getSession() {
     try {
-      // Si tenemos sesión en caché y no ha expirado, usarla
-      const now = Date.now();
-      if (sessionCache && (now - sessionCacheTime) < SESSION_CACHE_TTL) {
-        return sessionCache;
-      }
-
       const { data: { session }, error } = await supabase.auth.getSession();
-
       if (error) {
         console.error('Error getting session:', error);
         return null;
       }
-      
-      // Actualizar caché
-      sessionCache = session;
-      sessionCacheTime = now;
-      
       return session;
     } catch (err) {
       console.error('Error in getSession:', err);
-      return sessionCache; // Devolver caché si hay error
+      return null;
     }
   },
 
-  // Obtener usuario actual - simplificado sin timeout destructivo
+  // Obtener usuario actual
   async getCurrentUser() {
     try {
       const session = await this.getSession();
@@ -99,12 +82,6 @@ export const authService = {
       console.error('Error getting user:', err);
       return null;
     }
-  },
-
-  // Limpiar caché de sesión (llamar en logout o cuando cambia el estado)
-  clearSessionCache() {
-    sessionCache = null;
-    sessionCacheTime = 0;
   },
 
   // Iniciar sesión con Google
@@ -121,21 +98,13 @@ export const authService = {
 
   // Cerrar sesión
   async signOut() {
-    this.clearSessionCache();
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
   },
 
-  // Escuchar cambios de auth - con limpieza de caché automática
+  // Escuchar cambios de auth
   onAuthStateChange(callback) {
-    return supabase.auth.onAuthStateChange((event, session) => {
-      // Limpiar caché cuando cambia el estado
-      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
-        sessionCache = session;
-        sessionCacheTime = Date.now();
-      }
-      callback(event, session);
-    });
+    return supabase.auth.onAuthStateChange(callback);
   }
 };
 

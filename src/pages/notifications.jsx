@@ -71,6 +71,14 @@ export const Notifications = () => {
       }
     };
 
+    // Timeout de seguridad: si después de 3 segundos sigue loading, quitarlo
+    const safetyTimeout = setTimeout(() => {
+      if (isMounted && loading) {
+        console.warn('Auth check taking too long, forcing load');
+        setLoading(false);
+      }
+    }, 3000);
+
     initAuth();
 
     const {
@@ -85,6 +93,7 @@ export const Notifications = () => {
 
     return () => {
       isMounted = false;
+      clearTimeout(safetyTimeout);
       subscription?.unsubscribe();
     };
   }, []);

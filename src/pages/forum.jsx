@@ -93,6 +93,14 @@ export const Forum = () => {
       }
     };
 
+    // Timeout de seguridad: si después de 3 segundos sigue loading, quitarlo
+    const safetyTimeout = setTimeout(() => {
+      if (isMounted && loading) {
+        console.warn('Auth check taking too long, forcing load');
+        setLoading(false);
+      }
+    }, 3000);
+
     initAuth();
 
     const {
@@ -101,13 +109,13 @@ export const Forum = () => {
       if (!isMounted) return;
       if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
         setUser(session?.user || null);
-        // Si loading aún está en true, quitarlo
         setLoading(false);
       }
     });
 
     return () => {
       isMounted = false;
+      clearTimeout(safetyTimeout);
       subscription?.unsubscribe();
     };
   }, []);
