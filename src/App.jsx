@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './App.scss';
+import { Analytics } from '@vercel/analytics/react';
 import { Nav } from './components/Nav';
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import { Home } from './pages/home';
@@ -30,6 +31,7 @@ function App() {
         <Route path="/contacto" element={<Contact />} exact />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Analytics />
     </Router>
   );
 }
