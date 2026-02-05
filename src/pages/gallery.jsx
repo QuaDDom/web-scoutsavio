@@ -234,11 +234,19 @@ export const Gallery = () => {
 
 const GalleryImage = ({ id, imgSrc, title, category }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
     <>
       <div className="gallery-item" onClick={onOpen}>
-        <Image className="gallery-img" src={imgSrc} alt={title} />
+        <img 
+          className="gallery-img" 
+          src={imgSrc} 
+          alt={title}
+          loading="lazy"
+          onLoad={() => setImageLoaded(true)}
+          style={{ opacity: imageLoaded ? 1 : 0, transition: 'opacity 0.3s ease' }}
+        />
         <div className="gallery-overlay">
           <span className="gallery-category">{category}</span>
           <h3>{title}</h3>
@@ -259,10 +267,17 @@ const GalleryImage = ({ id, imgSrc, title, category }) => {
             <span className="modal-category">{category}</span>
           </ModalHeader>
           <ModalBody className="modal-body">
-            <Image src={imgSrc} alt={title} className="modal-image" />
+            <img src={imgSrc} alt={title} className="modal-image" />
           </ModalBody>
           <ModalFooter className="modal-footer">
-            <Button className="download-btn" startContent={<FaDownload />}>
+            <Button 
+              className="download-btn" 
+              startContent={<FaDownload />}
+              as="a"
+              href={imgSrc}
+              download={title}
+              target="_blank"
+            >
               Descargar
             </Button>
             <Button variant="bordered" onPress={onClose} className="close-btn">

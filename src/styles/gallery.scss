@@ -1,37 +1,80 @@
 @import './variables';
 
-// Gallery Hero
+// ========================================
+// GALLERY HERO - Diseño moderno y elegante
+// ========================================
 .gallery-hero {
-  min-height: 40vh;
+  min-height: 50vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba($scout-orange, 0.1), rgba($scout-yellow, 0.05));
-  padding: 120px 20px 60px;
+  background: linear-gradient(
+    180deg,
+    rgba($scout-orange, 0.08) 0%,
+    rgba($main, 0) 100%
+  );
+  padding: 140px 20px 80px;
+  position: relative;
+  overflow: hidden;
+
+  // Efecto decorativo de fondo
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba($scout-red, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba($scout-yellow, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
 
   .hero-content {
     text-align: center;
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
 
     .hero-icon {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
+      width: 90px;
+      height: 90px;
+      border-radius: 24px;
       background: $gradient;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 24px;
+      margin: 0 auto 28px;
+      box-shadow: 0 20px 40px rgba($scout-red, 0.3);
+      transform: rotate(-5deg);
+      transition: $transition-normal;
+
+      &:hover {
+        transform: rotate(0deg) scale(1.05);
+      }
 
       svg {
-        font-size: 32px;
+        font-size: 36px;
         color: #fff;
       }
     }
 
     h1 {
-      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-size: clamp(2.8rem, 6vw, 4rem);
       font-weight: 800;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
 
       .gradient-text {
         background: $gradient;
@@ -42,15 +85,62 @@
     }
 
     p {
-      font-size: 1.1rem;
-      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: 8px;
+      font-weight: 400;
     }
   }
 }
 
-// Filter Section
+// Upload button en hero
+.upload-hero-btn {
+  margin-top: 32px;
+  background: $gradient;
+  color: #fff;
+  font-weight: 600;
+  padding: 14px 32px;
+  font-size: 1rem;
+  border-radius: 14px;
+  border: none;
+  transition: $transition-normal;
+  box-shadow: 0 8px 24px rgba($scout-red, 0.25);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba($scout-red, 0.35);
+  }
+
+  svg {
+    font-size: 1.1rem;
+  }
+}
+
+// User logged in indicator
+.user-logged-in {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 16px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  svg {
+    color: $scout-red;
+    font-size: 0.85rem;
+  }
+}
+
+// ========================================
+// FILTER SECTION - Moderno y limpio
+// ========================================
 .filter-section {
-  padding: 40px 20px;
+  padding: 0 20px 50px;
   max-width: 1400px;
   margin: 0 auto;
 
@@ -58,68 +148,91 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 10px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    width: fit-content;
+    margin: 0 auto;
   }
 
   .filter-btn {
-    padding: 10px 24px;
-    border-radius: 50px;
-    border: 2px solid rgba(255, 255, 255, 0.15);
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: none;
     background: transparent;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.6);
     font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
     transition: $transition-normal;
 
     &:hover {
-      border-color: rgba($scout-orange, 0.5);
+      background: rgba(255, 255, 255, 0.08);
       color: #fff;
     }
 
     &.active {
       background: $gradient;
-      border-color: transparent;
       color: #fff;
+      box-shadow: 0 4px 16px rgba($scout-red, 0.3);
     }
   }
 }
 
-// Gallery Section
+// ========================================
+// GALLERY SECTION - Grid profesional
+// ========================================
 .gallery-section {
-  padding: 20px;
-  max-width: 1400px;
+  padding: 0 20px 80px;
+  max-width: 1500px;
   margin: 0 auto;
+}
 
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+
+  @include laptop {
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
+  }
 
-    @include laptop {
-      grid-template-columns: repeat(3, 1fr);
-    }
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
 
-    @include tablet {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @include mobile {
-      grid-template-columns: 1fr;
-    }
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 }
 
+// ========================================
+// GALLERY ITEM - Diseño mejorado con fix para PNGs
+// ========================================
 .gallery-item {
   position: relative;
-  border-radius: $radius-lg;
+  border-radius: 20px;
   overflow: hidden;
   cursor: pointer;
   aspect-ratio: 4/3;
+  // IMPORTANTE: Fondo sólido para PNGs con transparencia
+  background: linear-gradient(145deg, #1a1a2e 0%, #252540 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: $transition-normal;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 
   &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba($scout-red, 0.3);
+
     .gallery-img {
-      transform: scale(1.1);
+      transform: scale(1.08);
     }
 
     .gallery-overlay {
@@ -131,94 +244,161 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: $transition-slow;
+    transition: transform 0.5s ease;
+    // Asegurar que la imagen llene el contenedor
+    position: absolute;
+    inset: 0;
+    // Fondo para PNGs transparentes
+    background: linear-gradient(145deg, #1e1e32 0%, #282845 100%);
   }
 
   .gallery-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 60%);
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.9) 0%,
+      rgba(0, 0, 0, 0.4) 40%,
+      transparent 70%
+    );
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 20px;
+    padding: 24px;
     opacity: 0;
     transition: $transition-normal;
+    z-index: 2;
 
     .gallery-category {
       display: inline-block;
       background: $gradient;
-      padding: 4px 12px;
-      border-radius: 20px;
+      padding: 6px 14px;
+      border-radius: 8px;
       font-size: 0.75rem;
       font-weight: 600;
       color: #fff;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       width: fit-content;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     h3 {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 600;
       color: #fff;
+      line-height: 1.3;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
   }
 }
 
-// Modal Styles
+// ========================================
+// LOADING & EMPTY STATES
+// ========================================
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: 20px;
+
+  p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1rem;
+  }
+}
+
+.empty-gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 24px;
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+  padding: 60px 40px;
+
+  svg {
+    font-size: 56px;
+    color: rgba(255, 255, 255, 0.15);
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+}
+
+// ========================================
+// IMAGE MODAL - Diseño elegante
+// ========================================
 .modal-content {
-  background: rgba($main, 0.95) !important;
-  backdrop-filter: blur(20px);
+  background: rgba($main, 0.97) !important;
+  backdrop-filter: blur(30px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: $radius-xl !important;
+  border-radius: 24px !important;
   max-height: 90vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
 
   .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 24px 28px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     flex-shrink: 0;
 
     h3 {
-      font-size: 1.3rem;
-      font-weight: 600;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
     }
 
     .modal-category {
       background: $gradient;
-      padding: 4px 14px;
-      border-radius: 20px;
+      padding: 6px 16px;
+      border-radius: 10px;
       font-size: 0.8rem;
       font-weight: 600;
       color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
   }
 
   .modal-body {
-    padding: 24px;
+    padding: 28px;
     overflow: auto;
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    // Fondo sutil para imágenes PNG
+    background: linear-gradient(145deg, rgba(25, 25, 45, 0.3) 0%, rgba(35, 35, 60, 0.3) 100%);
+    border-radius: 16px;
+    margin: 0 28px;
 
     .modal-image {
       width: auto;
       max-width: 100%;
       max-height: 60vh;
       object-fit: contain;
-      border-radius: $radius-md;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     }
   }
 
   .modal-footer {
-    padding: 16px 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px 28px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
     gap: 12px;
     justify-content: flex-end;
@@ -228,193 +408,29 @@
       background: $gradient;
       color: #fff;
       font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 12px;
+      transition: $transition-normal;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba($scout-red, 0.3);
+      }
     }
 
     .close-btn {
-      border-color: rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       color: rgba(255, 255, 255, 0.8);
-    }
-  }
-}
-
-// ========================================
-// LIGHT MODE STYLES
-// ========================================
-.light,
-[data-theme='light'] {
-  .gallery-hero {
-    background: linear-gradient(135deg, rgba($scout-red, 0.08), rgba($scout-yellow, 0.04));
-
-    .hero-content p {
-      color: rgba(0, 0, 0, 0.6);
-    }
-  }
-
-  .filter-section {
-    .filter-btn {
-      border-color: rgba(0, 0, 0, 0.15);
-      color: rgba(0, 0, 0, 0.65);
+      padding: 12px 24px;
+      border-radius: 12px;
+      background: transparent;
+      transition: $transition-normal;
 
       &:hover {
-        border-color: rgba($scout-red, 0.5);
-        color: #1a1a2e;
-      }
-
-      &.active {
-        background: $gradient;
-        border-color: transparent;
-        color: #fff;
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.3);
       }
     }
-  }
-
-  .gallery-item {
-    box-shadow: $shadow-sm-light;
-  }
-
-  .modal-content {
-    background: rgba(255, 255, 255, 0.98) !important;
-    border-color: rgba(0, 0, 0, 0.1);
-
-    .modal-header {
-      border-color: rgba(0, 0, 0, 0.1);
-
-      h3 {
-        color: #1a1a2e;
-      }
-    }
-
-    .modal-footer {
-      border-color: rgba(0, 0, 0, 0.1);
-
-      .close-btn {
-        border-color: rgba(0, 0, 0, 0.2);
-        color: rgba(0, 0, 0, 0.7);
-      }
-    }
-  }
-
-  .upload-modal-content {
-    background: #fff !important;
-
-    .upload-modal-header {
-      h3 {
-        color: #1a1a2e;
-      }
-
-      p {
-        color: rgba(0, 0, 0, 0.6);
-      }
-    }
-
-    .drop-zone {
-      border-color: rgba(0, 0, 0, 0.2);
-      background: rgba(0, 0, 0, 0.02);
-
-      &:hover,
-      &.active {
-        border-color: $scout-red;
-        background: rgba($scout-red, 0.05);
-      }
-
-      .drop-icon {
-        color: rgba(0, 0, 0, 0.3);
-      }
-
-      .drop-text {
-        color: rgba(0, 0, 0, 0.7);
-      }
-
-      .drop-hint {
-        color: rgba(0, 0, 0, 0.5);
-      }
-    }
-
-    .preview-item {
-      border-color: rgba(0, 0, 0, 0.1);
-    }
-
-    .upload-input-wrapper {
-      background: rgba(0, 0, 0, 0.03) !important;
-      border-color: rgba(0, 0, 0, 0.15) !important;
-    }
-
-    .upload-notice {
-      background: rgba($scout-red, 0.08);
-      border-color: rgba($scout-red, 0.2);
-
-      p {
-        color: rgba(0, 0, 0, 0.7);
-      }
-    }
-
-    .cancel-btn {
-      border-color: rgba(0, 0, 0, 0.2);
-      color: rgba(0, 0, 0, 0.7);
-    }
-
-    .success-state {
-      h4 {
-        color: #1a1a2e;
-      }
-
-      p {
-        color: rgba(0, 0, 0, 0.6);
-      }
-    }
-  }
-
-  // Auth Required State - Light Mode
-  .auth-required {
-    .auth-icon {
-      color: rgba(0, 0, 0, 0.25);
-    }
-
-    h4 {
-      color: #1a1a2e;
-    }
-
-    p {
-      color: rgba(0, 0, 0, 0.6);
-    }
-
-    .google-signin-btn {
-      background: #fff;
-      border: 1px solid rgba(0, 0, 0, 0.15);
-      box-shadow: $shadow-sm-light;
-
-      &:hover {
-        background: #f8f8f8;
-        box-shadow: $shadow-md-light;
-      }
-    }
-
-    .auth-note {
-      color: rgba(0, 0, 0, 0.5);
-    }
-  }
-
-  // User logged in indicator - Light Mode
-  .user-logged-in {
-    color: rgba(0, 0, 0, 0.6);
-  }
-}
-
-// ========================================
-// UPLOAD BUTTON IN HERO
-// ========================================
-.upload-hero-btn {
-  margin-top: 24px;
-  background: $gradient;
-  color: #fff;
-  font-weight: 600;
-  padding: 12px 28px;
-  border-radius: $radius-md;
-  transition: $transition-normal;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: $shadow-md;
   }
 }
 
@@ -423,58 +439,61 @@
 // ========================================
 .upload-modal-content {
   background: rgba($main, 0.98) !important;
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(30px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: $radius-xl !important;
+  border-radius: 24px !important;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
 }
 
 .upload-modal-header {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 20px;
+  padding: 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
   .header-icon {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
     background: $gradient;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    box-shadow: 0 8px 24px rgba($scout-red, 0.3);
 
     svg {
-      font-size: 24px;
+      font-size: 26px;
       color: #fff;
     }
   }
 
   h3 {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
   }
 
   p {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.55);
     margin: 0;
   }
 }
 
 .upload-modal-body {
-  padding: 24px;
+  padding: 28px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 
 .drop-zone {
-  border: 2px dashed rgba(255, 255, 255, 0.2);
-  border-radius: $radius-lg;
-  padding: 40px 24px;
+  border: 2px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 50px 30px;
   text-align: center;
   cursor: pointer;
   transition: $transition-normal;
@@ -483,42 +502,43 @@
   &:hover,
   &.active {
     border-color: $scout-red;
-    background: rgba($scout-red, 0.1);
+    background: rgba($scout-red, 0.08);
 
     .drop-icon {
       color: $scout-red;
-      transform: scale(1.1);
+      transform: scale(1.15) translateY(-5px);
     }
   }
 
   &.has-files {
-    padding: 24px;
+    padding: 28px;
   }
 
   .drop-icon {
-    font-size: 48px;
-    color: rgba(255, 255, 255, 0.3);
-    margin-bottom: 16px;
+    font-size: 56px;
+    color: rgba(255, 255, 255, 0.25);
+    margin-bottom: 20px;
     transition: $transition-normal;
   }
 
   .drop-text {
-    font-size: 1rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 10px;
   }
 
   .drop-hint {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.45);
   }
 }
 
 .preview-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+  gap: 14px;
+  margin-top: 16px;
 
   @include tablet {
     grid-template-columns: repeat(4, 1fr);
@@ -532,9 +552,19 @@
 .preview-item {
   position: relative;
   aspect-ratio: 1;
-  border-radius: $radius-md;
+  border-radius: 14px;
   overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(145deg, #1a1a2e 0%, #252540 100%);
+  transition: $transition-normal;
+
+  &:hover {
+    border-color: rgba($scout-red, 0.3);
+
+    .remove-btn {
+      opacity: 1;
+    }
+  }
 
   img {
     width: 100%;
@@ -544,12 +574,12 @@
 
   .remove-btn {
     position: absolute;
-    top: 6px;
-    right: 6px;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.7);
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.75);
     border: none;
     color: #fff;
     display: flex;
@@ -557,10 +587,12 @@
     justify-content: center;
     cursor: pointer;
     transition: $transition-fast;
-    font-size: 10px;
+    font-size: 11px;
+    opacity: 0.7;
 
     &:hover {
       background: $scout-red;
+      opacity: 1;
       transform: scale(1.1);
     }
   }
@@ -569,12 +601,12 @@
 .upload-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 
   .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 18px;
 
     @include mobile {
       grid-template-columns: 1fr;
@@ -584,182 +616,206 @@
   .user-info-box {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 16px;
-    background: rgba($scout-red, 0.1);
-    border: 1px solid rgba($scout-red, 0.2);
-    border-radius: $radius-md;
+    gap: 14px;
+    padding: 18px;
+    background: rgba($scout-red, 0.08);
+    border: 1px solid rgba($scout-red, 0.15);
+    border-radius: 14px;
 
     svg {
-      font-size: 24px;
+      font-size: 26px;
       color: $scout-red;
     }
 
     div {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 3px;
 
       strong {
         font-size: 1rem;
         color: #fff;
+        font-weight: 600;
       }
 
       span {
         font-size: 0.85rem;
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(255, 255, 255, 0.55);
       }
     }
   }
 }
 
-// Auth Required State
-.auth-required {
-  text-align: center;
-  padding: 40px 20px;
-
-  .auth-icon {
-    font-size: 64px;
-    color: rgba(255, 255, 255, 0.3);
-    margin-bottom: 24px;
-  }
-
-  h4 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 12px;
-  }
-
-  p {
-    color: rgba(255, 255, 255, 0.7);
-    max-width: 400px;
-    margin: 0 auto 32px;
-    line-height: 1.6;
-  }
-
-  .google-signin-btn {
-    background: #fff;
-    color: #333;
-    font-weight: 600;
-    padding: 12px 32px;
-
-    svg {
-      color: #ea4335;
-    }
-
-    &:hover {
-      background: #f5f5f5;
-    }
-  }
-
-  .auth-note {
-    margin-top: 16px;
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.5);
-  }
-}
-
-// User logged in indicator in hero
-.user-logged-in {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 16px;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.6);
-
-  svg {
-    color: $scout-red;
-  }
-}
-
 .upload-input-wrapper {
-  background: rgba(255, 255, 255, 0.05) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 14px !important;
   transition: $transition-normal !important;
 
   &:hover {
-    border-color: rgba($scout-red, 0.5) !important;
+    border-color: rgba($scout-red, 0.4) !important;
   }
 
   &:focus-within {
     border-color: $scout-red !important;
+    box-shadow: 0 0 0 3px rgba($scout-red, 0.15) !important;
   }
 }
 
 .upload-notice {
-  background: rgba($scout-red, 0.1);
-  border: 1px solid rgba($scout-red, 0.2);
-  border-radius: $radius-md;
-  padding: 16px;
+  background: rgba($scout-red, 0.08);
+  border: 1px solid rgba($scout-red, 0.15);
+  border-radius: 14px;
+  padding: 18px;
 
   p {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.75);
     margin: 0;
-    line-height: 1.5;
+    line-height: 1.6;
   }
 }
 
 .upload-modal-footer {
-  padding: 16px 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
-  gap: 12px;
+  gap: 14px;
   justify-content: flex-end;
 
   .cancel-btn {
-    border-color: rgba(255, 255, 255, 0.3);
-    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.75);
+    padding: 12px 24px;
+    border-radius: 12px;
+    background: transparent;
+    font-weight: 500;
+    transition: $transition-normal;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
   }
 
   .submit-btn {
     background: $gradient;
     color: #fff;
     font-weight: 600;
+    padding: 12px 28px;
+    border-radius: 12px;
+    transition: $transition-normal;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba($scout-red, 0.3);
+    }
 
     &:disabled {
-      opacity: 0.5;
+      opacity: 0.4;
+      cursor: not-allowed;
     }
   }
 }
 
+// ========================================
+// AUTH REQUIRED STATE
+// ========================================
+.auth-required {
+  text-align: center;
+  padding: 50px 30px;
+
+  .auth-icon {
+    font-size: 72px;
+    color: rgba(255, 255, 255, 0.2);
+    margin-bottom: 28px;
+  }
+
+  h4 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 380px;
+    margin: 0 auto 36px;
+    line-height: 1.7;
+    font-size: 1rem;
+  }
+
+  .google-signin-btn {
+    background: #fff;
+    color: #333;
+    font-weight: 600;
+    padding: 14px 36px;
+    border-radius: 14px;
+    font-size: 1rem;
+    transition: $transition-normal;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+
+    svg {
+      color: #ea4335;
+      font-size: 1.1rem;
+    }
+
+    &:hover {
+      background: #f8f8f8;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .auth-note {
+    margin-top: 20px;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
+  }
+}
+
+// ========================================
+// SUCCESS STATE
+// ========================================
 .success-state {
   text-align: center;
-  padding: 40px 20px;
+  padding: 50px 30px;
 
   .success-icon {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     background: linear-gradient(135deg, #10b981, #059669);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 24px;
+    margin: 0 auto 28px;
+    box-shadow: 0 16px 40px rgba(16, 185, 129, 0.35);
 
     svg {
-      font-size: 36px;
+      font-size: 40px;
       color: #fff;
     }
   }
 
   h4 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 700;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
 
   p {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.7);
-    max-width: 300px;
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.65);
+    max-width: 320px;
     margin: 0 auto;
+    line-height: 1.6;
   }
 }
 
-// Spin animation
+// ========================================
+// ANIMATIONS
+// ========================================
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -771,4 +827,242 @@
 
 .spin {
   animation: spin 1s linear infinite;
+}
+
+// ========================================
+// LIGHT MODE STYLES
+// ========================================
+.light,
+[data-theme='light'] {
+  .gallery-hero {
+    background: linear-gradient(
+      180deg,
+      rgba($scout-red, 0.06) 0%,
+      rgba(#fff, 0) 100%
+    );
+
+    &::before {
+      background: radial-gradient(circle, rgba($scout-red, 0.05) 0%, transparent 70%);
+    }
+
+    &::after {
+      background: radial-gradient(circle, rgba($scout-yellow, 0.04) 0%, transparent 70%);
+    }
+
+    .hero-content p {
+      color: rgba(0, 0, 0, 0.55);
+    }
+  }
+
+  .user-logged-in {
+    color: rgba(0, 0, 0, 0.55);
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .filter-section {
+    .filter-container {
+      background: rgba(0, 0, 0, 0.03);
+      border-color: rgba(0, 0, 0, 0.06);
+    }
+
+    .filter-btn {
+      color: rgba(0, 0, 0, 0.6);
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.06);
+        color: #1a1a2e;
+      }
+
+      &.active {
+        background: $gradient;
+        color: #fff;
+      }
+    }
+  }
+
+  .gallery-item {
+    background: linear-gradient(145deg, #f5f5fa 0%, #ebebf0 100%);
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+    &:hover {
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      border-color: rgba($scout-red, 0.3);
+    }
+
+    .gallery-img {
+      background: linear-gradient(145deg, #f0f0f5 0%, #e5e5eb 100%);
+    }
+  }
+
+  .empty-gallery {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.1);
+
+    svg {
+      color: rgba(0, 0, 0, 0.15);
+    }
+
+    p {
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .loading-container p {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .modal-content {
+    background: rgba(255, 255, 255, 0.98) !important;
+    border-color: rgba(0, 0, 0, 0.1);
+
+    .modal-header {
+      border-color: rgba(0, 0, 0, 0.08);
+
+      h3 {
+        color: #1a1a2e;
+      }
+    }
+
+    .modal-body {
+      background: linear-gradient(145deg, rgba(245, 245, 250, 0.5) 0%, rgba(235, 235, 240, 0.5) 100%);
+    }
+
+    .modal-footer {
+      border-color: rgba(0, 0, 0, 0.08);
+
+      .close-btn {
+        border-color: rgba(0, 0, 0, 0.15);
+        color: rgba(0, 0, 0, 0.7);
+
+        &:hover {
+          background: rgba(0, 0, 0, 0.04);
+        }
+      }
+    }
+  }
+
+  .upload-modal-content {
+    background: #fff !important;
+
+    .upload-modal-header {
+      border-color: rgba(0, 0, 0, 0.08);
+
+      h3 {
+        color: #1a1a2e;
+      }
+
+      p {
+        color: rgba(0, 0, 0, 0.55);
+      }
+    }
+
+    .drop-zone {
+      border-color: rgba(0, 0, 0, 0.15);
+      background: rgba(0, 0, 0, 0.02);
+
+      &:hover,
+      &.active {
+        border-color: $scout-red;
+        background: rgba($scout-red, 0.05);
+      }
+
+      .drop-icon {
+        color: rgba(0, 0, 0, 0.25);
+      }
+
+      .drop-text {
+        color: rgba(0, 0, 0, 0.8);
+      }
+
+      .drop-hint {
+        color: rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    .preview-item {
+      border-color: rgba(0, 0, 0, 0.1);
+      background: linear-gradient(145deg, #f5f5fa 0%, #ebebf0 100%);
+    }
+
+    .upload-input-wrapper {
+      background: rgba(0, 0, 0, 0.02) !important;
+      border-color: rgba(0, 0, 0, 0.12) !important;
+    }
+
+    .upload-notice {
+      background: rgba($scout-red, 0.06);
+      border-color: rgba($scout-red, 0.15);
+
+      p {
+        color: rgba(0, 0, 0, 0.7);
+      }
+    }
+
+    .upload-modal-footer {
+      border-color: rgba(0, 0, 0, 0.08);
+
+      .cancel-btn {
+        border-color: rgba(0, 0, 0, 0.15);
+        color: rgba(0, 0, 0, 0.7);
+
+        &:hover {
+          background: rgba(0, 0, 0, 0.04);
+        }
+      }
+    }
+
+    .user-info-box {
+      background: rgba($scout-red, 0.06);
+      border-color: rgba($scout-red, 0.12);
+
+      div {
+        strong {
+          color: #1a1a2e;
+        }
+
+        span {
+          color: rgba(0, 0, 0, 0.55);
+        }
+      }
+    }
+  }
+
+  .auth-required {
+    .auth-icon {
+      color: rgba(0, 0, 0, 0.2);
+    }
+
+    h4 {
+      color: #1a1a2e;
+    }
+
+    p {
+      color: rgba(0, 0, 0, 0.6);
+    }
+
+    .google-signin-btn {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+
+      &:hover {
+        background: #fafafa;
+      }
+    }
+
+    .auth-note {
+      color: rgba(0, 0, 0, 0.45);
+    }
+  }
+
+  .success-state {
+    h4 {
+      color: #1a1a2e;
+    }
+
+    p {
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
 }
