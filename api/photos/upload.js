@@ -54,6 +54,16 @@ export default async function handler(req, res) {
       ? fields.description[0]
       : fields.description || '';
 
+    // Extraer títulos personalizados del form (titles[0], titles[1], etc.)
+    const titles = [];
+    Object.keys(fields).forEach((key) => {
+      const match = key.match(/^titles\[(\d+)\]$/);
+      if (match) {
+        const index = parseInt(match[1], 10);
+        titles[index] = Array.isArray(fields[key]) ? fields[key][0] : fields[key];
+      }
+    });
+
     // Validaciones
     if (!uploaderName || !uploaderEmail || !category) {
       return res.status(400).json({ error: 'Missing required fields' });
@@ -81,7 +91,9 @@ export default async function handler(req, res) {
     const uploadedPhotos = [];
     const uploadBatchId = `batch_${Date.now()}`;
 
-    for (const file of fileList) {
+    for (let i = 0; i < fileList.length; i++) {
+      const file = fileList[i];
+
       // Validar tipo de archivo
       if (!file.mimetype || !file.mimetype.startsWith('image/')) {
         continue;
@@ -116,13 +128,16 @@ export default async function handler(req, res) {
       // Obtener URL pública
       const { data: urlData } = supabaseAdmin.storage.from('gallery-photos').getPublicUrl(filePath);
 
+      // Usar título personalizado o nombre del archivo
+      const photoTitle = titles[i] || file.originalFilename?.replace(/\.[^/.]+$/, '') || 'Photo';
+
       // Crear registro en la base de datos
       const { data: photoData, error: dbError } = await supabaseAdmin
         .from('photos')
         .insert({
           image_url: urlData.publicUrl,
           thumbnail_url: urlData.publicUrl,
-          title: file.originalFilename?.replace(/\.[^/.]+$/, '') || 'Photo',
+          title: photoTitle,
           description,
           category,
           uploader_name: uploaderName,

@@ -57,6 +57,20 @@ import {
 } from 'react-icons/fa';
 import { MdPhotoLibrary, MdPending, MdVerified, MdNotifications } from 'react-icons/md';
 
+// Lista de emails de administradores autorizados (debe coincidir con api/lib/supabase.js)
+const ADMIN_EMAILS = [
+  'scoutsavio331@gmail.com',
+  'matquadev@gmail.com',
+  'burgosagostina60@gmail.com',
+  'vickyrivero.scout@gmail.com',
+  'monjesana@gmail.com',
+  'psicocecirodriguez@gmail.com',
+  'leitogottero@gmail.com'
+];
+
+// Verificar si un email es admin
+const isAdmin = (email) => ADMIN_EMAILS.includes(email?.toLowerCase());
+
 // Datos de ramas y progresiones
 const branchesData = {
   manada: {
@@ -541,6 +555,36 @@ export const Admin = () => {
                   Iniciar sesión con Google
                 </Button>
                 <p className="login-note">Solo los administradores autorizados pueden acceder</p>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
+      </PageContainer>
+    );
+  }
+
+  // Verificar si el usuario es admin
+  if (!isAdmin(user.email)) {
+    return (
+      <PageContainer>
+        <SEO title="Acceso Denegado" url="/admin" />
+        <div className="admin-login">
+          <Card className="login-card">
+            <CardBody>
+              <div className="login-content">
+                <FaExclamationTriangle className="login-icon denied" />
+                <h1>Acceso Denegado</h1>
+                <p>Tu cuenta ({user.email}) no tiene permisos de administrador.</p>
+                <p className="login-note">
+                  Si creés que esto es un error, contactá con los administradores del grupo.
+                </p>
+                <Button
+                  variant="bordered"
+                  onPress={signOut}
+                  startContent={<FaSignOutAlt />}
+                  className="logout-btn">
+                  Cerrar sesión
+                </Button>
               </div>
             </CardBody>
           </Card>

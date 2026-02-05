@@ -315,8 +315,13 @@ export const galleryService = {
         formData.append('category', metadata.category);
         formData.append('description', metadata.description || '');
 
-        files.forEach((fileObj) => {
+        // Enviar archivos y sus títulos
+        files.forEach((fileObj, index) => {
           formData.append('files', fileObj.file);
+          formData.append(
+            `titles[${index}]`,
+            fileObj.title || fileObj.file.name.replace(/\.[^/.]+$/, '')
+          );
         });
 
         const response = await fetch('/api/photos/upload', {
@@ -339,6 +344,7 @@ export const galleryService = {
 
       for (const fileObj of files) {
         const file = fileObj.file;
+        const title = fileObj.title || file.name.replace(/\.[^/.]+$/, '');
         const fileExt = file.name.split('.').pop();
         const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
         const filePath = `pending/${fileName}`;
@@ -364,7 +370,7 @@ export const galleryService = {
           .from('photos')
           .insert({
             image_url: urlData.publicUrl,
-            title: file.name.replace(/\.[^/.]+$/, ''),
+            title,
             description: metadata.description || '',
             category: metadata.category,
             uploader_name: metadata.name,

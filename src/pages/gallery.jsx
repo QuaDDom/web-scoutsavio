@@ -239,9 +239,9 @@ const GalleryImage = ({ id, imgSrc, title, category }) => {
   return (
     <>
       <div className="gallery-item" onClick={onOpen}>
-        <img 
-          className="gallery-img" 
-          src={imgSrc} 
+        <img
+          className="gallery-img"
+          src={imgSrc}
           alt={title}
           loading="lazy"
           onLoad={() => setImageLoaded(true)}
@@ -270,14 +270,13 @@ const GalleryImage = ({ id, imgSrc, title, category }) => {
             <img src={imgSrc} alt={title} className="modal-image" />
           </ModalBody>
           <ModalFooter className="modal-footer">
-            <Button 
-              className="download-btn" 
+            <Button
+              className="download-btn"
               startContent={<FaDownload />}
               as="a"
               href={imgSrc}
               download={title}
-              target="_blank"
-            >
+              target="_blank">
               Descargar
             </Button>
             <Button variant="bordered" onPress={onClose} className="close-btn">
@@ -345,9 +344,14 @@ const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLo
     const filesWithPreview = newFiles.map((file) => ({
       file,
       preview: URL.createObjectURL(file),
-      id: Math.random().toString(36).substr(2, 9)
+      id: Math.random().toString(36).substr(2, 9),
+      title: file.name.replace(/\.[^/.]+$/, '') // Nombre sin extensión como título inicial
     }));
     setFiles((prev) => [...prev, ...filesWithPreview].slice(0, 10)); // Max 10 files
+  };
+
+  const updateFileTitle = (id, title) => {
+    setFiles((prev) => prev.map((f) => (f.id === id ? { ...f, title } : f)));
   };
 
   const removeFile = (id) => {
@@ -368,7 +372,13 @@ const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLo
     setIsSubmitting(true);
 
     try {
-      const result = await galleryService.uploadPhotos(files, {
+      // Preparar archivos con títulos
+      const filesWithTitles = files.map((f) => ({
+        file: f.file,
+        title: f.title || f.file.name.replace(/\.[^/.]+$/, '')
+      }));
+
+      const result = await galleryService.uploadPhotos(filesWithTitles, {
         name: userProfile?.name || user.user_metadata?.full_name || user.email.split('@')[0],
         email: user.email,
         category,
@@ -542,6 +552,15 @@ const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLo
                             }}>
                             <FaTimes />
                           </button>
+                          <Input
+                            size="sm"
+                            variant="flat"
+                            placeholder="Título de la imagen"
+                            value={file.title}
+                            onChange={(e) => updateFileTitle(file.id, e.target.value)}
+                            className="preview-title-input"
+                            onClick={(e) => e.stopPropagation()}
+                          />
                         </div>
                       ))}
                     </div>

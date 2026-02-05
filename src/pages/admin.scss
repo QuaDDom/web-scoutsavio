@@ -41,6 +41,10 @@
       font-size: 64px;
       color: $scout-orange;
       margin-bottom: 24px;
+
+      &.denied {
+        color: #ef4444;
+      }
     }
 
     h1 {
@@ -59,6 +63,10 @@
       color: #fff;
       font-weight: 600;
       width: 100%;
+    }
+
+    .logout-btn {
+      margin-top: 16px;
     }
 
     .login-note {
