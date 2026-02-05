@@ -377,8 +377,6 @@ const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLo
     setTimeout(() => {
       setSubmitSuccess(false);
       setFiles([]);
-      setUploaderName('');
-      setUploaderEmail('');
       setDescription('');
       setCategory('');
       onOpenChange(false);
