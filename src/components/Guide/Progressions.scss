@@ -88,6 +88,18 @@
 .branch-content {
   width: 100%;
 
+  .branch-subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $scout-orange;
+    margin-bottom: 12px;
+
+    &::before {
+      content: '📅 ';
+    }
+  }
+
   .branch-description {
     text-align: center;
     color: rgba(255, 255, 255, 0.7);
@@ -99,11 +111,15 @@
 
 .progressions-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
   padding-top: 10px; // Espacio para que los números no se corten
 
   @include laptop {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include tablet {
     grid-template-columns: repeat(2, 1fr);
   }
 

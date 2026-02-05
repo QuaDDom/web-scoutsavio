@@ -5,21 +5,37 @@ import { Card, CardBody, Image, Tabs, Tab } from '@nextui-org/react';
 import { SEO } from '../SEO';
 import './Progressions.scss';
 
-// Manada progressions
-import pataTierna from '../../assets/progressions/manada/PATA-TIERNA.png';
-import saltador from '../../assets/progressions/manada/SALTADOR.png';
-import rastreador from '../../assets/progressions/manada/RASTREADOR.png';
-import cazador from '../../assets/progressions/manada/CAZADOR.png';
+// Manada progressions (7-10 años)
+import pataTierna from '../../assets/progressions/manada/Pata-Tierna.png';
+import saltador from '../../assets/progressions/manada/Saltador.png';
+import rastreador from '../../assets/progressions/manada/Rastreador.png';
+import cazador from '../../assets/progressions/manada/Cazador.png';
+import manadaCompleta from '../../assets/progressions/manada/Completa.png';
 
-// Unidad progressions
-import unidad1 from '../../assets/progressions/unidad/1.png';
-import unidad2 from '../../assets/progressions/unidad/2.png';
-import unidad3 from '../../assets/progressions/unidad/3.png';
-import unidad4 from '../../assets/progressions/unidad/4.png';
+// Unidad progressions (10-14 años)
+import pista from '../../assets/progressions/unidad/Pista.png';
+import senda from '../../assets/progressions/unidad/Senda.png';
+import rumbo from '../../assets/progressions/unidad/Rumbo.png';
+import travesia from '../../assets/progressions/unidad/Travesia.png';
+import unidadCompleta from '../../assets/progressions/unidad/Completa.png';
+
+// Caminantes progressions (14-18 años)
+import norte from '../../assets/progressions/caminantes/Norte.png';
+import este from '../../assets/progressions/caminantes/Este.png';
+import sur from '../../assets/progressions/caminantes/Sur.png';
+import oeste from '../../assets/progressions/caminantes/Oeste.png';
+import caminantesCompleta from '../../assets/progressions/caminantes/Completa.png';
+
+// Rovers progressions (18-22 años)
+import encuentro from '../../assets/progressions/rovers/Encuentro.png';
+import compromiso from '../../assets/progressions/rovers/Compromiso.png';
+import proyeccion from '../../assets/progressions/rovers/Proyeccion.png';
+import roversCompleta from '../../assets/progressions/rovers/Completa.png';
 
 const progressionsData = {
   manada: {
     title: 'Manada',
+    subtitle: '7 a 10 años',
     color: '#ff9800',
     description:
       'Las progresiones en la Manada representan el crecimiento del lobato a través de su aventura en la selva.',
@@ -46,74 +62,110 @@ const progressionsData = {
         img: cazador,
         description:
           'La máxima progresión. Es un ejemplo para toda la manada y está listo para la unidad.'
+      },
+      {
+        name: 'Progresión Completa',
+        img: manadaCompleta,
+        description:
+          'Ha completado todo el recorrido de la Manada y está preparado para el paso a la Unidad.'
       }
     ]
   },
   unidad: {
     title: 'Unidad',
+    subtitle: '10 a 14 años',
     color: '#4caf50',
     description:
       'Las progresiones en la Unidad marcan el desarrollo del scout hacia la autonomía y el liderazgo.',
     items: [
       {
         name: 'Pista',
-        img: unidad1,
+        img: pista,
         description: 'El scout inicia su camino, aprendiendo las bases del escultismo.'
       },
       {
         name: 'Senda',
-        img: unidad2,
+        img: senda,
         description: 'Desarrollo de habilidades técnicas y trabajo en patrulla.'
       },
       {
         name: 'Rumbo',
-        img: unidad3,
+        img: rumbo,
         description: 'Liderazgo dentro de la patrulla y compromiso con la tropa.'
       },
       {
         name: 'Travesía',
-        img: unidad4,
+        img: travesia,
         description: 'Máximo desarrollo. Preparado para los desafíos de la rama Caminantes.'
+      },
+      {
+        name: 'Progresión Completa',
+        img: unidadCompleta,
+        description: 'Ha completado todo el recorrido de la Unidad y está listo para Caminantes.'
       }
     ]
   },
   caminantes: {
     title: 'Caminantes',
+    subtitle: '14 a 18 años',
     color: '#2196f3',
     description:
-      'Las progresiones Caminantes representan el camino hacia la madurez y el servicio.',
+      'Las progresiones Caminantes representan los puntos cardinales, guiando el camino hacia la madurez y el servicio.',
     items: [
       {
-        name: 'Rumbo',
-        description: 'Inicio del camino caminante, definiendo metas personales.'
+        name: 'Norte',
+        img: norte,
+        description:
+          'El inicio del camino caminante. Define su norte, sus metas y propósitos personales.'
       },
       {
-        name: 'Travesía',
-        description: 'Desarrollo de proyectos personales y comunitarios.'
+        name: 'Este',
+        img: este,
+        description: 'El amanecer de nuevas experiencias. Desarrollo de proyectos personales.'
       },
       {
-        name: 'Desafío',
-        description: 'Compromiso total con el servicio y preparación para ser Rover.'
+        name: 'Sur',
+        img: sur,
+        description: 'Consolidación del camino. Proyectos comunitarios y liderazgo.'
+      },
+      {
+        name: 'Oeste',
+        img: oeste,
+        description: 'Preparación para el paso a Rovers. Servicio y compromiso total.'
+      },
+      {
+        name: 'Progresión Completa',
+        img: caminantesCompleta,
+        description: 'Ha recorrido todos los puntos cardinales y está listo para ser Rover.'
       }
     ]
   },
   rover: {
     title: 'Rover',
-    color: '#9c27b0',
+    subtitle: '18 a 22 años',
+    color: '#e53935',
     description:
       'La etapa Rover representa el servicio activo a la comunidad y el desarrollo personal completo.',
     items: [
       {
-        name: 'Partida',
-        description: 'Inicio del compromiso como joven adulto en el movimiento.'
+        name: 'Encuentro',
+        img: encuentro,
+        description: 'El encuentro consigo mismo y con la comunidad Rover. Inicio del compromiso.'
       },
       {
-        name: 'Servicio',
-        description: 'Desarrollo de proyectos de impacto comunitario.'
+        name: 'Compromiso',
+        img: compromiso,
+        description: 'Compromiso formal con el escultismo y desarrollo de proyectos de servicio.'
       },
       {
-        name: 'Partida Rover',
-        description: 'Máximo compromiso con el escultismo y la sociedad.'
+        name: 'Proyección',
+        img: proyeccion,
+        description: 'Proyección hacia la sociedad. Impacto comunitario y liderazgo adulto.'
+      },
+      {
+        name: 'Progresión Completa',
+        img: roversCompleta,
+        description: 'Ha completado su formación Rover. Preparado para la vida adulta scout.'
       }
     ]
   }
@@ -170,6 +222,7 @@ export const Progressions = () => {
               </span>
             }>
             <div className="branch-content">
+              <div className="branch-subtitle">{branch.subtitle}</div>
               <p className="branch-description">{branch.description}</p>
 
               <div className="progressions-grid">

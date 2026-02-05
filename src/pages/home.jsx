@@ -150,7 +150,7 @@ export const Home = () => {
           <div className="branch-item manada">
             <img src={logoManada} alt="Logo Manada" className="branch-logo" />
             <div className="branch-content">
-              <span className="branch-age">7-11 años</span>
+              <span className="branch-age">7-10 años</span>
               <h3>Manada</h3>
               <p>El inicio de la aventura scout</p>
             </div>
@@ -158,7 +158,7 @@ export const Home = () => {
           <div className="branch-item unidad">
             <img src={logoUnidad} alt="Logo Unidad" className="branch-logo" />
             <div className="branch-content">
-              <span className="branch-age">11-14 años</span>
+              <span className="branch-age">10-14 años</span>
               <h3>Unidad</h3>
               <p>Explorando nuevos horizontes</p>
             </div>
@@ -166,7 +166,7 @@ export const Home = () => {
           <div className="branch-item caminantes">
             <img src={logoCaminantes} alt="Logo Caminantes" className="branch-logo" />
             <div className="branch-content">
-              <span className="branch-age">14-17 años</span>
+              <span className="branch-age">14-18 años</span>
               <h3>Caminantes</h3>
               <p>El camino hacia la madurez</p>
             </div>
@@ -174,7 +174,7 @@ export const Home = () => {
           <div className="branch-item rover">
             <img src={logoRover} alt="Logo Rover" className="branch-logo" />
             <div className="branch-content">
-              <span className="branch-age">17-21 años</span>
+              <span className="branch-age">18-22 años</span>
               <h3>Rover</h3>
               <p>Servicio y compromiso social</p>
             </div>

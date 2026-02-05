@@ -8,6 +8,10 @@ import { Gallery } from './pages/gallery';
 import { Guide } from './pages/guide';
 import { Contact } from './pages/contact';
 import { About } from './pages/about';
+import { Admin } from './pages/admin';
+import { Profile } from './pages/profile';
+import { Forum } from './pages/forum';
+import { Notifications } from './pages/notifications';
 import { Specialties } from './components/Guide/Specialties';
 import { Progressions } from './components/Guide/Progressions';
 import { Branches } from './components/Guide/Branches';
@@ -29,6 +33,10 @@ function App() {
           <Route path="branches" element={<Branches />} />
         </Route>
         <Route path="/contacto" element={<Contact />} exact />
+        <Route path="/admin" element={<Admin />} exact />
+        <Route path="/perfil" element={<Profile />} exact />
+        <Route path="/foro" element={<Forum />} exact />
+        <Route path="/notificaciones" element={<Notifications />} exact />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Analytics />

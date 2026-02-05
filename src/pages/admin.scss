@@ -1,0 +1,947 @@
+@import '../styles/variables';
+
+.admin-loading {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding-top: 100px;
+
+  p {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  &.inline {
+    min-height: 200px;
+    padding-top: 0;
+  }
+}
+
+.admin-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 20px;
+
+  .login-card {
+    max-width: 400px;
+    width: 100%;
+    background: rgba($main2, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .login-content {
+    text-align: center;
+    padding: 40px 20px;
+
+    .login-icon {
+      font-size: 64px;
+      color: $scout-orange;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 32px;
+    }
+
+    .login-btn {
+      background: $gradient;
+      color: #fff;
+      font-weight: 600;
+      width: 100%;
+    }
+
+    .login-note {
+      margin-top: 24px;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+.admin-page {
+  padding: 120px 20px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  .header-info {
+    h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: $scout-orange;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+    }
+  }
+
+  .logout-btn {
+    border-color: $scout-orange;
+    color: $scout-orange;
+
+    &:hover {
+      background: rgba($scout-orange, 0.1);
+    }
+  }
+}
+
+// Quick Stats
+.admin-quick-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+
+  .quick-stat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: rgba($main2, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: $radius-md;
+
+    svg {
+      font-size: 1.25rem;
+    }
+
+    .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .label {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.85rem;
+    }
+
+    &.pending {
+      svg,
+      .value {
+        color: #ff9800;
+      }
+    }
+
+    &.users {
+      svg,
+      .value {
+        color: #2196f3;
+      }
+    }
+  }
+}
+
+// Tabs
+.admin-tabs {
+  margin-bottom: 16px;
+
+  .tab-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    svg {
+      font-size: 1.1rem;
+    }
+  }
+}
+
+.tab-content {
+  padding-top: 16px;
+}
+
+// Toolbars
+.photos-toolbar,
+.users-toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+
+  .filter-select {
+    min-width: 150px;
+    max-width: 200px;
+  }
+
+  .search-input {
+    flex: 1;
+    min-width: 200px;
+    max-width: 400px;
+  }
+}
+
+// Photos Grid
+.photos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.photos-table-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.photo-card {
+  background: rgba($main2, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  &.compact {
+    [class*='CardBody'] {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .photo-preview {
+      height: 130px;
+      position: relative;
+      margin-bottom: 0;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .status-badge {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        font-size: 0.65rem;
+
+        &.approved {
+          background: #4caf50;
+          color: white;
+        }
+        &.pending {
+          background: #ff9800;
+          color: white;
+        }
+        &.rejected {
+          background: #f44336;
+          color: white;
+        }
+      }
+    }
+
+    .photo-info.compact {
+      h4 {
+        font-size: 0.85rem;
+        margin-bottom: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .photo-meta {
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.5);
+      }
+    }
+
+    .photo-actions-dropdown {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      z-index: 2;
+    }
+  }
+
+  .photo-preview {
+    width: 100%;
+    height: 200px;
+    border-radius: $radius-md;
+    overflow: hidden;
+    margin-bottom: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+
+    img,
+    .photo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+
+  .photo-info {
+    margin-bottom: 12px;
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .uploader-info {
+      margin-top: 10px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: $radius-sm;
+
+      p {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 3px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    .photo-date {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  .photo-actions {
+    display: flex;
+    gap: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    .approve-btn,
+    .reject-btn {
+      flex: 1;
+    }
+  }
+}
+
+// Users Grid
+.users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.user-card {
+  background: rgba($main2, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  .user-header {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+
+    .user-info {
+      flex: 1;
+      min-width: 0;
+
+      h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        .verified {
+          color: #4caf50;
+        }
+      }
+
+      .user-email {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 6px;
+        word-break: break-all;
+      }
+    }
+  }
+
+  .user-badges {
+    margin-bottom: 12px;
+
+    .badges-section {
+      margin-bottom: 10px;
+
+      .badges-label {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.7rem;
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .badges-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+    }
+  }
+
+  .user-actions {
+    display: flex;
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+// Empty States
+.admin-empty {
+  text-align: center;
+  padding: 60px 20px;
+
+  &.small {
+    padding: 40px 20px;
+  }
+
+  .empty-icon {
+    font-size: 56px;
+    color: #4caf50;
+    margin-bottom: 20px;
+
+    &.small {
+      font-size: 40px;
+    }
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+// Modals
+.modal-icon {
+  margin-right: 8px;
+
+  &.warning {
+    color: #ff9800;
+  }
+}
+
+.status-chip {
+  margin-left: 8px;
+
+  &.approved {
+    background: #4caf50;
+    color: white;
+  }
+  &.pending {
+    background: #ff9800;
+    color: white;
+  }
+  &.rejected {
+    background: #f44336;
+    color: white;
+  }
+}
+
+.photo-view-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .photo-view-img {
+    width: 100%;
+    max-height: 60vh;
+    object-fit: contain;
+    border-radius: $radius-md;
+  }
+
+  .photo-view-info {
+    p {
+      margin-bottom: 6px;
+    }
+
+    .rejection-reason {
+      color: #f44336;
+      padding: 10px;
+      background: rgba(244, 67, 54, 0.1);
+      border-radius: $radius-sm;
+      margin-top: 8px;
+    }
+  }
+}
+
+.user-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .user-edit-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    h4 {
+      margin-bottom: 2px;
+    }
+    p {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+
+  .promise-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+
+      input[type='checkbox'] {
+        width: 18px;
+        height: 18px;
+        accent-color: $scout-orange;
+      }
+    }
+  }
+}
+
+.badge-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .badge-form-user {
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: $radius-sm;
+  }
+
+  .warning-text {
+    color: #ff9800;
+    font-size: 0.9rem;
+  }
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+// ========================================
+// LIGHT MODE
+// ========================================
+.light,
+[data-theme='light'] {
+  .admin-loading p {
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .admin-login .login-card {
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .admin-login .login-content {
+    h1 {
+      color: #1a1a2e;
+    }
+    p {
+      color: rgba(0, 0, 0, 0.6);
+    }
+    .login-note {
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .admin-header {
+    .header-info {
+      h1 {
+        color: $scout-orange;
+      }
+      p {
+        color: rgba(0, 0, 0, 0.6);
+      }
+    }
+
+    .logout-btn {
+      border-color: $scout-orange;
+      color: $scout-orange;
+    }
+  }
+
+  .admin-quick-stats .quick-stat {
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.1);
+
+    .label {
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  .admin-empty {
+    h2 {
+      color: #1a1a2e;
+    }
+    p {
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  .photo-card,
+  .user-card {
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.1);
+
+    .photo-info {
+      h3 {
+        color: #1a1a2e;
+      }
+      .uploader-info {
+        background: rgba(0, 0, 0, 0.05);
+        p {
+          color: rgba(0, 0, 0, 0.7);
+        }
+      }
+      .photo-date {
+        color: rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    .photo-actions,
+    .user-actions {
+      border-top-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .user-card {
+    .user-info {
+      h4 {
+        color: #1a1a2e;
+      }
+      .user-email {
+        color: rgba(0, 0, 0, 0.6);
+      }
+    }
+
+    .badges-section .badges-label {
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .user-edit-form {
+    .user-edit-header {
+      border-bottom-color: rgba(0, 0, 0, 0.1);
+      p {
+        color: rgba(0, 0, 0, 0.6);
+      }
+    }
+  }
+
+  .badge-form .badge-form-user {
+    background: rgba(0, 0, 0, 0.05);
+  }
+}
+
+// ================================
+// Estilos para Tab de Notificaciones
+// ================================
+.notifications-toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.notification-card-admin {
+  background: rgba($main2, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: rgba($scout-orange, 0.3);
+  }
+
+  .notif-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .notif-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.1);
+
+    &.general {
+      background: rgba(100, 100, 100, 0.3);
+    }
+    &.payment {
+      background: rgba(76, 175, 80, 0.3);
+      color: #81c784;
+    }
+    &.document {
+      background: rgba(33, 150, 243, 0.3);
+      color: #64b5f6;
+    }
+    &.permission {
+      background: rgba(156, 39, 176, 0.3);
+      color: #ba68c8;
+    }
+    &.urgent {
+      background: rgba(244, 67, 54, 0.3);
+      color: #e57373;
+    }
+    &.activity {
+      background: rgba(255, 152, 0, 0.3);
+      color: #ffb74d;
+    }
+  }
+
+  .notif-date {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .notif-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .notif-message {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    white-space: pre-wrap;
+  }
+
+  .notif-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+    flex-wrap: wrap;
+  }
+}
+
+// Modal de notificación
+.notification-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .recipient-selector {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-weight: 500;
+
+      input[type='checkbox'] {
+        width: 18px;
+        height: 18px;
+        accent-color: $scout-orange;
+      }
+    }
+  }
+
+  .user-select-list {
+    margin-top: 16px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 8px;
+
+    .select-hint {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 12px;
+    }
+
+    .no-users {
+      color: rgba(255, 255, 255, 0.5);
+      font-style: italic;
+    }
+
+    .users-checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .user-checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  }
+
+  .attachments-section {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    .attachments-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .attachments-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .attachment-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+
+      .att-name {
+        flex: 1;
+        font-size: 0.9rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .att-size {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.5);
+      }
+    }
+
+    .upload-btn-label {
+      cursor: pointer;
+    }
+  }
+}
+
+// Light mode para notificaciones
+html.light {
+  .notification-card-admin {
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.1);
+
+    .notif-date {
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    .notif-title {
+      color: #1a1a2e;
+    }
+
+    .notif-message {
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    .notif-meta {
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .notification-form {
+    .recipient-selector,
+    .attachments-section {
+      background: rgba(0, 0, 0, 0.03);
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .user-select-list {
+      .select-hint,
+      .no-users {
+        color: rgba(0, 0, 0, 0.6);
+      }
+    }
+
+    .attachment-item {
+      background: rgba(0, 0, 0, 0.05);
+
+      .att-size {
+        color: rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+}

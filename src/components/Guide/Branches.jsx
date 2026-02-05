@@ -14,7 +14,7 @@ export const Branches = () => {
     <div className="branches-page">
       <SEO
         title="Ramas Scouts"
-        description="Conoce las 4 ramas del escultismo: Manada (7-11 años), Unidad (11-14 años), Caminantes (15-18 años) y Rover (+18 años). Cada rama con programas adaptados a cada edad."
+        description="Conoce las 4 ramas del escultismo: Manada (7-10 años), Unidad (10-14 años), Caminantes (14-18 años) y Rover (18-22 años). Cada rama con programas adaptados a cada edad."
         keywords="ramas scouts, manada scout, unidad scout, caminantes scout, rover, edades scouts, programa scout"
         url="/guia/branches"
       />
@@ -37,7 +37,7 @@ export const Branches = () => {
           rama="Manada"
           img={imgManada}
           color="#ff9800"
-          edades="De 7 a 11 años"
+          edades="De 7 a 10 años"
           objetivos={[
             'Fomento de la amistad, el compañerismo y el respeto por la naturaleza.',
             'Introducción a la Ley y Promesa Scout.'
@@ -51,7 +51,7 @@ export const Branches = () => {
           rama="Unidad"
           img={imgUnidad}
           color="#4caf50"
-          edades="De 11 a 14 años"
+          edades="De 10 a 14 años"
           objetivos={[
             'Campamentos que incluyen actividades de cocina al aire libre y construcción de refugios.',
             'Proyectos comunitarios para inculcar el espíritu de servicio.'
@@ -65,7 +65,7 @@ export const Branches = () => {
           rama="Caminantes"
           img={imgCaminantes}
           color="#2196f3"
-          edades="De 15 a 18 años"
+          edades="De 14 a 18 años"
           objetivos={[
             'Excursiones de mayor duración, promoviendo la resistencia y la planificación.',
             'Proyectos sociales más complejos y desafiantes.'
@@ -79,7 +79,7 @@ export const Branches = () => {
           rama="Rover"
           img={imgRover}
           color="#e53935"
-          edades="A partir de los 18 años"
+          edades="De 18 a 22 años"
           objetivos={[
             'Liderazgo en eventos scouts y participación en acciones solidarias.',
             'Proyectos personales y grupales orientados al desarrollo social y personal.'

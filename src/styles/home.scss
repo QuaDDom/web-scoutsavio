@@ -285,7 +285,10 @@
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: $radius-lg !important;
     padding: 20px;
-    transition: $transition-normal;
+    transition:
+      transform 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
     cursor: default;
 
     &:hover {
@@ -296,6 +299,10 @@
       .feature-icon {
         transform: scale(1.1);
         background: $gradient;
+
+        svg {
+          color: #fff;
+        }
       }
     }
 
@@ -308,11 +315,14 @@
       align-items: center;
       justify-content: center;
       margin-bottom: 20px;
-      transition: $transition-normal;
+      transition:
+        transform 0.3s ease,
+        background 0.3s ease;
 
       svg {
         font-size: 28px;
         color: $scout-orange;
+        transition: color 0.3s ease;
       }
     }
 
@@ -377,10 +387,11 @@
     overflow: hidden;
     position: relative;
     cursor: pointer;
-    transition: $transition-normal;
+    transition: transform 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    will-change: transform;
 
     .branch-logo {
       position: absolute;
@@ -388,7 +399,8 @@
       height: 100%;
       object-fit: cover;
       z-index: 0;
-      transition: $transition-slow;
+      transition: transform 0.4s ease;
+      will-change: transform;
     }
 
     &::before {

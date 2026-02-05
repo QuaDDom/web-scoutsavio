@@ -1,9 +1,12 @@
 import React from 'react';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import '../styles/gallery.scss';
 import { PageContainer } from '../components/PageContainer';
 import { Footer } from '../components/Footer';
 import { SEO } from '../components/SEO';
+import { galleryService, authService, userService, supabase } from '../lib/supabase';
+import { FaGoogle, FaUser } from 'react-icons/fa';
+// Imágenes locales de fallback
 import img1 from '../assets/galleryimages/img1.jpg';
 import img2 from '../assets/galleryimages/img2.jpg';
 import img3 from '../assets/galleryimages/img3.jpg';
@@ -38,26 +41,33 @@ import {
   Textarea,
   Select,
   SelectItem,
-  Progress
+  Progress,
+  Spinner
 } from '@nextui-org/react';
 
-const galleryData = [
-  { id: 1, imgSrc: img1, title: 'Campamento 2024', category: 'Campamento' },
-  { id: 2, imgSrc: img2, title: 'Actividad al aire libre', category: 'Actividades' },
-  { id: 3, imgSrc: img3, title: 'Fogón scout', category: 'Eventos' },
-  { id: 4, imgSrc: img4, title: 'Excursión', category: 'Excursiones' },
-  { id: 5, imgSrc: img5, title: 'Juegos en grupo', category: 'Actividades' },
-  { id: 6, imgSrc: img6, title: 'Ceremonia', category: 'Eventos' },
-  { id: 7, imgSrc: img7, title: 'Naturaleza', category: 'Excursiones' },
-  { id: 8, imgSrc: img8, title: 'Trabajo en equipo', category: 'Actividades' },
-  { id: 9, imgSrc: img9, title: 'Campamento nocturno', category: 'Campamento' },
-  { id: 10, imgSrc: img10, title: 'Senderismo', category: 'Excursiones' },
-  { id: 11, imgSrc: img11, title: 'Actividad grupal', category: 'Actividades' },
-  { id: 12, imgSrc: img12, title: 'Momentos especiales', category: 'Eventos' }
+// Imágenes locales de fallback cuando no hay conexión a Supabase
+const localGalleryData = [
+  { id: 1, image_url: img1, title: 'Campamento 2024', category: 'Campamento' },
+  { id: 2, image_url: img2, title: 'Actividad al aire libre', category: 'Actividades' },
+  { id: 3, image_url: img3, title: 'Fogón scout', category: 'Eventos' },
+  { id: 4, image_url: img4, title: 'Excursión', category: 'Excursiones' },
+  { id: 5, image_url: img5, title: 'Juegos en grupo', category: 'Actividades' },
+  { id: 6, image_url: img6, title: 'Ceremonia', category: 'Eventos' },
+  { id: 7, image_url: img7, title: 'Naturaleza', category: 'Excursiones' },
+  { id: 8, image_url: img8, title: 'Trabajo en equipo', category: 'Actividades' },
+  { id: 9, image_url: img9, title: 'Campamento nocturno', category: 'Campamento' },
+  { id: 10, image_url: img10, title: 'Senderismo', category: 'Excursiones' },
+  { id: 11, image_url: img11, title: 'Actividad grupal', category: 'Actividades' },
+  { id: 12, image_url: img12, title: 'Momentos especiales', category: 'Eventos' }
 ];
 
 export const Gallery = () => {
   const [filter, setFilter] = useState('Todos');
+  const [photos, setPhotos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [usingLocalData, setUsingLocalData] = useState(false);
+  const [user, setUser] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
   const categories = ['Todos', 'Campamento', 'Actividades', 'Excursiones', 'Eventos'];
   const {
     isOpen: isUploadOpen,
@@ -65,8 +75,70 @@ export const Gallery = () => {
     onOpenChange: onUploadOpenChange
   } = useDisclosure();
 
-  const filteredData =
-    filter === 'Todos' ? galleryData : galleryData.filter((item) => item.category === filter);
+  // Verificar sesión al cargar
+  useEffect(() => {
+    checkSession();
+
+    // Escuchar cambios de autenticación
+    const {
+      data: { subscription }
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        const profile = await userService.getOrCreateProfile(session.user);
+        setUserProfile(profile);
+      } else {
+        setUserProfile(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const checkSession = async () => {
+    const {
+      data: { session }
+    } = await supabase.auth.getSession();
+    setUser(session?.user ?? null);
+    if (session?.user) {
+      const profile = await userService.getOrCreateProfile(session.user);
+      setUserProfile(profile);
+    }
+  };
+
+  // Cargar fotos al inicio y cuando cambia el filtro
+  useEffect(() => {
+    loadPhotos();
+  }, [filter]);
+
+  const loadPhotos = async () => {
+    setLoading(true);
+    try {
+      const result = await galleryService.getApprovedPhotos(filter);
+      if (result.photos && result.photos.length > 0) {
+        setPhotos(result.photos);
+        setUsingLocalData(false);
+      } else {
+        // Usar datos locales si no hay fotos en la API
+        const filtered =
+          filter === 'Todos'
+            ? localGalleryData
+            : localGalleryData.filter((p) => p.category === filter);
+        setPhotos(filtered);
+        setUsingLocalData(true);
+      }
+    } catch (error) {
+      console.error('Error loading photos:', error);
+      // Usar datos locales en caso de error
+      const filtered =
+        filter === 'Todos'
+          ? localGalleryData
+          : localGalleryData.filter((p) => p.category === filter);
+      setPhotos(filtered);
+      setUsingLocalData(true);
+    }
+    setLoading(false);
+  };
 
   return (
     <PageContainer>
@@ -92,6 +164,11 @@ export const Gallery = () => {
             startContent={<FaCloudUploadAlt />}>
             Subir mis fotos
           </Button>
+          {user && (
+            <p className="user-logged-in">
+              <FaUser /> Conectado como {userProfile?.name || user.email}
+            </p>
+          )}
         </div>
       </section>
 
@@ -111,11 +188,30 @@ export const Gallery = () => {
 
       {/* Gallery Grid */}
       <section className="gallery-section">
-        <div className="gallery-grid">
-          {filteredData.map((item) => (
-            <GalleryImage key={item.id} {...item} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="loading-container">
+            <Spinner size="lg" color="warning" />
+            <p>Cargando fotos...</p>
+          </div>
+        ) : (
+          <div className="gallery-grid">
+            {photos.map((item) => (
+              <GalleryImage
+                key={item.id}
+                id={item.id}
+                imgSrc={item.image_url}
+                title={item.title}
+                category={item.category}
+              />
+            ))}
+          </div>
+        )}
+        {!loading && photos.length === 0 && (
+          <div className="empty-gallery">
+            <FaCamera />
+            <p>No hay fotos en esta categoría</p>
+          </div>
+        )}
       </section>
 
       {/* Upload Modal */}
@@ -123,6 +219,9 @@ export const Gallery = () => {
         isOpen={isUploadOpen}
         onOpenChange={onUploadOpenChange}
         categories={categories.filter((c) => c !== 'Todos')}
+        user={user}
+        userProfile={userProfile}
+        onLoadPhotos={loadPhotos}
       />
 
       <Footer />
@@ -174,16 +273,26 @@ const GalleryImage = ({ id, imgSrc, title, category }) => {
 };
 
 // Upload Modal Component
-const UploadModal = ({ isOpen, onOpenChange, categories }) => {
+const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLoadPhotos }) => {
   const [files, setFiles] = useState([]);
-  const [uploaderName, setUploaderName] = useState('');
-  const [uploaderEmail, setUploaderEmail] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [authLoading, setAuthLoading] = useState(false);
   const fileInputRef = useRef(null);
+
+  const handleSignIn = async () => {
+    setAuthLoading(true);
+    try {
+      await authService.signInWithGoogle();
+    } catch (error) {
+      console.error('Error signing in:', error);
+      alert('Error al iniciar sesión. Intenta nuevamente.');
+    }
+    setAuthLoading(false);
+  };
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -234,18 +343,35 @@ const UploadModal = ({ isOpen, onOpenChange, categories }) => {
   };
 
   const handleSubmit = async () => {
-    if (files.length === 0 || !uploaderName || !uploaderEmail || !category) {
+    if (files.length === 0 || !category || !user) {
       return;
     }
 
     setIsSubmitting(true);
 
-    // TODO: Implementar conexión con backend
-    // Simular envío
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      const result = await galleryService.uploadPhotos(files, {
+        name: userProfile?.name || user.user_metadata?.full_name || user.email.split('@')[0],
+        email: user.email,
+        category,
+        description,
+        userId: userProfile?.id
+      });
+
+      if (result.success) {
+        setSubmitSuccess(true);
+        // Recargar fotos si se agregaron algunas aprobadas
+        if (onLoadPhotos) onLoadPhotos();
+      } else {
+        console.error('Upload failed:', result.error);
+        alert('Error al subir las fotos. Intenta nuevamente.');
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert('Error al subir las fotos. Intenta nuevamente.');
+    }
 
     setIsSubmitting(false);
-    setSubmitSuccess(true);
 
     // Reset después de 3 segundos
     setTimeout(() => {
@@ -262,12 +388,66 @@ const UploadModal = ({ isOpen, onOpenChange, categories }) => {
   const resetForm = () => {
     files.forEach((f) => URL.revokeObjectURL(f.preview));
     setFiles([]);
-    setUploaderName('');
-    setUploaderEmail('');
     setDescription('');
     setCategory('');
     setSubmitSuccess(false);
   };
+
+  // Si no está autenticado, mostrar pantalla de login
+  if (!user) {
+    return (
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        size="md"
+        classNames={{
+          backdrop: 'bg-black/80 backdrop-blur-sm'
+        }}>
+        <ModalContent className="upload-modal-content">
+          {(onClose) => (
+            <>
+              <ModalHeader className="upload-modal-header">
+                <div className="header-icon">
+                  <FaCloudUploadAlt />
+                </div>
+                <div>
+                  <h3>Compartí tus fotos</h3>
+                  <p>Iniciá sesión para subir fotos a la galería</p>
+                </div>
+              </ModalHeader>
+
+              <ModalBody className="upload-modal-body">
+                <div className="auth-required">
+                  <FaUser className="auth-icon" />
+                  <h4>¿Querés compartir tus fotos?</h4>
+                  <p>
+                    Para subir fotos necesitás iniciar sesión con tu cuenta de Google. Esto nos
+                    ayuda a mantener la galería organizada y poder contactarte si tus fotos son
+                    aprobadas.
+                  </p>
+                  <Button
+                    className="google-signin-btn"
+                    onPress={handleSignIn}
+                    isLoading={authLoading}
+                    startContent={!authLoading && <FaGoogle />}
+                    size="lg">
+                    {authLoading ? 'Conectando...' : 'Iniciar sesión con Google'}
+                  </Button>
+                  <p className="auth-note">Solo usamos tu información para identificar tus fotos</p>
+                </div>
+              </ModalBody>
+
+              <ModalFooter className="upload-modal-footer">
+                <Button variant="bordered" onPress={onClose} className="cancel-btn">
+                  Cancelar
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    );
+  }
 
   return (
     <Modal
@@ -352,28 +532,14 @@ const UploadModal = ({ isOpen, onOpenChange, categories }) => {
 
                   {/* Form Fields */}
                   <div className="upload-form">
-                    <div className="form-row">
-                      <Input
-                        label="Tu nombre"
-                        placeholder="Ej: Juan Pérez"
-                        value={uploaderName}
-                        onValueChange={setUploaderName}
-                        isRequired
-                        classNames={{
-                          inputWrapper: 'upload-input-wrapper'
-                        }}
-                      />
-                      <Input
-                        label="Tu email"
-                        type="email"
-                        placeholder="juan@email.com"
-                        value={uploaderEmail}
-                        onValueChange={setUploaderEmail}
-                        isRequired
-                        classNames={{
-                          inputWrapper: 'upload-input-wrapper'
-                        }}
-                      />
+                    <div className="user-info-box">
+                      <FaUser />
+                      <div>
+                        <strong>
+                          {userProfile?.name || user?.user_metadata?.full_name || 'Usuario'}
+                        </strong>
+                        <span>{user?.email}</span>
+                      </div>
                     </div>
 
                     <Select
@@ -422,13 +588,7 @@ const UploadModal = ({ isOpen, onOpenChange, categories }) => {
                 <Button
                   className="submit-btn"
                   onPress={handleSubmit}
-                  isDisabled={
-                    files.length === 0 ||
-                    !uploaderName ||
-                    !uploaderEmail ||
-                    !category ||
-                    isSubmitting
-                  }
+                  isDisabled={files.length === 0 || !category || isSubmitting}
                   startContent={
                     isSubmitting ? <FaSpinner className="spin" /> : <FaCloudUploadAlt />
                   }>
