@@ -23,13 +23,16 @@ function getSupabaseClient() {
       document.addEventListener('visibilitychange', async () => {
         if (document.visibilityState === 'visible') {
           // Cuando la pestaña vuelve a estar activa, refrescar la sesión
-          const { data: { session }, error } = await window[SUPABASE_KEY].auth.getSession();
+          const {
+            data: { session },
+            error
+          } = await window[SUPABASE_KEY].auth.getSession();
           if (session && !error) {
             // Forzar refresh del token si está próximo a expirar
             const expiresAt = session.expires_at;
             const now = Math.floor(Date.now() / 1000);
             const timeUntilExpiry = expiresAt - now;
-            
+
             // Si expira en menos de 5 minutos, refrescar
             if (timeUntilExpiry < 300) {
               await window[SUPABASE_KEY].auth.refreshSession();

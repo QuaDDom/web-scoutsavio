@@ -93,16 +93,6 @@ export const Forum = () => {
       }
     };
 
-    // Manejar cuando la pestaña vuelve a estar visible
-    const handleVisibilityChange = async () => {
-      if (document.visibilityState === 'visible' && isMounted) {
-        const currentUser = await authService.getCurrentUser();
-        setUser(currentUser);
-        setLoading(false);
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
     initAuth();
 
     const {
@@ -117,7 +107,6 @@ export const Forum = () => {
 
     return () => {
       isMounted = false;
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
       subscription?.unsubscribe();
     };
   }, []);

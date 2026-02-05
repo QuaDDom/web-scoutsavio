@@ -191,22 +191,6 @@ export const Admin = () => {
       }
     };
 
-    // Re-verificar auth cuando la pestaña vuelve a estar visible
-    const handleVisibilityChange = async () => {
-      if (document.visibilityState === 'visible' && isMounted) {
-        const currentUser = await authService.getCurrentUser();
-        if (isMounted) {
-          setUser(currentUser);
-          setLoading(false);
-          if (currentUser) {
-            const token = await getToken();
-            if (token) loadPendingPhotos(token);
-          }
-        }
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
     initAuth();
 
     const {
@@ -224,7 +208,6 @@ export const Admin = () => {
 
     return () => {
       isMounted = false;
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
       subscription?.unsubscribe();
     };
   }, []);
