@@ -22,6 +22,8 @@ export const Nav = () => {
   const { theme, setTheme } = useTheme();
   const location = useLocation();
 
+  const isHomePage = location.pathname === '/';
+
   const navLinks = [
     { to: '/sobre', label: 'Quiénes somos' },
     { to: '/guia', label: 'Guía' },
@@ -44,7 +46,7 @@ export const Nav = () => {
 
   return (
     <Navbar
-      className={`navContainer ${scrolled ? 'scrolled' : ''}`}
+      className={`navContainer ${scrolled ? 'scrolled' : ''} ${!isHomePage ? 'not-home' : ''}`}
       maxWidth="xl"
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}

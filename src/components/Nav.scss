@@ -163,7 +163,9 @@ a {
 .light,
 [data-theme='light'] {
   .navContainer {
-    &.scrolled {
+    // Cuando está scrolled O cuando no es el home, aplicar estilos oscuros
+    &.scrolled,
+    &.not-home {
       background: rgba(255, 255, 255, 0.95) !important;
       box-shadow: $shadow-md-light;
 
@@ -184,6 +186,10 @@ a {
         background: $gradient;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+      }
+
+      .mobile-toggle {
+        color: rgba(0, 0, 0, 0.75);
       }
     }
   }
