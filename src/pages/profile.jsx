@@ -4,7 +4,7 @@ import { PageContainer } from '../components/PageContainer';
 import { Footer } from '../components/Footer';
 import { SEO } from '../components/SEO';
 import { supabase, authService, userService } from '../lib/supabase';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Avatar,
   Button,
@@ -44,6 +44,25 @@ import {
   FaInfoCircle
 } from 'react-icons/fa';
 import { MdVerified, MdPhotoLibrary, MdSettings, MdBadge } from 'react-icons/md';
+import { FaCrown, FaShieldAlt } from 'react-icons/fa';
+
+// Lista de emails de administradores
+const ADMIN_EMAILS = [
+  'scoutsavio331@gmail.com',
+  'matquadev@gmail.com',
+  'burgosagostina60@gmail.com',
+  'vickyrivero.scout@gmail.com',
+  'monjesana@gmail.com',
+  'psicocecirodriguez@gmail.com',
+  'leitogottero@gmail.com'
+];
+
+// Email del creador/owner
+const OWNER_EMAIL = 'matquadev@gmail.com';
+
+// Verificar roles
+const isAdmin = (email) => ADMIN_EMAILS.includes(email?.toLowerCase());
+const isOwner = (email) => email?.toLowerCase() === OWNER_EMAIL;
 
 // Datos de ramas
 const branchesData = {
@@ -56,9 +75,11 @@ const branchesData = {
 // Componente principal del perfil
 export const Profile = () => {
   const navigate = useNavigate();
+  const { userId } = useParams(); // Para perfiles públicos
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
-  const [profile, setProfile] = useState(null);
+  const [user, setUser] = useState(null); // Usuario autenticado
+  const [profile, setProfile] = useState(null); // Perfil a mostrar
+  const [isOwnProfile, setIsOwnProfile] = useState(true); // Si es el perfil propio
   const [userPhotos, setUserPhotos] = useState([]);
   const [activeTab, setActiveTab] = useState('overview');
   const [saving, setSaving] = useState(false);
@@ -80,62 +101,93 @@ export const Profile = () => {
     try {
       setLoading(true);
       const currentUser = await authService.getCurrentUser();
-
-      if (!currentUser) {
-        navigate('/galeria');
-        return;
-      }
-
       setUser(currentUser);
 
-      // Obtener o crear perfil
-      const userProfile = await userService.getOrCreateProfile(currentUser);
-      setProfile(userProfile);
+      // Si hay userId en params, cargar ese perfil (público)
+      if (userId) {
+        // Intentar buscar por id de la tabla users primero
+        let publicProfile = await userService.getProfileById(userId);
 
-      // Cargar formulario de edición
-      if (userProfile) {
-        setEditForm({
-          name: userProfile.name || '',
-          branch: userProfile.branch || '',
-          bio: userProfile.bio || '',
-          is_promised: userProfile.is_promised || false,
-          promise_date: userProfile.promise_date || ''
-        });
+        // Si no encuentra, intentar por auth_id (uuid de auth.users)
+        if (!publicProfile) {
+          publicProfile = await userService.getProfileByAuthId(userId);
+        }
 
-        // Cargar fotos del usuario
-        const photos = await userService.getUserPhotos(userProfile.id);
-        setUserPhotos(photos || []);
+        if (!publicProfile) {
+          navigate('/galeria');
+          return;
+        }
+        setProfile(publicProfile);
+        setIsOwnProfile(currentUser?.email === publicProfile.email);
+
+        // Solo cargar fotos si es perfil propio
+        if (currentUser?.email === publicProfile.email) {
+          const photos = await userService.getUserPhotos(publicProfile.id);
+          setUserPhotos(photos || []);
+          setEditForm({
+            name: publicProfile.name || '',
+            branch: publicProfile.branch || '',
+            bio: publicProfile.bio || '',
+            is_promised: publicProfile.is_promised || false,
+            promise_date: publicProfile.promise_date || ''
+          });
+        }
+      } else {
+        // Perfil propio - requiere autenticación
+        if (!currentUser) {
+          navigate('/galeria');
+          return;
+        }
+
+        setIsOwnProfile(true);
+        const userProfile = await userService.getOrCreateProfile(currentUser);
+        setProfile(userProfile);
+
+        if (userProfile) {
+          setEditForm({
+            name: userProfile.name || '',
+            branch: userProfile.branch || '',
+            bio: userProfile.bio || '',
+            is_promised: userProfile.is_promised || false,
+            promise_date: userProfile.promise_date || ''
+          });
+
+          const photos = await userService.getUserPhotos(userProfile.id);
+          setUserPhotos(photos || []);
+        }
       }
     } catch (error) {
-      // Ignorar errores de abort que son normales en desarrollo con React Strict Mode
       if (error.name === 'AbortError') return;
       console.error('Error loading user data:', error);
     } finally {
       setLoading(false);
     }
-  }, [navigate]);
+  }, [navigate, userId]);
 
   useEffect(() => {
     let isMounted = true;
 
-    // Patrón exacto de la documentación de Supabase
+    // Si es perfil público, cargar directamente
+    if (userId) {
+      loadUserData();
+      return;
+    }
+
+    // Para perfil propio, usar auth state
     const {
       data: { subscription }
     } = authService.onAuthStateChange((event, session) => {
       if (!isMounted) return;
 
       if (event === 'SIGNED_OUT') {
-        // Diferir navegación para después del callback
         setTimeout(() => {
           if (isMounted) navigate('/galeria');
         }, 0);
       } else if (session) {
-        // Diferir carga de datos para después del callback
         setTimeout(() => {
           if (isMounted) loadUserData();
         }, 0);
       } else {
-        // Sin sesión, redirigir
         setTimeout(() => {
           if (isMounted) navigate('/galeria');
         }, 0);
@@ -279,10 +331,28 @@ export const Profile = () => {
               </div>
 
               <div className="user-info">
-                <h1 className="user-name">
-                  {profile?.name || user?.email?.split('@')[0]}
-                  {profile?.is_promised && <MdVerified className="verified-icon" />}
-                </h1>
+                <div className="user-name-row">
+                  <h1 className="user-name">
+                    {profile?.name || user?.email?.split('@')[0]}
+                    {profile?.is_promised && <MdVerified className="verified-icon" />}
+                  </h1>
+                  {/* Badges de rol */}
+                  <div className="role-badges">
+                    {isOwner(profile?.email) && (
+                      <Chip className="role-badge owner-badge" startContent={<FaCrown />} size="sm">
+                        Creador
+                      </Chip>
+                    )}
+                    {isAdmin(profile?.email) && !isOwner(profile?.email) && (
+                      <Chip
+                        className="role-badge admin-badge"
+                        startContent={<FaShieldAlt />}
+                        size="sm">
+                        Admin
+                      </Chip>
+                    )}
+                  </div>
+                </div>
                 <p className="user-email">{profile?.email || user?.email}</p>
 
                 {branchInfo && (
@@ -300,23 +370,25 @@ export const Profile = () => {
                 {profile?.bio && <p className="user-bio">{profile.bio}</p>}
               </div>
 
-              <div className="header-actions">
-                <Button
-                  className="edit-btn"
-                  startContent={<FaEdit />}
-                  variant="flat"
-                  onClick={onEditOpen}>
-                  Editar perfil
-                </Button>
-                <Button
-                  className="logout-btn"
-                  startContent={<FaSignOutAlt />}
-                  variant="flat"
-                  color="danger"
-                  onClick={handleSignOut}>
-                  Cerrar sesión
-                </Button>
-              </div>
+              {isOwnProfile && (
+                <div className="header-actions">
+                  <Button
+                    className="edit-btn"
+                    startContent={<FaEdit />}
+                    variant="flat"
+                    onClick={onEditOpen}>
+                    Editar perfil
+                  </Button>
+                  <Button
+                    className="logout-btn"
+                    startContent={<FaSignOutAlt />}
+                    variant="flat"
+                    color="danger"
+                    onClick={handleSignOut}>
+                    Cerrar sesión
+                  </Button>
+                </div>
+              )}
             </div>
 
             {/* Stats */}

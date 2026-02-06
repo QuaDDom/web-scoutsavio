@@ -12,6 +12,34 @@
 }
 
 // ========================================
+// CLICKABLE ELEMENTS (Avatars/Names)
+// ========================================
+.clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+.author-avatar.clickable,
+.reply-avatar.clickable {
+  &:hover {
+    box-shadow: 0 0 0 2px $scout-orange;
+  }
+}
+
+.author-name.clickable,
+.reply-author.clickable {
+  &:hover {
+    color: $scout-orange;
+    text-decoration: underline;
+  }
+}
+
+// ========================================
 // HEADER
 // ========================================
 .forum-header {

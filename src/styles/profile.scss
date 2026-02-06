@@ -215,6 +215,17 @@
       align-items: center;
     }
 
+    .user-name-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+
+      @include tablet {
+        justify-content: center;
+      }
+    }
+
     .user-name {
       font-size: 2rem;
       font-weight: 800;
@@ -230,6 +241,40 @@
 
       @include mobile {
         font-size: 1.5rem;
+      }
+    }
+
+    .role-badges {
+      display: flex;
+      gap: 8px;
+
+      .role-badge {
+        font-weight: 600;
+        font-size: 0.75rem;
+
+        svg {
+          font-size: 12px;
+        }
+      }
+
+      .owner-badge {
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        color: #1a1a1a;
+        box-shadow: 0 2px 8px rgba(251, 191, 36, 0.4);
+
+        svg {
+          color: #1a1a1a;
+        }
+      }
+
+      .admin-badge {
+        background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
+
+        svg {
+          color: #fff;
+        }
       }
     }
 

@@ -39,6 +39,7 @@ function App() {
         <Route path="/eventos" element={<Events />} exact />
         <Route path="/admin" element={<Admin />} exact />
         <Route path="/perfil" element={<Profile />} exact />
+        <Route path="/perfil/:userId" element={<Profile />} exact />
         <Route path="/foro" element={<Forum />} exact />
         <Route path="/notificaciones" element={<Notifications />} exact />
         <Route path="*" element={<NotFound />} />

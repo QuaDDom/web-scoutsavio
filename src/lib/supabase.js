@@ -208,6 +208,22 @@ export const userService = {
     return data;
   },
 
+  // Obtener perfil por Auth ID (uuid de auth.users)
+  async getProfileByAuthId(authId) {
+    const { data, error } = await supabase
+      .from('users')
+      .select('*, user_progressions(*), user_specialties(*)')
+      .eq('auth_id', authId)
+      .single();
+
+    if (error) {
+      console.error('Error fetching profile by auth_id:', error);
+      return null;
+    }
+
+    return data;
+  },
+
   // Actualizar perfil
   async updateProfile(userId, updates) {
     const { data, error } = await supabase

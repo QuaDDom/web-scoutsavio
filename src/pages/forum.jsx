@@ -303,7 +303,8 @@ export const Forum = () => {
                     src={selectedTopic.author_avatar}
                     showFallback
                     size="lg"
-                    className="author-avatar"
+                    className="author-avatar clickable"
+                    onClick={() => navigate(`/perfil/${selectedTopic.author_id}`)}
                   />
                   <div className="header-content">
                     <Chip size="sm" color={topicCat.color} className="topic-category">
@@ -311,7 +312,11 @@ export const Forum = () => {
                     </Chip>
                     <h1>{selectedTopic.title}</h1>
                     <div className="meta-row">
-                      <span className="author-name">{selectedTopic.author_name}</span>
+                      <span
+                        className="author-name clickable"
+                        onClick={() => navigate(`/perfil/${selectedTopic.author_id}`)}>
+                        {selectedTopic.author_name}
+                      </span>
                       <span className="meta-dot">•</span>
                       <span className="meta-item">
                         <FaClock /> {formatDate(selectedTopic.created_at)}
@@ -371,10 +376,15 @@ export const Forum = () => {
                               src={reply.author_avatar}
                               showFallback
                               size="sm"
-                              className="reply-avatar"
+                              className="reply-avatar clickable"
+                              onClick={() => navigate(`/perfil/${reply.author_id}`)}
                             />
                             <div className="reply-info">
-                              <span className="reply-author">{reply.author_name}</span>
+                              <span
+                                className="reply-author clickable"
+                                onClick={() => navigate(`/perfil/${reply.author_id}`)}>
+                                {reply.author_name}
+                              </span>
                               {reply.author_id === selectedTopic.author_id && (
                                 <span className="op-badge">OP</span>
                               )}
@@ -517,7 +527,15 @@ export const Forum = () => {
                             {cat.emoji} {cat.label}
                           </Chip>
                           <span className="author-info">
-                            Publicado por <span className="author-name">{topic.author_name}</span>
+                            Publicado por{' '}
+                            <span
+                              className="author-name clickable"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                navigate(`/perfil/${topic.author_id}`);
+                              }}>
+                              {topic.author_name}
+                            </span>
                             <span className="separator">•</span>
                             {formatDate(topic.created_at)}
                           </span>
