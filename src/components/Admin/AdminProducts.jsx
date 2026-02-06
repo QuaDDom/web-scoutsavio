@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Button,
   Card,
@@ -21,7 +21,8 @@ import {
   TableColumn,
   TableBody,
   TableRow,
-  TableCell
+  TableCell,
+  Progress
 } from '@nextui-org/react';
 import {
   FaPlus,
@@ -33,7 +34,9 @@ import {
   FaImage,
   FaTshirt,
   FaCampground,
-  FaTag
+  FaTag,
+  FaUpload,
+  FaSpinner
 } from 'react-icons/fa';
 import { authService } from '../../lib/supabase';
 
@@ -52,9 +55,12 @@ export const AdminProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
+  const fileInputRef = useRef(null);
 
   // Form state
   const [form, setForm] = useState({
@@ -187,9 +193,56 @@ export const AdminProducts = () => {
   };
 
   const handleAddImage = () => {
-    const url = prompt('URL de la imagen:');
-    if (url) {
-      setForm({ ...form, images: [...form.images, url] });
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const maxImages = 5 - form.images.length;
+    if (files.length > maxImages) {
+      alert(`Máximo ${maxImages} imagen(es) más permitidas`);
+      return;
+    }
+
+    try {
+      setUploading(true);
+      setUploadProgress(0);
+
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        formData.append('images', files[i]);
+      }
+      if (selectedProduct?.id) {
+        formData.append('product_id', selectedProduct.id);
+      }
+
+      const session = await authService.getSession();
+      const response = await fetch(`${API_URL}/api/admin/products/upload`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${session?.access_token}`
+        },
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.urls) {
+        setForm({ ...form, images: [...form.images, ...data.urls] });
+      } else {
+        alert(data.error || 'Error al subir imagen');
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      alert('Error al subir imagen');
+    } finally {
+      setUploading(false);
+      setUploadProgress(0);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
@@ -398,7 +451,21 @@ export const AdminProducts = () => {
               </div>
 
               <div className="images-section">
-                <label>Imágenes:</label>
+                <label>Imágenes ({form.images.length}/5):</label>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  accept="image/*"
+                  multiple
+                  style={{ display: 'none' }}
+                />
+                {uploading && (
+                  <div className="upload-progress">
+                    <Spinner size="sm" color="warning" />
+                    <span>Subiendo imagen...</span>
+                  </div>
+                )}
                 <div className="images-grid">
                   {form.images.map((img, idx) => (
                     <div key={idx} className="image-preview">
@@ -413,10 +480,19 @@ export const AdminProducts = () => {
                       </Button>
                     </div>
                   ))}
-                  <Button variant="bordered" className="add-image-btn" onPress={handleAddImage}>
-                    <FaImage /> Agregar imagen
-                  </Button>
+                  {form.images.length < 5 && (
+                    <Button
+                      variant="bordered"
+                      className="add-image-btn"
+                      onPress={handleAddImage}
+                      isDisabled={uploading}>
+                      <FaUpload /> {uploading ? 'Subiendo...' : 'Subir imagen'}
+                    </Button>
+                  )}
                 </div>
+                <p className="images-hint">
+                  Máximo 5 imágenes de hasta 5MB cada una (JPG, PNG, WebP)
+                </p>
               </div>
 
               <Switch

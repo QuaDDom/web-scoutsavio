@@ -59,6 +59,16 @@ const CATEGORIES = [
 // Componente de producto individual
 const ProductCard = ({ product, onAddToCart, onViewDetails }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const imgRef = React.useRef(null);
+  const productImage = product.images?.[0] || product.image_url;
+
+  // Handle cached images that may already be loaded
+  useEffect(() => {
+    if (imgRef.current?.complete && imgRef.current?.naturalHeight > 0) {
+      setImageLoaded(true);
+    }
+  }, [productImage]);
 
   return (
     <motion.div
@@ -68,12 +78,14 @@ const ProductCard = ({ product, onAddToCart, onViewDetails }) => {
       whileHover={{ y: -8 }}
       transition={{ duration: 0.3 }}>
       <div className="product-image" onClick={() => onViewDetails(product)}>
-        {product.image_url ? (
+        {productImage && !imageError ? (
           <img
-            src={product.image_url}
+            ref={imgRef}
+            src={productImage}
             alt={product.name}
             onLoad={() => setImageLoaded(true)}
-            style={{ opacity: imageLoaded ? 1 : 0 }}
+            onError={() => setImageError(true)}
+            style={{ opacity: imageLoaded ? 1 : 0, transition: 'opacity 0.3s ease' }}
           />
         ) : (
           <div className="no-image">
