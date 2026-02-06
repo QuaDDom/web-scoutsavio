@@ -183,38 +183,41 @@ const CartDrawer = ({ isOpen, onClose, cart, updateQuantity, removeFromCart, onC
                   <span>Agregá productos para continuar</span>
                 </div>
               ) : (
-                cart.map((item) => (
-                  <div key={item.id} className="cart-item">
-                    <div className="item-image">
-                      {item.image_url ? <img src={item.image_url} alt={item.name} /> : <FaTshirt />}
-                    </div>
-                    <div className="item-details">
-                      <h4>{item.name}</h4>
-                      <p className="item-price">
-                        $
-                        {(item.discount_percent > 0
-                          ? calculateDiscountedPrice(item.price, item.discount_percent)
-                          : item.price
-                        ).toLocaleString()}
-                      </p>
-                      {item.selectedSize && (
-                        <span className="item-size">Talle: {item.selectedSize}</span>
-                      )}
-                    </div>
-                    <div className="item-quantity">
-                      <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>
-                        <FaMinus />
+                cart.map((item) => {
+                  const itemImage = item.images?.[0] || item.image_url;
+                  return (
+                    <div key={item.id} className="cart-item">
+                      <div className="item-image">
+                        {itemImage ? <img src={itemImage} alt={item.name} /> : <FaTshirt />}
+                      </div>
+                      <div className="item-details">
+                        <h4>{item.name}</h4>
+                        <p className="item-price">
+                          $
+                          {(item.discount_percent > 0
+                            ? calculateDiscountedPrice(item.price, item.discount_percent)
+                            : item.price
+                          ).toLocaleString()}
+                        </p>
+                        {item.selectedSize && (
+                          <span className="item-size">Talle: {item.selectedSize}</span>
+                        )}
+                      </div>
+                      <div className="item-quantity">
+                        <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>
+                          <FaMinus />
+                        </button>
+                        <span>{item.quantity}</span>
+                        <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>
+                          <FaPlus />
+                        </button>
+                      </div>
+                      <button className="remove-btn" onClick={() => removeFromCart(item.id)}>
+                        <FaTrash />
                       </button>
-                      <span>{item.quantity}</span>
-                      <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>
-                        <FaPlus />
-                      </button>
                     </div>
-                    <button className="remove-btn" onClick={() => removeFromCart(item.id)}>
-                      <FaTrash />
-                    </button>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
 
