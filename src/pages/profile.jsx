@@ -3,7 +3,7 @@ import '../styles/profile.scss';
 import { PageContainer } from '../components/PageContainer';
 import { Footer } from '../components/Footer';
 import { SEO } from '../components/SEO';
-import { supabase, authService, userService } from '../lib/supabase';
+import { supabase, authService, userService, isAdmin, isOwner } from '../lib/supabase';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   Avatar,
@@ -45,24 +45,6 @@ import {
 } from 'react-icons/fa';
 import { MdVerified, MdPhotoLibrary, MdSettings, MdBadge } from 'react-icons/md';
 import { FaCrown, FaShieldAlt } from 'react-icons/fa';
-
-// Lista de emails de administradores
-const ADMIN_EMAILS = [
-  'scoutsavio331@gmail.com',
-  'matquadev@gmail.com',
-  'burgosagostina60@gmail.com',
-  'vickyrivero.scout@gmail.com',
-  'monjesana@gmail.com',
-  'psicocecirodriguez@gmail.com',
-  'leitogottero@gmail.com'
-];
-
-// Email del creador/owner
-const OWNER_EMAIL = 'matquadev@gmail.com';
-
-// Verificar roles
-const isAdmin = (email) => ADMIN_EMAILS.includes(email?.toLowerCase());
-const isOwner = (email) => email?.toLowerCase() === OWNER_EMAIL;
 
 // Datos de ramas
 const branchesData = {
@@ -343,7 +325,7 @@ export const Profile = () => {
                         Creador
                       </Chip>
                     )}
-                    {isAdmin(profile?.email) && !isOwner(profile?.email) && (
+                    {isAdmin(profile?.email) && (
                       <Chip
                         className="role-badge admin-badge"
                         startContent={<FaShieldAlt />}

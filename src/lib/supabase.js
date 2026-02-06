@@ -3,6 +3,22 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+// Emails de administradores y creador
+export const ADMIN_EMAILS = [
+  'scoutsavio331@gmail.com',
+  'matquadev@gmail.com',
+  'burgosagostina60@gmail.com',
+  'vickyrivero.scout@gmail.com',
+  'monjesana@gmail.com',
+  'psicocecirodriguez@gmail.com',
+  'leitogottero@gmail.com'
+];
+
+export const OWNER_EMAIL = 'matquadev@gmail.com';
+
+export const isAdmin = (email) => ADMIN_EMAILS.includes(email?.toLowerCase());
+export const isOwner = (email) => email?.toLowerCase() === OWNER_EMAIL;
+
 // Singleton pattern para evitar múltiples instancias de GoTrueClient
 const SUPABASE_KEY = '__supabase_client__';
 
@@ -167,13 +183,17 @@ export const userService = {
 
     // Si no existe, crearlo
     if (error && error.code === 'PGRST116') {
+      // Auto-verificar administradores
+      const shouldAutoVerify = isAdmin(authUser.email);
+
       const { data: newProfile, error: createError } = await supabase
         .from('users')
         .insert({
           auth_id: authUser.id,
           email: authUser.email,
           name: authUser.user_metadata?.full_name || authUser.email.split('@')[0],
-          avatar_url: authUser.user_metadata?.avatar_url || null
+          avatar_url: authUser.user_metadata?.avatar_url || null,
+          is_verified: shouldAutoVerify
         })
         .select()
         .single();
@@ -814,6 +834,33 @@ export const adminService = {
       console.error('Error:', error);
       return { success: false, error: error.message };
     }
+  },
+
+  // Verificar/desverificar usuario
+  async verifyUser(token, userId, verified) {
+    try {
+      if (isProduction) {
+        const response = await fetch('/api/admin/verify-user', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId, verified })
+        });
+        return await response.json();
+      }
+
+      const { data, error } = await supabase
+        .from('users')
+        .update({ is_verified: verified })
+        .eq('id', userId)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { success: true, user: data };
+    } catch (error) {
+      console.error('Error:', error);
+      return { success: false, error: error.message };
+    }
   }
 };
 
@@ -853,7 +900,8 @@ export const forumService = {
           category: topic.category,
           author_id: topic.author_id,
           author_name: topic.author_name,
-          author_avatar: topic.author_avatar
+          author_avatar: topic.author_avatar,
+          author_email: topic.author_email
         })
         .select()
         .single();
@@ -876,7 +924,30 @@ export const forumService = {
         .order('created_at', { ascending: true });
 
       if (error) throw error;
-      return data || [];
+
+      // Construir árbol de respuestas anidadas
+      const replies = data || [];
+      const replyMap = new Map();
+      const rootReplies = [];
+
+      // Primero, crear un mapa de todas las respuestas
+      replies.forEach((reply) => {
+        replyMap.set(reply.id, { ...reply, children: [] });
+      });
+
+      // Luego, construir la estructura de árbol
+      replies.forEach((reply) => {
+        const replyWithChildren = replyMap.get(reply.id);
+        if (reply.parent_reply_id && replyMap.has(reply.parent_reply_id)) {
+          // Es una respuesta anidada
+          replyMap.get(reply.parent_reply_id).children.push(replyWithChildren);
+        } else {
+          // Es una respuesta de nivel raíz
+          rootReplies.push(replyWithChildren);
+        }
+      });
+
+      return rootReplies;
     } catch (error) {
       console.error('Error fetching replies:', error);
       return [];
@@ -893,7 +964,10 @@ export const forumService = {
           content: reply.content,
           author_id: reply.author_id,
           author_name: reply.author_name,
-          author_avatar: reply.author_avatar
+          author_avatar: reply.author_avatar,
+          author_email: reply.author_email,
+          parent_reply_id: reply.parent_reply_id || null,
+          depth: reply.depth || 0
         })
         .select()
         .single();
@@ -1084,8 +1158,45 @@ export const notificationService = {
   },
 
   // Crear notificación (solo admin)
-  async createNotification({ title, message, type, recipientIds, attachments, createdBy }) {
+  async createNotification({
+    title,
+    message,
+    type,
+    recipientIds,
+    targetBranch,
+    attachments,
+    createdBy
+  }) {
     try {
+      // Si hay una rama objetivo, obtener los IDs de usuarios de esa rama
+      if (targetBranch) {
+        const { data: branchUsers, error: branchError } = await supabase
+          .from('users')
+          .select('id')
+          .eq('branch', targetBranch);
+
+        if (branchError) throw branchError;
+
+        if (!branchUsers || branchUsers.length === 0) {
+          return { success: false, error: 'No hay usuarios en esta rama' };
+        }
+
+        // Crear notificaciones para usuarios de la rama
+        const notifications = branchUsers.map((user) => ({
+          title,
+          message,
+          type: type || 'general',
+          recipient_id: user.id,
+          attachments: attachments || [],
+          created_by: createdBy
+        }));
+
+        const { data, error } = await supabase.from('notifications').insert(notifications).select();
+
+        if (error) throw error;
+        return { success: true, data, recipientCount: branchUsers.length };
+      }
+
       // Si recipientIds está vacío o es null, es para todos los usuarios
       if (!recipientIds || recipientIds.length === 0) {
         // Notificación para todos

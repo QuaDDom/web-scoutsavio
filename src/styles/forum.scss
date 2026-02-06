@@ -12,6 +12,43 @@
 }
 
 // ========================================
+// ROLE BADGES (Admin/Owner in Forum)
+// ========================================
+.forum-role-badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 6px;
+
+  .role-badge-mini {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 10px;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.15);
+    }
+
+    &.owner {
+      background: linear-gradient(135deg, #ffd700 0%, #ffb800 100%);
+      color: #1a1a1a;
+      box-shadow: 0 2px 6px rgba(255, 215, 0, 0.4);
+    }
+
+    &.admin {
+      background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+      color: white;
+      box-shadow: 0 2px 6px rgba(139, 92, 246, 0.4);
+    }
+  }
+}
+
+// ========================================
 // CLICKABLE ELEMENTS (Avatars/Names)
 // ========================================
 .clickable {
@@ -529,6 +566,21 @@
         text-transform: uppercase;
       }
     }
+
+    .reply-actions-right {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .reply-btn-nested {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.6);
+
+        &:hover {
+          color: $scout-orange;
+        }
+      }
+    }
   }
 
   .reply-body {
@@ -537,6 +589,128 @@
     color: rgba(255, 255, 255, 0.8);
     white-space: pre-wrap;
     padding-left: 42px;
+  }
+
+  // Form para respuestas anidadas
+  .nested-reply-form {
+    margin-top: 12px;
+    padding-left: 42px;
+
+    .nested-reply-input {
+      margin-bottom: 8px;
+    }
+
+    .nested-reply-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+  }
+}
+
+// ========================================
+// NESTED REPLIES (Reddit-style threading)
+// ========================================
+.replies-list.nested {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nested-reply {
+  position: relative;
+
+  // Indentación por nivel de profundidad
+  &.depth-0 {
+    margin-left: 0;
+  }
+  &.depth-1 {
+    margin-left: 24px;
+  }
+  &.depth-2 {
+    margin-left: 48px;
+  }
+  &.depth-3 {
+    margin-left: 72px;
+  }
+  &.depth-4 {
+    margin-left: 96px;
+  }
+  &.depth-5 {
+    margin-left: 120px;
+  }
+
+  // Línea de conexión vertical
+  &::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba($scout-orange, 0.2);
+    border-radius: 2px;
+  }
+
+  &.depth-0::before {
+    display: none;
+  }
+
+  // Colores de borde por profundidad
+  &.depth-1 .reply-card {
+    border-left-color: rgba(#4caf50, 0.5) !important;
+    &:hover {
+      border-left-color: #4caf50 !important;
+    }
+  }
+  &.depth-2 .reply-card {
+    border-left-color: rgba(#2196f3, 0.5) !important;
+    &:hover {
+      border-left-color: #2196f3 !important;
+    }
+  }
+  &.depth-3 .reply-card {
+    border-left-color: rgba(#9c27b0, 0.5) !important;
+    &:hover {
+      border-left-color: #9c27b0 !important;
+    }
+  }
+  &.depth-4 .reply-card {
+    border-left-color: rgba(#ff5722, 0.5) !important;
+    &:hover {
+      border-left-color: #ff5722 !important;
+    }
+  }
+  &.depth-5 .reply-card {
+    border-left-color: rgba(#607d8b, 0.5) !important;
+    &:hover {
+      border-left-color: #607d8b !important;
+    }
+  }
+
+  .nested-children {
+    margin-top: 8px;
+  }
+}
+
+// Responsive: reducir indentación en móvil
+@media (max-width: 600px) {
+  .nested-reply {
+    &.depth-1 {
+      margin-left: 16px;
+    }
+    &.depth-2 {
+      margin-left: 32px;
+    }
+    &.depth-3 {
+      margin-left: 48px;
+    }
+    &.depth-4 {
+      margin-left: 64px;
+    }
+    &.depth-5 {
+      margin-left: 80px;
+    }
   }
 }
 

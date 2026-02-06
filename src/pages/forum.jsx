@@ -2,7 +2,14 @@ import React, { useState, useEffect } from 'react';
 import '../styles/forum.scss';
 import { PageContainer } from '../components/PageContainer';
 import { SEO } from '../components/SEO';
-import { supabase, authService, forumService } from '../lib/supabase';
+import {
+  supabase,
+  authService,
+  forumService,
+  isAdmin,
+  isOwner,
+  ADMIN_EMAILS
+} from '../lib/supabase';
 import {
   Button,
   Card,
@@ -21,7 +28,8 @@ import {
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
+  Tooltip
 } from '@nextui-org/react';
 import {
   FaPlus,
@@ -40,10 +48,171 @@ import {
   FaEye,
   FaArrowUp,
   FaArrowDown,
-  FaFire
+  FaFire,
+  FaCrown,
+  FaShieldAlt
 } from 'react-icons/fa';
 import { HiSparkles } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
+
+// Componente de badges de rol para el foro
+const RoleBadges = ({ email }) => {
+  const ownerStatus = isOwner(email);
+  const adminStatus = isAdmin(email);
+
+  if (!ownerStatus && !adminStatus) return null;
+
+  return (
+    <span className="forum-role-badges">
+      {ownerStatus && (
+        <Tooltip content="Creador" placement="top">
+          <span className="role-badge-mini owner">
+            <FaCrown />
+          </span>
+        </Tooltip>
+      )}
+      {adminStatus && (
+        <Tooltip content="Administrador" placement="top">
+          <span className="role-badge-mini admin">
+            <FaShieldAlt />
+          </span>
+        </Tooltip>
+      )}
+    </span>
+  );
+};
+
+// Componente recursivo para respuestas anidadas
+const NestedReply = ({
+  reply,
+  topicAuthorId,
+  currentUser,
+  onDelete,
+  onReply,
+  replyingTo,
+  setReplyingTo,
+  nestedReplyContent,
+  setNestedReplyContent,
+  submittingReply,
+  navigate,
+  formatDate,
+  maxDepth = 5
+}) => {
+  const isOP = reply.author_id === topicAuthorId;
+  const isOwnReply = reply.author_id === currentUser?.id;
+  const canNest = (reply.depth || 0) < maxDepth;
+  const isReplyingToThis = replyingTo === reply.id;
+
+  return (
+    <div className={`nested-reply depth-${reply.depth || 0}`}>
+      <Card className="reply-card">
+        <CardBody>
+          <div className="reply-header">
+            <Avatar
+              src={reply.author_avatar}
+              showFallback
+              size="sm"
+              className="reply-avatar clickable"
+              onClick={() => navigate(`/perfil/${reply.author_id}`)}
+            />
+            <div className="reply-info">
+              <span
+                className="reply-author clickable"
+                onClick={() => navigate(`/perfil/${reply.author_id}`)}>
+                {reply.author_name}
+              </span>
+              <RoleBadges email={reply.author_email} />
+              {isOP && <span className="op-badge">OP</span>}
+              <span className="reply-date">{formatDate(reply.created_at)}</span>
+            </div>
+            <div className="reply-actions-right">
+              {canNest && currentUser && (
+                <Button
+                  size="sm"
+                  variant="light"
+                  startContent={<FaReply />}
+                  className="reply-btn-nested"
+                  onPress={() => setReplyingTo(isReplyingToThis ? null : reply.id)}>
+                  Responder
+                </Button>
+              )}
+              {isOwnReply && (
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Button isIconOnly variant="light" size="sm">
+                      <FaEllipsisV />
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu>
+                    <DropdownItem
+                      key="delete"
+                      color="danger"
+                      startContent={<FaTrash />}
+                      onPress={() => onDelete(reply.id)}>
+                      Eliminar
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              )}
+            </div>
+          </div>
+          <p className="reply-body">{reply.content}</p>
+
+          {/* Form para responder a esta respuesta */}
+          {isReplyingToThis && (
+            <div className="nested-reply-form">
+              <Textarea
+                placeholder={`Responder a ${reply.author_name}...`}
+                value={nestedReplyContent}
+                onValueChange={setNestedReplyContent}
+                minRows={2}
+                size="sm"
+                className="nested-reply-input"
+              />
+              <div className="nested-reply-actions">
+                <Button size="sm" variant="flat" onPress={() => setReplyingTo(null)}>
+                  Cancelar
+                </Button>
+                <Button
+                  size="sm"
+                  color="warning"
+                  isLoading={submittingReply}
+                  isDisabled={!nestedReplyContent.trim()}
+                  onPress={() => onReply(reply.id, (reply.depth || 0) + 1)}>
+                  Responder
+                </Button>
+              </div>
+            </div>
+          )}
+        </CardBody>
+      </Card>
+
+      {/* Renderizar respuestas hijas recursivamente */}
+      {reply.children && reply.children.length > 0 && (
+        <div className="nested-children">
+          {reply.children.map((childReply) => (
+            <NestedReply
+              key={childReply.id}
+              reply={childReply}
+              topicAuthorId={topicAuthorId}
+              currentUser={currentUser}
+              onDelete={onDelete}
+              onReply={onReply}
+              replyingTo={replyingTo}
+              setReplyingTo={setReplyingTo}
+              nestedReplyContent={nestedReplyContent}
+              setNestedReplyContent={setNestedReplyContent}
+              submittingReply={submittingReply}
+              navigate={navigate}
+              formatDate={formatDate}
+              maxDepth={maxDepth}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 export const Forum = () => {
   const [user, setUser] = useState(null);
@@ -55,6 +224,11 @@ export const Forum = () => {
   const [loadingReplies, setLoadingReplies] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [likedTopics, setLikedTopics] = useState(new Set());
+
+  // Estados para respuestas anidadas
+  const [replyingTo, setReplyingTo] = useState(null);
+  const [nestedReplyContent, setNestedReplyContent] = useState('');
+  const [submittingNestedReply, setSubmittingNestedReply] = useState(false);
 
   // Forms
   const [newTopicTitle, setNewTopicTitle] = useState('');
@@ -144,7 +318,8 @@ export const Forum = () => {
       category: newTopicCategory,
       author_id: user.id,
       author_name: user.user_metadata?.full_name || user.email.split('@')[0],
-      author_avatar: user.user_metadata?.avatar_url
+      author_avatar: user.user_metadata?.avatar_url,
+      author_email: user.email
     });
 
     if (result.success) {
@@ -175,7 +350,8 @@ export const Forum = () => {
       content: replyContent,
       author_id: user.id,
       author_name: user.user_metadata?.full_name || user.email.split('@')[0],
-      author_avatar: user.user_metadata?.avatar_url
+      author_avatar: user.user_metadata?.avatar_url,
+      author_email: user.email
     });
 
     if (result.success) {
@@ -185,6 +361,31 @@ export const Forum = () => {
       setSelectedTopic({ ...selectedTopic, replies_count: (selectedTopic.replies_count || 0) + 1 });
     }
     setProcessing(false);
+  };
+
+  // Manejar respuestas anidadas
+  const handleNestedReply = async (parentReplyId, depth) => {
+    if (!nestedReplyContent.trim() || !selectedTopic) return;
+    setSubmittingNestedReply(true);
+
+    const result = await forumService.createReply({
+      topic_id: selectedTopic.id,
+      content: nestedReplyContent,
+      author_id: user.id,
+      author_name: user.user_metadata?.full_name || user.email.split('@')[0],
+      author_avatar: user.user_metadata?.avatar_url,
+      author_email: user.email,
+      parent_reply_id: parentReplyId,
+      depth: depth
+    });
+
+    if (result.success) {
+      setNestedReplyContent('');
+      setReplyingTo(null);
+      loadReplies(selectedTopic.id);
+      setSelectedTopic({ ...selectedTopic, replies_count: (selectedTopic.replies_count || 0) + 1 });
+    }
+    setSubmittingNestedReply(false);
   };
 
   const handleDeleteTopic = async (topicId, e) => {
@@ -317,6 +518,7 @@ export const Forum = () => {
                         onClick={() => navigate(`/perfil/${selectedTopic.author_id}`)}>
                         {selectedTopic.author_name}
                       </span>
+                      <RoleBadges email={selectedTopic.author_email} />
                       <span className="meta-dot">•</span>
                       <span className="meta-item">
                         <FaClock /> {formatDate(selectedTopic.created_at)}
@@ -364,54 +566,26 @@ export const Forum = () => {
                   <Spinner size="sm" color="warning" />
                 </div>
               ) : (
-                <div className="replies-list">
+                <div className="replies-list nested">
                   {replies.length === 0 ? (
                     <p className="no-replies">No hay comentarios todavía. ¡Sé el primero!</p>
                   ) : (
                     replies.map((reply) => (
-                      <Card key={reply.id} className="reply-card">
-                        <CardBody>
-                          <div className="reply-header">
-                            <Avatar
-                              src={reply.author_avatar}
-                              showFallback
-                              size="sm"
-                              className="reply-avatar clickable"
-                              onClick={() => navigate(`/perfil/${reply.author_id}`)}
-                            />
-                            <div className="reply-info">
-                              <span
-                                className="reply-author clickable"
-                                onClick={() => navigate(`/perfil/${reply.author_id}`)}>
-                                {reply.author_name}
-                              </span>
-                              {reply.author_id === selectedTopic.author_id && (
-                                <span className="op-badge">OP</span>
-                              )}
-                              <span className="reply-date">{formatDate(reply.created_at)}</span>
-                            </div>
-                            {reply.author_id === user.id && (
-                              <Dropdown>
-                                <DropdownTrigger>
-                                  <Button isIconOnly variant="light" size="sm">
-                                    <FaEllipsisV />
-                                  </Button>
-                                </DropdownTrigger>
-                                <DropdownMenu>
-                                  <DropdownItem
-                                    key="delete"
-                                    color="danger"
-                                    startContent={<FaTrash />}
-                                    onPress={() => handleDeleteReply(reply.id)}>
-                                    Eliminar
-                                  </DropdownItem>
-                                </DropdownMenu>
-                              </Dropdown>
-                            )}
-                          </div>
-                          <p className="reply-body">{reply.content}</p>
-                        </CardBody>
-                      </Card>
+                      <NestedReply
+                        key={reply.id}
+                        reply={reply}
+                        topicAuthorId={selectedTopic.author_id}
+                        currentUser={user}
+                        onDelete={handleDeleteReply}
+                        onReply={handleNestedReply}
+                        replyingTo={replyingTo}
+                        setReplyingTo={setReplyingTo}
+                        nestedReplyContent={nestedReplyContent}
+                        setNestedReplyContent={setNestedReplyContent}
+                        submittingReply={submittingNestedReply}
+                        navigate={navigate}
+                        formatDate={formatDate}
+                      />
                     ))
                   )}
                 </div>
@@ -536,6 +710,7 @@ export const Forum = () => {
                               }}>
                               {topic.author_name}
                             </span>
+                            <RoleBadges email={topic.author_email} />
                             <span className="separator">•</span>
                             {formatDate(topic.created_at)}
                           </span>

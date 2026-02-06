@@ -30,7 +30,9 @@ import {
   DropdownItem,
   Pagination,
   CheckboxGroup,
-  Checkbox
+  Checkbox,
+  RadioGroup,
+  Radio
 } from '@nextui-org/react';
 import {
   FaCheck,
@@ -55,11 +57,48 @@ import {
   FaFile,
   FaUpload,
   FaBox,
-  FaCalendar
+  FaCalendar,
+  FaUserCheck,
+  FaUserTimes
 } from 'react-icons/fa';
 import { MdPhotoLibrary, MdPending, MdVerified, MdNotifications } from 'react-icons/md';
 import { AdminProducts } from '../components/Admin/AdminProducts';
 import { AdminEvents } from '../components/Admin/AdminEvents';
+
+// Imágenes de especialidades
+import arteImg from '../assets/specialties/arte.png';
+import cienciaImg from '../assets/specialties/ciencia.png';
+import deporteImg from '../assets/specialties/deporte.png';
+import espiritualidadImg from '../assets/specialties/espiritualidad.png';
+import naturalezaImg from '../assets/specialties/naturaleza.png';
+import servicioImg from '../assets/specialties/servicio.png';
+
+// Imágenes de progresiones - Manada
+import pataTiernaImg from '../assets/progressions/manada/Pata-Tierna.png';
+import saltadorImg from '../assets/progressions/manada/Saltador.png';
+import rastreadorImg from '../assets/progressions/manada/Rastreador.png';
+import cazadorImg from '../assets/progressions/manada/Cazador.png';
+import manadaCompletaImg from '../assets/progressions/manada/Completa.png';
+
+// Imágenes de progresiones - Unidad
+import pistaImg from '../assets/progressions/unidad/Pista.png';
+import sendaImg from '../assets/progressions/unidad/Senda.png';
+import rumboImg from '../assets/progressions/unidad/Rumbo.png';
+import travesiaImg from '../assets/progressions/unidad/Travesia.png';
+import unidadCompletaImg from '../assets/progressions/unidad/Completa.png';
+
+// Imágenes de progresiones - Caminantes
+import norteImg from '../assets/progressions/caminantes/Norte.png';
+import esteImg from '../assets/progressions/caminantes/Este.png';
+import surImg from '../assets/progressions/caminantes/Sur.png';
+import oesteImg from '../assets/progressions/caminantes/Oeste.png';
+import caminantesCompletaImg from '../assets/progressions/caminantes/Completa.png';
+
+// Imágenes de progresiones - Rovers
+import encuentroImg from '../assets/progressions/rovers/Encuentro.png';
+import compromisoImg from '../assets/progressions/rovers/Compromiso.png';
+import proyeccionImg from '../assets/progressions/rovers/Proyeccion.png';
+import roversCompletaImg from '../assets/progressions/rovers/Completa.png';
 
 // Lista de emails de administradores autorizados (debe coincidir con api/lib/supabase.js)
 const ADMIN_EMAILS = [
@@ -75,28 +114,79 @@ const ADMIN_EMAILS = [
 // Verificar si un email es admin
 const isAdmin = (email) => ADMIN_EMAILS.includes(email?.toLowerCase());
 
-// Datos de ramas y progresiones
+// Datos de especialidades
+const specialtiesData = [
+  { id: 'arte', name: 'Arte', img: arteImg, color: '#9025bb' },
+  { id: 'ciencia', name: 'Ciencia y Tecnología', img: cienciaImg, color: '#00bfff' },
+  { id: 'deporte', name: 'Deporte', img: deporteImg, color: '#0e0d5d' },
+  { id: 'servicio', name: 'Servicio a los demás', img: servicioImg, color: '#e71b1b' },
+  { id: 'naturaleza', name: 'Naturaleza', img: naturalezaImg, color: '#1f6a2a' },
+  { id: 'espiritualidad', name: 'Espiritualidad', img: espiritualidadImg, color: '#f0e000' }
+];
+
+// Datos de ramas y progresiones con imágenes
 const branchesData = {
   manada: {
     name: 'Manada',
     color: '#ff9800',
-    progressions: ['Pata Tierna', 'Saltador', 'Rastreador', 'Cazador', 'Progresión Completa']
+    progressions: [
+      { id: 'pata-tierna', name: 'Pata Tierna', img: pataTiernaImg },
+      { id: 'saltador', name: 'Saltador', img: saltadorImg },
+      { id: 'rastreador', name: 'Rastreador', img: rastreadorImg },
+      { id: 'cazador', name: 'Cazador', img: cazadorImg },
+      { id: 'completa', name: 'Progresión Completa', img: manadaCompletaImg }
+    ]
   },
   unidad: {
     name: 'Unidad',
     color: '#4caf50',
-    progressions: ['Pista', 'Senda', 'Rumbo', 'Travesía', 'Progresión Completa']
+    progressions: [
+      { id: 'pista', name: 'Pista', img: pistaImg },
+      { id: 'senda', name: 'Senda', img: sendaImg },
+      { id: 'rumbo', name: 'Rumbo', img: rumboImg },
+      { id: 'travesia', name: 'Travesía', img: travesiaImg },
+      { id: 'completa', name: 'Progresión Completa', img: unidadCompletaImg }
+    ]
   },
   caminantes: {
     name: 'Caminantes',
     color: '#2196f3',
-    progressions: ['Norte', 'Este', 'Sur', 'Oeste', 'Progresión Completa']
+    progressions: [
+      { id: 'norte', name: 'Norte', img: norteImg },
+      { id: 'este', name: 'Este', img: esteImg },
+      { id: 'sur', name: 'Sur', img: surImg },
+      { id: 'oeste', name: 'Oeste', img: oesteImg },
+      { id: 'completa', name: 'Progresión Completa', img: caminantesCompletaImg }
+    ]
   },
   rover: {
     name: 'Rover',
     color: '#e53935',
-    progressions: ['Encuentro', 'Compromiso', 'Proyección', 'Progresión Completa']
+    progressions: [
+      { id: 'encuentro', name: 'Encuentro', img: encuentroImg },
+      { id: 'compromiso', name: 'Compromiso', img: compromisoImg },
+      { id: 'proyeccion', name: 'Proyección', img: proyeccionImg },
+      { id: 'completa', name: 'Progresión Completa', img: roversCompletaImg }
+    ]
   }
+};
+
+// Función auxiliar para obtener imagen de progresión
+const getProgressionImage = (progressionId, branch) => {
+  const branchData = branchesData[branch];
+  if (!branchData) return null;
+  const prog = branchData.progressions.find(
+    (p) => p.id === progressionId || p.name.toLowerCase() === progressionId?.toLowerCase()
+  );
+  return prog?.img || null;
+};
+
+// Función auxiliar para obtener imagen de especialidad
+const getSpecialtyImage = (specialtyId) => {
+  const spec = specialtiesData.find(
+    (s) => s.id === specialtyId || s.name.toLowerCase() === specialtyId?.toLowerCase()
+  );
+  return spec?.img || null;
 };
 
 export const Admin = () => {
@@ -160,7 +250,8 @@ export const Admin = () => {
     title: '',
     message: '',
     type: 'general',
-    sendToAll: true,
+    sendMode: 'all', // 'all' | 'branch' | 'users'
+    selectedBranch: '',
     selectedUsers: []
   });
   const [attachments, setAttachments] = useState([]);
@@ -396,14 +487,20 @@ export const Admin = () => {
       const token = await getToken();
       let result;
       if (badgeForm.type === 'progression') {
+        // Buscar la progresión seleccionada para obtener el nombre
+        const selectedProg = branchesData[selectedUser.branch]?.progressions.find(
+          (p) => p.id === badgeForm.name
+        );
         result = await adminService.addProgression(token, selectedUser.id, {
-          progression_id: badgeForm.name.toLowerCase().replace(/\s+/g, '-'),
-          progression_name: badgeForm.name
+          progression_id: badgeForm.name,
+          progression_name: selectedProg?.name || badgeForm.name
         });
       } else {
+        // Buscar la especialidad seleccionada para obtener el nombre
+        const selectedSpec = specialtiesData.find((s) => s.id === badgeForm.name);
         result = await adminService.addSpecialty(token, selectedUser.id, {
-          specialty_id: badgeForm.name.toLowerCase().replace(/\s+/g, '-'),
-          specialty_name: badgeForm.name,
+          specialty_id: badgeForm.name,
+          specialty_name: selectedSpec?.name || badgeForm.name,
           level: badgeForm.level
         });
       }
@@ -425,6 +522,20 @@ export const Admin = () => {
       if (result.success) loadUsers();
     } catch (error) {
       console.error('Error removing badge:', error);
+    }
+  };
+
+  const handleVerifyUser = async (userId, verified) => {
+    try {
+      const token = await getToken();
+      const result = await adminService.verifyUser(token, userId, verified);
+      if (result.success) {
+        loadUsers();
+      } else {
+        alert('Error al cambiar verificación');
+      }
+    } catch (error) {
+      console.error('Error verifying user:', error);
     }
   };
 
@@ -471,31 +582,58 @@ export const Admin = () => {
       return;
     }
 
+    // Validar selección según el modo
+    if (notificationForm.sendMode === 'branch' && !notificationForm.selectedBranch) {
+      alert('Por favor selecciona una rama');
+      return;
+    }
+
+    if (notificationForm.sendMode === 'users' && notificationForm.selectedUsers.length === 0) {
+      alert('Por favor selecciona al menos un usuario');
+      return;
+    }
+
     setSendingNotification(true);
     try {
+      // Determinar destinatarios según el modo de envío
+      let recipientIds = null;
+      let targetBranch = null;
+
+      if (notificationForm.sendMode === 'branch') {
+        targetBranch = notificationForm.selectedBranch;
+      } else if (notificationForm.sendMode === 'users') {
+        recipientIds = notificationForm.selectedUsers;
+      }
+
       const result = await notificationService.createNotification({
         title: notificationForm.title,
         message: notificationForm.message,
         type: notificationForm.type,
-        recipientIds: notificationForm.sendToAll ? null : notificationForm.selectedUsers,
+        recipientIds,
+        targetBranch,
         attachments: attachments,
         createdBy: user.id
       });
 
       if (result.success) {
-        alert('Notificación enviada correctamente');
+        let successMsg = 'Notificación enviada correctamente';
+        if (result.recipientCount) {
+          successMsg += ` a ${result.recipientCount} usuarios de ${branchesData[notificationForm.selectedBranch]?.name}`;
+        }
+        alert(successMsg);
         setNotificationForm({
           title: '',
           message: '',
           type: 'general',
-          sendToAll: true,
+          sendMode: 'all',
+          selectedBranch: '',
           selectedUsers: []
         });
         setAttachments([]);
         onNotificationClose();
         loadSentNotifications();
       } else {
-        alert('Error al enviar notificación');
+        alert(result.error || 'Error al enviar notificación');
       }
     } catch (error) {
       console.error('Error sending notification:', error);
@@ -891,31 +1029,56 @@ export const Admin = () => {
               ) : (
                 <div className="users-grid">
                   {users.map((u) => (
-                    <Card key={u.id} className="user-card">
+                    <Card
+                      key={u.id}
+                      className={`user-card ${u.is_verified ? 'verified' : 'unverified'}`}>
                       <CardBody>
                         <div className="user-header">
-                          <Avatar
-                            src={u.avatar_url}
-                            showFallback
-                            size="lg"
-                            className="user-avatar"
-                          />
+                          <div className="avatar-wrapper">
+                            <Avatar
+                              src={u.avatar_url}
+                              showFallback
+                              size="lg"
+                              className="user-avatar"
+                            />
+                            {u.is_verified ? (
+                              <span
+                                className="verification-badge verified"
+                                title="Usuario verificado">
+                                <FaUserCheck />
+                              </span>
+                            ) : (
+                              <span
+                                className="verification-badge unverified"
+                                title="Pendiente de verificación">
+                                <FaUserTimes />
+                              </span>
+                            )}
+                          </div>
                           <div className="user-info">
                             <h4>
                               {u.name}
                               {u.is_promised && <MdVerified className="verified" />}
                             </h4>
                             <p className="user-email">{u.email}</p>
-                            {u.branch && (
+                            <div className="user-chips">
+                              {u.branch && (
+                                <Chip
+                                  size="sm"
+                                  style={{
+                                    backgroundColor: branchesData[u.branch]?.color,
+                                    color: '#fff'
+                                  }}>
+                                  {branchesData[u.branch]?.name}
+                                </Chip>
+                              )}
                               <Chip
                                 size="sm"
-                                style={{
-                                  backgroundColor: branchesData[u.branch]?.color,
-                                  color: '#fff'
-                                }}>
-                                {branchesData[u.branch]?.name}
+                                color={u.is_verified ? 'success' : 'danger'}
+                                variant="flat">
+                                {u.is_verified ? 'Verificado' : 'Sin verificar'}
                               </Chip>
-                            )}
+                            </div>
                           </div>
                         </div>
                         <div className="user-badges">
@@ -925,16 +1088,30 @@ export const Admin = () => {
                                 <FaMedal /> Progresiones
                               </span>
                               <div className="badges-list">
-                                {u.user_progressions.map((prog) => (
-                                  <Chip
-                                    key={prog.id}
-                                    size="sm"
-                                    variant="flat"
-                                    color="warning"
-                                    onClose={() => handleRemoveBadge(prog.id, 'progression')}>
-                                    {prog.progression_name}
-                                  </Chip>
-                                ))}
+                                {u.user_progressions.map((prog) => {
+                                  const progImg = getProgressionImage(
+                                    prog.progression_id,
+                                    u.branch
+                                  );
+                                  return (
+                                    <div key={prog.id} className="badge-item">
+                                      {progImg && (
+                                        <img
+                                          src={progImg}
+                                          alt={prog.progression_name}
+                                          className="badge-img"
+                                        />
+                                      )}
+                                      <Chip
+                                        size="sm"
+                                        variant="flat"
+                                        color="warning"
+                                        onClose={() => handleRemoveBadge(prog.id, 'progression')}>
+                                        {prog.progression_name}
+                                      </Chip>
+                                    </div>
+                                  );
+                                })}
                               </div>
                             </div>
                           )}
@@ -944,21 +1121,40 @@ export const Admin = () => {
                                 <FaStar /> Especialidades
                               </span>
                               <div className="badges-list">
-                                {u.user_specialties.map((spec) => (
-                                  <Chip
-                                    key={spec.id}
-                                    size="sm"
-                                    variant="flat"
-                                    color="secondary"
-                                    onClose={() => handleRemoveBadge(spec.id, 'specialty')}>
-                                    {spec.specialty_name} ({spec.level})
-                                  </Chip>
-                                ))}
+                                {u.user_specialties.map((spec) => {
+                                  const specImg = getSpecialtyImage(spec.specialty_id);
+                                  return (
+                                    <div key={spec.id} className="badge-item">
+                                      {specImg && (
+                                        <img
+                                          src={specImg}
+                                          alt={spec.specialty_name}
+                                          className="badge-img"
+                                        />
+                                      )}
+                                      <Chip
+                                        size="sm"
+                                        variant="flat"
+                                        color="secondary"
+                                        onClose={() => handleRemoveBadge(spec.id, 'specialty')}>
+                                        {spec.specialty_name} ({spec.level})
+                                      </Chip>
+                                    </div>
+                                  );
+                                })}
                               </div>
                             </div>
                           )}
                         </div>
                         <div className="user-actions">
+                          <Button
+                            size="sm"
+                            variant="flat"
+                            color={u.is_verified ? 'danger' : 'success'}
+                            startContent={u.is_verified ? <FaUserTimes /> : <FaUserCheck />}
+                            onPress={() => handleVerifyUser(u.id, !u.is_verified)}>
+                            {u.is_verified ? 'Quitar verificación' : 'Verificar'}
+                          </Button>
                           <Button
                             size="sm"
                             variant="flat"
@@ -1294,7 +1490,7 @@ export const Admin = () => {
                 {badgeForm.type === 'progression' && selectedUser.branch && (
                   <Select
                     label="Progresión"
-                    placeholder="Seleccionar"
+                    placeholder="Seleccionar progresión"
                     selectedKeys={badgeForm.name ? [badgeForm.name] : []}
                     onSelectionChange={(keys) => {
                       const selected = Array.from(keys)[0];
@@ -1305,20 +1501,41 @@ export const Admin = () => {
                       portalContainer: document.body
                     }}>
                     {branchesData[selectedUser.branch]?.progressions.map((prog) => (
-                      <SelectItem key={prog} value={prog} textValue={prog}>
-                        {prog}
+                      <SelectItem key={prog.id} value={prog.id} textValue={prog.name}>
+                        <div className="badge-select-item">
+                          <img src={prog.img} alt={prog.name} className="badge-select-img" />
+                          <span>{prog.name}</span>
+                        </div>
                       </SelectItem>
                     ))}
                   </Select>
                 )}
                 {badgeForm.type === 'specialty' && (
                   <>
-                    <Input
-                      label="Nombre de especialidad"
-                      placeholder="Ej: Primeros Auxilios"
-                      value={badgeForm.name}
-                      onChange={(e) => setBadgeForm({ ...badgeForm, name: e.target.value })}
-                    />
+                    <Select
+                      label="Especialidad"
+                      placeholder="Seleccionar especialidad"
+                      selectedKeys={badgeForm.name ? [badgeForm.name] : []}
+                      onSelectionChange={(keys) => {
+                        const selected = Array.from(keys)[0];
+                        setBadgeForm({ ...badgeForm, name: selected || '' });
+                      }}
+                      popoverProps={{
+                        classNames: { content: 'z-[9999]' },
+                        portalContainer: document.body
+                      }}>
+                      {specialtiesData.map((spec) => (
+                        <SelectItem key={spec.id} value={spec.id} textValue={spec.name}>
+                          <div className="badge-select-item">
+                            <img src={spec.img} alt={spec.name} className="badge-select-img" />
+                            <span>{spec.name}</span>
+                            <span
+                              className="badge-select-color"
+                              style={{ background: spec.color }}></span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </Select>
                     <Select
                       label="Nivel"
                       selectedKeys={[badgeForm.level]}
@@ -1412,22 +1629,66 @@ export const Admin = () => {
               />
 
               <div className="recipient-selector">
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    checked={notificationForm.sendToAll}
-                    onChange={(e) =>
-                      setNotificationForm({
-                        ...notificationForm,
-                        sendToAll: e.target.checked,
-                        selectedUsers: []
-                      })
-                    }
-                  />
-                  <span>Enviar a todos los usuarios</span>
-                </label>
+                <p className="recipient-label">Destinatarios:</p>
+                <RadioGroup
+                  value={notificationForm.sendMode}
+                  onValueChange={(value) =>
+                    setNotificationForm({
+                      ...notificationForm,
+                      sendMode: value,
+                      selectedBranch: '',
+                      selectedUsers: []
+                    })
+                  }
+                  orientation="horizontal"
+                  className="send-mode-radio">
+                  <Radio value="all">Todos los usuarios</Radio>
+                  <Radio value="branch">Por rama</Radio>
+                  <Radio value="users">Usuarios específicos</Radio>
+                </RadioGroup>
 
-                {!notificationForm.sendToAll && (
+                {notificationForm.sendMode === 'branch' && (
+                  <div className="branch-select-section">
+                    <Select
+                      label="Seleccionar rama"
+                      placeholder="Elige una rama"
+                      selectedKeys={
+                        notificationForm.selectedBranch ? [notificationForm.selectedBranch] : []
+                      }
+                      onSelectionChange={(keys) => {
+                        const selected = Array.from(keys)[0];
+                        setNotificationForm({
+                          ...notificationForm,
+                          selectedBranch: selected || ''
+                        });
+                      }}
+                      className="branch-select">
+                      {Object.entries(branchesData).map(([key, data]) => (
+                        <SelectItem
+                          key={key}
+                          value={key}
+                          startContent={
+                            <span className="branch-dot" style={{ backgroundColor: data.color }} />
+                          }>
+                          {data.name}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                    {notificationForm.selectedBranch && (
+                      <Chip
+                        size="sm"
+                        style={{
+                          backgroundColor: branchesData[notificationForm.selectedBranch]?.color,
+                          color: '#fff',
+                          marginTop: '8px'
+                        }}>
+                        Enviando a: {branchesData[notificationForm.selectedBranch]?.name}
+                      </Chip>
+                    )}
+                  </div>
+                )}
+
+                {notificationForm.sendMode === 'users' && (
                   <div className="user-select-list">
                     <p className="select-hint">Selecciona los destinatarios:</p>
                     {users.length === 0 ? (
@@ -1444,6 +1705,17 @@ export const Admin = () => {
                             <div className="user-checkbox-item">
                               <Avatar src={u.avatar_url} size="sm" showFallback />
                               <span>{u.name}</span>
+                              {u.branch && (
+                                <Chip
+                                  size="sm"
+                                  style={{
+                                    backgroundColor: branchesData[u.branch]?.color,
+                                    color: '#fff',
+                                    marginLeft: '8px'
+                                  }}>
+                                  {branchesData[u.branch]?.name}
+                                </Chip>
+                              )}
                             </div>
                           </Checkbox>
                         ))}

@@ -10,7 +10,8 @@ import {
   FaSignOutAlt,
   FaCog,
   FaUserCircle,
-  FaShieldAlt
+  FaShieldAlt,
+  FaExclamationTriangle
 } from 'react-icons/fa';
 import {
   Switch,
@@ -27,30 +28,19 @@ import {
   DropdownMenu,
   DropdownItem,
   Badge,
-  useDisclosure
+  useDisclosure,
+  Chip
 } from '@nextui-org/react';
 import { useTheme } from 'next-themes';
-import { authService, notificationService } from '../lib/supabase';
+import { authService, notificationService, userService, isAdmin } from '../lib/supabase';
 import { LoginModal } from './LoginModal';
 import savioLogo from '../assets/logo/scoutsaviologo.png';
-
-// Lista de emails de administradores
-const ADMIN_EMAILS = [
-  'scoutsavio331@gmail.com',
-  'matquadev@gmail.com',
-  'burgosagostina60@gmail.com',
-  'vickyrivero.scout@gmail.com',
-  'monjesana@gmail.com',
-  'psicocecirodriguez@gmail.com',
-  'leitogottero@gmail.com'
-];
-
-const isAdmin = (email) => ADMIN_EMAILS.includes(email?.toLowerCase());
 
 export const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [user, setUser] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
   const [unreadCount, setUnreadCount] = useState(0);
   const { theme, setTheme } = useTheme();
   const location = useLocation();
@@ -59,20 +49,32 @@ export const Nav = () => {
 
   const isHomePage = location.pathname === '/';
 
-  const navLinks = [
+  // Verificar si usuario está verificado o es admin
+  const isVerified = userProfile?.is_verified || isAdmin(user?.email);
+
+  // Links base de navegación
+  const allNavLinks = [
     { to: '/sobre', label: 'Quiénes somos' },
     { to: '/guia', label: 'Guía' },
     { to: '/galeria', label: 'Galería' },
-    { to: '/tienda', label: 'Tienda' },
+    { to: '/tienda', label: 'Tienda', requiresVerification: true },
     { to: '/eventos', label: 'Eventos' },
     { to: '/contacto', label: 'Contacto' }
   ];
 
-  // Links solo para usuarios logueados
-  const userLinks = [
-    { to: '/foro', label: 'Foro', icon: FaComments },
-    { to: '/notificaciones', label: 'Avisos', icon: MdNotifications }
-  ];
+  // Filtrar links según verificación
+  const navLinks = allNavLinks.filter((link) => {
+    if (!link.requiresVerification) return true;
+    return isVerified;
+  });
+
+  // Links solo para usuarios logueados Y verificados
+  const userLinks = isVerified
+    ? [
+        { to: '/foro', label: 'Foro', icon: FaComments },
+        { to: '/notificaciones', label: 'Avisos', icon: MdNotifications }
+      ]
+    : [];
 
   // Check auth state
   useEffect(() => {
@@ -83,6 +85,9 @@ export const Nav = () => {
         if (currentUser) {
           const count = await notificationService.getUnreadCount(currentUser.id);
           setUnreadCount(count);
+          // Cargar perfil para verificación
+          const profile = await userService.getOrCreateProfile(currentUser);
+          setUserProfile(profile);
         }
       } catch (error) {
         // Ignorar errores de abort en desarrollo
@@ -103,6 +108,7 @@ export const Nav = () => {
 
       if (!session?.user) {
         setUnreadCount(0);
+        setUserProfile(null);
         return;
       }
 
@@ -111,6 +117,9 @@ export const Nav = () => {
         try {
           const count = await notificationService.getUnreadCount(session.user.id);
           setUnreadCount(count);
+          // Cargar perfil para verificación
+          const profile = await userService.getOrCreateProfile(session.user);
+          setUserProfile(profile);
         } catch (error) {
           if (error.name !== 'AbortError') console.error(error);
         }
@@ -213,6 +222,16 @@ export const Nav = () => {
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Acciones de usuario" className="profile-dropdown-menu">
+              {!isVerified && (
+                <DropdownItem
+                  key="pending"
+                  textValue="Pendiente de verificación"
+                  startContent={<FaExclamationTriangle className="dropdown-icon pending-icon" />}
+                  className="pending-dropdown-item"
+                  isReadOnly>
+                  <span className="pending-text">Pendiente de verificación</span>
+                </DropdownItem>
+              )}
               <DropdownItem
                 key="profile"
                 textValue="Mi Perfil"
