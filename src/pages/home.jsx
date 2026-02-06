@@ -63,24 +63,46 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="stats-section">
-        <div className="stats-container">
-          <div className="stat-item">
-            <span className="stat-number">40+</span>
-            <span className="stat-label">Años de historia</span>
+      {/* Marquee Section - Values */}
+      <section className="marquee-section">
+        <div className="marquee-track">
+          <div className="marquee-wrapper marquee-left">
+            <div className="marquee-content">
+              <span className="marquee-item">⚜️ Siempre Listos</span>
+              <span className="marquee-item">🏕️ Aventura</span>
+              <span className="marquee-item">🤝 Hermandad</span>
+              <span className="marquee-item">🌲 Naturaleza</span>
+              <span className="marquee-item">💪 Servicio</span>
+              <span className="marquee-item">🔥 Fogones</span>
+            </div>
+            <div className="marquee-content" aria-hidden="true">
+              <span className="marquee-item">⚜️ Siempre Listos</span>
+              <span className="marquee-item">🏕️ Aventura</span>
+              <span className="marquee-item">🤝 Hermandad</span>
+              <span className="marquee-item">🌲 Naturaleza</span>
+              <span className="marquee-item">💪 Servicio</span>
+              <span className="marquee-item">🔥 Fogones</span>
+            </div>
           </div>
-          <div className="stat-item">
-            <span className="stat-number">200+</span>
-            <span className="stat-label">Scouts formados</span>
-          </div>
-          <div className="stat-item">
-            <span className="stat-number">4</span>
-            <span className="stat-label">Ramas activas</span>
-          </div>
-          <div className="stat-item">
-            <span className="stat-number">50+</span>
-            <span className="stat-label">Campamentos</span>
+        </div>
+        <div className="marquee-track">
+          <div className="marquee-wrapper marquee-right">
+            <div className="marquee-content">
+              <span className="marquee-item highlight">40+ años formando scouts</span>
+              <span className="marquee-item">🎯 Liderazgo</span>
+              <span className="marquee-item">🌟 Crecimiento</span>
+              <span className="marquee-item">❤️ Comunidad</span>
+              <span className="marquee-item">🧭 Exploración</span>
+              <span className="marquee-item">✨ Valores</span>
+            </div>
+            <div className="marquee-content" aria-hidden="true">
+              <span className="marquee-item highlight">40+ años formando scouts</span>
+              <span className="marquee-item">🎯 Liderazgo</span>
+              <span className="marquee-item">🌟 Crecimiento</span>
+              <span className="marquee-item">❤️ Comunidad</span>
+              <span className="marquee-item">🧭 Exploración</span>
+              <span className="marquee-item">✨ Valores</span>
+            </div>
           </div>
         </div>
       </section>

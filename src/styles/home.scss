@@ -178,63 +178,110 @@
   }
 }
 
-// Stats Section
-.stats-section {
-  padding: 80px 20px;
-  background: linear-gradient(180deg, transparent, rgba($scout-orange, 0.05));
+// Marquee Section - Infinite Scroll Values
+.marquee-section {
+  padding: 60px 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, transparent, rgba($scout-orange, 0.03));
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 
-  .stats-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 40px;
+  .marquee-track {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
 
-    @include laptop {
-      grid-template-columns: repeat(2, 1fr);
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100px;
+      z-index: 2;
+      pointer-events: none;
     }
 
-    @include mobile {
-      grid-template-columns: 1fr;
-      gap: 30px;
+    &::before {
+      left: 0;
+      background: linear-gradient(90deg, $main2 0%, transparent 100%);
+    }
+
+    &::after {
+      right: 0;
+      background: linear-gradient(90deg, transparent 0%, $main2 100%);
     }
   }
 
-  .stat-item {
-    text-align: center;
-    padding: 30px;
-    border-radius: $radius-lg;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: $transition-normal;
+  .marquee-wrapper {
+    display: flex;
+    width: max-content;
+  }
+
+  .marquee-left {
+    animation: marquee-scroll-left 25s linear infinite;
+  }
+
+  .marquee-right {
+    animation: marquee-scroll-right 30s linear infinite;
+  }
+
+  .marquee-content {
+    display: flex;
+    gap: 50px;
+    padding-right: 50px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .marquee-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    transition: color 0.3s ease;
+    flex-shrink: 0;
+
+    @include mobile {
+      font-size: 1.2rem;
+    }
 
     &:hover {
-      transform: translateY(-5px);
-      background: rgba(255, 255, 255, 0.05);
-      border-color: rgba($scout-orange, 0.3);
+      color: $scout-orange;
     }
 
-    .stat-number {
-      display: block;
-      font-size: 3.5rem;
-      font-weight: 800;
-      background: $gradient;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1;
-      margin-bottom: 8px;
+    &.highlight {
+      color: $scout-orange;
+      font-weight: 700;
+      font-size: 1.6rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
 
       @include mobile {
-        font-size: 2.5rem;
+        font-size: 1.3rem;
       }
     }
+  }
+}
 
-    .stat-label {
-      font-size: 1rem;
-      color: rgba(255, 255, 255, 0.7);
-      font-weight: 500;
-    }
+@keyframes marquee-scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-scroll-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
   }
 }
 
@@ -590,23 +637,29 @@
 // ========================================
 .light,
 [data-theme='light'] {
-  // Stats Section
-  .stats-section {
-    background: linear-gradient(180deg, transparent, rgba($scout-red, 0.05));
+  // Marquee Section
+  .marquee-section {
+    background: linear-gradient(180deg, transparent, rgba($scout-red, 0.03));
 
-    .stat-item {
-      background: #fff;
-      border-color: rgba(0, 0, 0, 0.08);
-      box-shadow: $shadow-sm-light;
-
-      .stat-number {
-        background: $gradient;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+    .marquee-track {
+      &::before {
+        background: linear-gradient(90deg, #fff 0%, transparent 100%);
       }
 
-      .stat-label {
-        color: rgba(0, 0, 0, 0.6);
+      &::after {
+        background: linear-gradient(90deg, transparent 0%, #fff 100%);
+      }
+    }
+
+    .marquee-item {
+      color: rgba(0, 0, 0, 0.5);
+
+      &:hover {
+        color: $scout-red;
+      }
+
+      &.highlight {
+        color: $scout-red;
       }
     }
   }
