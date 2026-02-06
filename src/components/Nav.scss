@@ -264,6 +264,16 @@
     flex-shrink: 0;
   }
 
+  .admin-dropdown-item {
+    .admin-icon {
+      color: #8b5cf6;
+    }
+
+    &:hover {
+      background: rgba(139, 92, 246, 0.15) !important;
+    }
+  }
+
   [data-key='logout'] {
     .dropdown-icon {
       color: #f31260;

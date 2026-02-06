@@ -661,24 +661,33 @@ const UploadModal = ({ isOpen, onOpenChange, categories, user, userProfile, onLo
                     <div className="preview-grid">
                       {files.map((file) => (
                         <div key={file.id} className="preview-item">
-                          <img src={file.preview} alt="Preview" />
-                          <button
-                            className="remove-btn"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              removeFile(file.id);
-                            }}>
-                            <FaTimes />
-                          </button>
-                          <Input
-                            size="sm"
-                            variant="flat"
-                            placeholder="Título de la imagen"
-                            value={file.title}
-                            onChange={(e) => updateFileTitle(file.id, e.target.value)}
-                            className="preview-title-input"
-                            onClick={(e) => e.stopPropagation()}
-                          />
+                          <div className="preview-image-wrapper">
+                            <img src={file.preview} alt="Preview" />
+                            <button
+                              className="remove-btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                removeFile(file.id);
+                              }}>
+                              <FaTimes />
+                            </button>
+                          </div>
+                          <div className="preview-title-section">
+                            <Input
+                              size="lg"
+                              variant="bordered"
+                              label="Título de la imagen"
+                              placeholder="Ej: Fogón campamento 2024"
+                              value={file.title}
+                              onChange={(e) => updateFileTitle(file.id, e.target.value)}
+                              className="preview-title-input"
+                              onClick={(e) => e.stopPropagation()}
+                              classNames={{
+                                inputWrapper: 'title-input-wrapper',
+                                label: 'title-input-label'
+                              }}
+                            />
+                          </div>
                         </div>
                       ))}
                     </div>

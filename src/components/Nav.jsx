@@ -3,7 +3,15 @@ import './Nav.scss';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { MdMenu, MdClose } from 'react-icons/md';
 import { MdDarkMode, MdLightMode, MdNotifications } from 'react-icons/md';
-import { FaUser, FaComments, FaCamera, FaSignOutAlt, FaCog, FaUserCircle } from 'react-icons/fa';
+import {
+  FaUser,
+  FaComments,
+  FaCamera,
+  FaSignOutAlt,
+  FaCog,
+  FaUserCircle,
+  FaShieldAlt
+} from 'react-icons/fa';
 import {
   Switch,
   Navbar,
@@ -25,6 +33,19 @@ import { useTheme } from 'next-themes';
 import { authService, notificationService } from '../lib/supabase';
 import { LoginModal } from './LoginModal';
 import savioLogo from '../assets/logo/scoutsaviologo.png';
+
+// Lista de emails de administradores
+const ADMIN_EMAILS = [
+  'scoutsavio331@gmail.com',
+  'matquadev@gmail.com',
+  'burgosagostina60@gmail.com',
+  'vickyrivero.scout@gmail.com',
+  'monjesana@gmail.com',
+  'psicocecirodriguez@gmail.com',
+  'leitogottero@gmail.com'
+];
+
+const isAdmin = (email) => ADMIN_EMAILS.includes(email?.toLowerCase());
 
 export const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -199,6 +220,16 @@ export const Nav = () => {
                 onClick={() => navigate('/perfil')}>
                 Mi Perfil
               </DropdownItem>
+              {isAdmin(user?.email) && (
+                <DropdownItem
+                  key="admin"
+                  textValue="Panel Admin"
+                  startContent={<FaShieldAlt className="dropdown-icon admin-icon" />}
+                  className="admin-dropdown-item"
+                  onClick={() => navigate('/admin')}>
+                  Panel Admin
+                </DropdownItem>
+              )}
               <DropdownItem
                 key="gallery"
                 textValue="Subir fotos"
