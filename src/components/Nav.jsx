@@ -42,6 +42,8 @@ export const Nav = () => {
     { to: '/sobre', label: 'Quiénes somos' },
     { to: '/guia', label: 'Guía' },
     { to: '/galeria', label: 'Galería' },
+    { to: '/tienda', label: 'Tienda' },
+    { to: '/eventos', label: 'Eventos' },
     { to: '/contacto', label: 'Contacto' }
   ];
 

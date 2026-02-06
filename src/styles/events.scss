@@ -1,0 +1,1141 @@
+@import './variables';
+
+// ========================================
+// EVENTS PAGE CONTAINER
+// ========================================
+.events-page {
+  min-height: 100vh;
+  padding-bottom: 0;
+}
+
+// ========================================
+// EVENTS HERO
+// ========================================
+.events-hero {
+  min-height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba($scout-orange, 0.08) 0%, transparent 100%);
+  padding: 140px 20px 50px;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba($scout-orange, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba($scout-yellow, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+
+    .hero-text {
+      h1 {
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        font-weight: 800;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        color: #fff;
+
+        svg {
+          color: $scout-orange;
+          font-size: 0.9em;
+        }
+      }
+
+      p {
+        font-size: 1.15rem;
+        color: rgba(255, 255, 255, 0.6);
+        max-width: 500px;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+    }
+  }
+}
+
+// ========================================
+// FEATURED EVENTS SECTION
+// ========================================
+.featured-events {
+  padding: 20px 20px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    &::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, rgba($scout-orange, 0.5) 0%, transparent 100%);
+    }
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+
+    @include laptop {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include tablet {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+// ========================================
+// EVENTS CONTROLS
+// ========================================
+.events-controls {
+  padding: 0 20px 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .controls-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .view-toggle {
+    display: flex;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: $transition-fast;
+
+      &:hover {
+        color: #fff;
+      }
+
+      &.active {
+        background: linear-gradient(135deg, $scout-orange, $scout-yellow);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba($scout-orange, 0.3);
+      }
+    }
+  }
+
+  .filter-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    button {
+      padding: 10px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: transparent;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: $transition-fast;
+
+      &:hover {
+        border-color: rgba(255, 255, 255, 0.2);
+        color: #fff;
+      }
+
+      &.active {
+        background: rgba($scout-orange, 0.15);
+        border-color: $scout-orange;
+        color: $scout-orange;
+      }
+    }
+  }
+}
+
+// ========================================
+// EVENTS CONTENT LAYOUT
+// ========================================
+.events-content {
+  display: flex;
+  gap: 32px;
+  padding: 0 20px 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+
+  @include tablet {
+    flex-direction: column;
+  }
+
+  .calendar-sidebar {
+    width: 340px;
+    flex-shrink: 0;
+
+    @include tablet {
+      width: 100%;
+    }
+  }
+
+  .events-list-container {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+
+  @include laptop {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ========================================
+// EVENT CARD
+// ========================================
+.event-card {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: $transition-normal;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    border-color: rgba($scout-orange, 0.25);
+
+    .event-image img {
+      transform: scale(1.05);
+    }
+  }
+
+  &.past {
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .event-date-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    padding: 12px 16px;
+    border-radius: 12px;
+    text-align: center;
+    z-index: 2;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    .day {
+      display: block;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: $scout-orange;
+      line-height: 1;
+    }
+
+    .month {
+      display: block;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 2px;
+    }
+  }
+
+  .event-image {
+    position: relative;
+    aspect-ratio: 16/10;
+    overflow: hidden;
+    background: linear-gradient(145deg, #1a1a2e 0%, #252540 100%);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .past-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(0, 0, 0, 0.7);
+      color: rgba(255, 255, 255, 0.8);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+  }
+
+  .event-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+
+    .event-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+
+      .type-chip {
+        color: #fff !important;
+        font-weight: 500;
+
+        svg {
+          margin-right: 4px;
+        }
+      }
+    }
+
+    .event-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+      margin: 0;
+    }
+
+    .event-subtitle {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .event-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: auto;
+
+      .info-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.5);
+
+        svg {
+          color: $scout-orange;
+          font-size: 0.9rem;
+        }
+      }
+    }
+
+    .view-more-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 10px 20px;
+      background: rgba($scout-orange, 0.15);
+      border: none;
+      border-radius: 10px;
+      color: $scout-orange;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: $transition-fast;
+      align-self: flex-start;
+
+      &:hover {
+        background: rgba($scout-orange, 0.25);
+      }
+
+      svg {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
+
+// ========================================
+// EVENT CALENDAR
+// ========================================
+.event-calendar {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 24px;
+  position: sticky;
+  top: 100px;
+
+  .calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      text-transform: capitalize;
+      margin: 0;
+    }
+
+    button {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: transparent;
+      color: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: $transition-fast;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+      }
+    }
+  }
+
+  .calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 8px;
+
+    .weekday {
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.4);
+      text-transform: uppercase;
+      padding: 8px 0;
+    }
+  }
+
+  .calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+
+    .calendar-day {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: $transition-fast;
+      position: relative;
+      padding: 4px;
+
+      &:hover:not(.empty) {
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      &.empty {
+        cursor: default;
+      }
+
+      &.today {
+        background: rgba($scout-orange, 0.15);
+        border: 1px solid rgba($scout-orange, 0.3);
+
+        .day-number {
+          color: $scout-orange;
+          font-weight: 700;
+        }
+      }
+
+      &.selected {
+        background: linear-gradient(135deg, $scout-orange, $scout-yellow);
+
+        .day-number {
+          color: #fff;
+        }
+      }
+
+      &.has-events {
+        .day-number {
+          font-weight: 600;
+        }
+      }
+
+      .day-number {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .event-dots {
+        display: flex;
+        gap: 3px;
+        margin-top: 2px;
+
+        .dot {
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+}
+
+.clear-date {
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: $transition-fast;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+  }
+}
+
+// ========================================
+// LOADING & EMPTY STATES
+// ========================================
+.loading-state,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+
+  > svg {
+    font-size: 4rem;
+    color: rgba(255, 255, 255, 0.15);
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 8px;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1rem;
+  }
+}
+
+.loading-state {
+  gap: 16px;
+}
+
+// ========================================
+// EVENT DETAIL MODAL
+// ========================================
+.event-detail-modal {
+  background: $main2 !important;
+  border-radius: 24px;
+  overflow: hidden;
+
+  .modal-cover {
+    position: relative;
+    aspect-ratio: 2/1;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cover-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba($main2, 0.9) 100%);
+    }
+  }
+
+  .event-detail-content {
+    padding: 24px 0;
+
+    .detail-header {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+
+      .type-chip {
+        color: #fff !important;
+        font-weight: 500;
+
+        svg {
+          margin-right: 4px;
+        }
+      }
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 0 8px;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin: 0 0 24px;
+    }
+
+    .event-details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+
+      .detail-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+
+        > svg {
+          color: $scout-orange;
+          font-size: 1.2rem;
+          margin-top: 2px;
+          flex-shrink: 0;
+        }
+
+        div {
+          .label {
+            display: block;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 2px;
+          }
+
+          .value {
+            font-weight: 600;
+            color: #fff;
+            font-size: 0.95rem;
+          }
+        }
+      }
+    }
+
+    .event-content-html {
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.7;
+      margin-bottom: 24px;
+
+      p {
+        margin-bottom: 16px;
+      }
+
+      h2,
+      h3,
+      h4 {
+        color: #fff;
+        margin: 24px 0 12px;
+      }
+
+      ul,
+      ol {
+        margin-left: 20px;
+        margin-bottom: 16px;
+      }
+    }
+
+    .event-images-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+
+      img {
+        width: 100%;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: $transition-fast;
+
+        &:hover {
+          transform: scale(1.02);
+        }
+      }
+
+      @include mobile {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .share-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+      > span {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.9rem;
+      }
+
+      .share-buttons {
+        display: flex;
+        gap: 8px;
+
+        button {
+          width: 42px;
+          height: 42px;
+          border-radius: 12px;
+          border: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: $transition-fast;
+          color: #fff;
+
+          svg {
+            font-size: 1.1rem;
+          }
+
+          &:hover {
+            transform: translateY(-2px);
+          }
+
+          &.whatsapp {
+            background: #25d366;
+          }
+
+          &.facebook {
+            background: #1877f2;
+          }
+
+          &.twitter {
+            background: #1da1f2;
+          }
+
+          &.copy {
+            background: rgba(255, 255, 255, 0.15);
+
+            &:hover {
+              background: rgba(255, 255, 255, 0.25);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// ========================================
+// LIGHT MODE
+// ========================================
+.light,
+[data-theme='light'] {
+  .events-hero {
+    background: linear-gradient(180deg, rgba($scout-orange, 0.06) 0%, transparent 100%);
+
+    &::before {
+      background: radial-gradient(circle, rgba($scout-orange, 0.04) 0%, transparent 70%);
+    }
+
+    &::after {
+      background: radial-gradient(circle, rgba($scout-yellow, 0.03) 0%, transparent 70%);
+    }
+
+    .hero-content .hero-text {
+      h1 {
+        color: #1a1a2e;
+      }
+
+      p {
+        color: rgba(0, 0, 0, 0.55);
+      }
+    }
+  }
+
+  .featured-events h2 {
+    color: #1a1a2e;
+
+    &::after {
+      background: linear-gradient(90deg, rgba($scout-orange, 0.4) 0%, transparent 100%);
+    }
+  }
+
+  .events-controls {
+    .view-toggle {
+      background: #fff;
+      border-color: rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+      button {
+        color: rgba(0, 0, 0, 0.6);
+
+        &:hover {
+          color: #1a1a2e;
+        }
+
+        &.active {
+          color: #fff;
+        }
+      }
+    }
+
+    .filter-tabs button {
+      border-color: rgba(0, 0, 0, 0.1);
+      color: rgba(0, 0, 0, 0.6);
+
+      &:hover {
+        border-color: rgba(0, 0, 0, 0.2);
+        color: #1a1a2e;
+      }
+
+      &.active {
+        background: rgba($scout-orange, 0.1);
+        border-color: $scout-orange;
+      }
+    }
+  }
+
+  .event-card {
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+
+    &:hover {
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+      border-color: rgba($scout-orange, 0.15);
+    }
+
+    .event-date-badge {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+
+      .month {
+        color: rgba(0, 0, 0, 0.6);
+      }
+    }
+
+    .event-image {
+      background: linear-gradient(145deg, #f5f5fa 0%, #ebebf0 100%);
+    }
+
+    .event-content {
+      .event-title {
+        color: #1a1a2e;
+      }
+
+      .event-subtitle {
+        color: rgba(0, 0, 0, 0.6);
+      }
+
+      .event-info .info-item {
+        color: rgba(0, 0, 0, 0.5);
+      }
+
+      .view-more-btn {
+        background: rgba($scout-orange, 0.1);
+
+        &:hover {
+          background: rgba($scout-orange, 0.18);
+        }
+      }
+    }
+  }
+
+  .event-calendar {
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+
+    .calendar-header {
+      h3 {
+        color: #1a1a2e;
+      }
+
+      button {
+        border-color: rgba(0, 0, 0, 0.1);
+        color: rgba(0, 0, 0, 0.5);
+
+        &:hover {
+          background: rgba(0, 0, 0, 0.05);
+          color: #1a1a2e;
+        }
+      }
+    }
+
+    .calendar-weekdays .weekday {
+      color: rgba(0, 0, 0, 0.45);
+    }
+
+    .calendar-days .calendar-day {
+      &:hover:not(.empty) {
+        background: rgba(0, 0, 0, 0.05);
+      }
+
+      &.today {
+        background: rgba($scout-orange, 0.1);
+        border-color: rgba($scout-orange, 0.25);
+      }
+
+      .day-number {
+        color: #1a1a2e;
+      }
+    }
+  }
+
+  .clear-date {
+    border-color: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.6);
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.04);
+      color: #1a1a2e;
+    }
+  }
+
+  .loading-state,
+  .empty-state {
+    > svg {
+      color: rgba(0, 0, 0, 0.1);
+    }
+
+    h3 {
+      color: #1a1a2e;
+    }
+
+    p {
+      color: rgba(0, 0, 0, 0.55);
+    }
+  }
+
+  .event-detail-modal {
+    background: #fff !important;
+
+    .modal-cover .cover-overlay {
+      background: linear-gradient(180deg, transparent 50%, rgba(#fff, 0.9) 100%);
+    }
+
+    .event-detail-content {
+      h1 {
+        color: #1a1a2e;
+      }
+
+      .subtitle {
+        color: rgba(0, 0, 0, 0.6);
+      }
+
+      .event-details-grid .detail-item {
+        background: rgba(0, 0, 0, 0.02);
+        border-color: rgba(0, 0, 0, 0.06);
+
+        div {
+          .label {
+            color: rgba(0, 0, 0, 0.5);
+          }
+
+          .value {
+            color: #1a1a2e;
+          }
+        }
+      }
+
+      .event-content-html {
+        color: rgba(0, 0, 0, 0.7);
+
+        h2,
+        h3,
+        h4 {
+          color: #1a1a2e;
+        }
+      }
+
+      .share-section {
+        border-color: rgba(0, 0, 0, 0.08);
+
+        > span {
+          color: rgba(0, 0, 0, 0.6);
+        }
+
+        .share-buttons button.copy {
+          background: rgba(0, 0, 0, 0.08);
+          color: #1a1a2e;
+
+          &:hover {
+            background: rgba(0, 0, 0, 0.12);
+          }
+        }
+      }
+    }
+  }
+}
+
+// ========================================
+// RESPONSIVE
+// ========================================
+@include tablet {
+  .events-content {
+    .calendar-sidebar {
+      order: -1;
+    }
+  }
+
+  .event-calendar {
+    position: static;
+  }
+}
+
+@include mobile {
+  .events-hero {
+    padding: 120px 16px 40px;
+    min-height: 35vh;
+
+    .hero-content .hero-text {
+      h1 {
+        font-size: 2rem;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .featured-events {
+    padding: 16px 16px 30px;
+
+    h2 {
+      font-size: 1.1rem;
+    }
+  }
+
+  .events-controls {
+    padding: 0 16px 24px;
+
+    .controls-container {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .view-toggle {
+      width: 100%;
+
+      button {
+        flex: 1;
+        justify-content: center;
+      }
+    }
+
+    .filter-tabs {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  .events-content {
+    padding: 0 16px 40px;
+    gap: 24px;
+  }
+
+  .events-grid {
+    gap: 16px;
+  }
+
+  .event-card .event-content {
+    padding: 16px;
+  }
+
+  .event-calendar {
+    padding: 16px;
+
+    .calendar-days .calendar-day .day-number {
+      font-size: 0.8rem;
+    }
+  }
+
+  .event-detail-modal {
+    .event-detail-content {
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      .event-details-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}

@@ -53,9 +53,13 @@ import {
   FaBell,
   FaPaperPlane,
   FaFile,
-  FaUpload
+  FaUpload,
+  FaBox,
+  FaCalendar
 } from 'react-icons/fa';
 import { MdPhotoLibrary, MdPending, MdVerified, MdNotifications } from 'react-icons/md';
+import { AdminProducts } from '../components/Admin/AdminProducts';
+import { AdminEvents } from '../components/Admin/AdminEvents';
 
 // Lista de emails de administradores autorizados (debe coincidir con api/lib/supabase.js)
 const ADMIN_EMAILS = [
@@ -1055,6 +1059,32 @@ export const Admin = () => {
                   ))}
                 </div>
               )}
+            </div>
+          </Tab>
+
+          <Tab
+            key="products"
+            title={
+              <div className="tab-title">
+                <FaBox />
+                <span>Productos</span>
+              </div>
+            }>
+            <div className="tab-content">
+              <AdminProducts />
+            </div>
+          </Tab>
+
+          <Tab
+            key="events"
+            title={
+              <div className="tab-title">
+                <FaCalendar />
+                <span>Eventos</span>
+              </div>
+            }>
+            <div className="tab-content">
+              <AdminEvents />
             </div>
           </Tab>
         </Tabs>

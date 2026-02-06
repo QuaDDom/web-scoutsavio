@@ -12,6 +12,8 @@ import { Admin } from './pages/admin';
 import { Profile } from './pages/profile';
 import { Forum } from './pages/forum';
 import { Notifications } from './pages/notifications';
+import { Store } from './pages/store';
+import { Events } from './pages/events';
 import { Specialties } from './components/Guide/Specialties';
 import { Progressions } from './components/Guide/Progressions';
 import { Branches } from './components/Guide/Branches';
@@ -33,6 +35,8 @@ function App() {
           <Route path="branches" element={<Branches />} />
         </Route>
         <Route path="/contacto" element={<Contact />} exact />
+        <Route path="/tienda" element={<Store />} exact />
+        <Route path="/eventos" element={<Events />} exact />
         <Route path="/admin" element={<Admin />} exact />
         <Route path="/perfil" element={<Profile />} exact />
         <Route path="/foro" element={<Forum />} exact />
