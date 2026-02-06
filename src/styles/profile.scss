@@ -579,6 +579,12 @@
       border-radius: 50px;
       font-size: 0.9rem;
 
+      .badge-img {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+      }
+
       &.progression {
         background: rgba(#f59e0b, 0.15);
         color: #f59e0b;
@@ -836,6 +842,12 @@
           svg {
             font-size: 24px;
             color: #fff;
+          }
+
+          .badge-img {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
           }
         }
 

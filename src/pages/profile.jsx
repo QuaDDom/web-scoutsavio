@@ -46,12 +46,125 @@ import {
 import { MdVerified, MdPhotoLibrary, MdSettings, MdBadge } from 'react-icons/md';
 import { FaCrown, FaShieldAlt } from 'react-icons/fa';
 
-// Datos de ramas
+// Imágenes de especialidades
+import arteImg from '../assets/specialties/arte.png';
+import cienciaImg from '../assets/specialties/ciencia.png';
+import deporteImg from '../assets/specialties/deporte.png';
+import espiritualidadImg from '../assets/specialties/espiritualidad.png';
+import naturalezaImg from '../assets/specialties/naturaleza.png';
+import servicioImg from '../assets/specialties/servicio.png';
+
+// Imágenes de progresiones - Manada
+import pataTiernaImg from '../assets/progressions/manada/Pata-Tierna.png';
+import saltadorImg from '../assets/progressions/manada/Saltador.png';
+import rastreadorImg from '../assets/progressions/manada/Rastreador.png';
+import cazadorImg from '../assets/progressions/manada/Cazador.png';
+import manadaCompletaImg from '../assets/progressions/manada/Completa.png';
+
+// Imágenes de progresiones - Unidad
+import pistaImg from '../assets/progressions/unidad/Pista.png';
+import sendaImg from '../assets/progressions/unidad/Senda.png';
+import rumboImg from '../assets/progressions/unidad/Rumbo.png';
+import travesiaImg from '../assets/progressions/unidad/Travesia.png';
+import unidadCompletaImg from '../assets/progressions/unidad/Completa.png';
+
+// Imágenes de progresiones - Caminantes
+import norteImg from '../assets/progressions/caminantes/Norte.png';
+import esteImg from '../assets/progressions/caminantes/Este.png';
+import surImg from '../assets/progressions/caminantes/Sur.png';
+import oesteImg from '../assets/progressions/caminantes/Oeste.png';
+import caminantesCompletaImg from '../assets/progressions/caminantes/Completa.png';
+
+// Imágenes de progresiones - Rovers
+import encuentroImg from '../assets/progressions/rovers/Encuentro.png';
+import compromisoImg from '../assets/progressions/rovers/Compromiso.png';
+import proyeccionImg from '../assets/progressions/rovers/Proyeccion.png';
+import roversCompletaImg from '../assets/progressions/rovers/Completa.png';
+
+// Datos de especialidades
+const specialtiesData = [
+  { id: 'arte', name: 'Arte', img: arteImg, color: '#9025bb' },
+  { id: 'ciencia', name: 'Ciencia y Tecnología', img: cienciaImg, color: '#00bfff' },
+  { id: 'deporte', name: 'Deporte', img: deporteImg, color: '#0e0d5d' },
+  { id: 'servicio', name: 'Servicio a los demás', img: servicioImg, color: '#e71b1b' },
+  { id: 'naturaleza', name: 'Naturaleza', img: naturalezaImg, color: '#1f6a2a' },
+  { id: 'espiritualidad', name: 'Espiritualidad', img: espiritualidadImg, color: '#f0e000' }
+];
+
+// Datos de ramas y progresiones con imágenes
 const branchesData = {
-  manada: { name: 'Manada', color: '#ff9800', age: '7-10 años', icon: '🐺' },
-  unidad: { name: 'Unidad', color: '#4caf50', age: '10-14 años', icon: '⚜️' },
-  caminantes: { name: 'Caminantes', color: '#2196f3', age: '14-18 años', icon: '🥾' },
-  rover: { name: 'Rover', color: '#e53935', age: '18-22 años', icon: '🔴' }
+  manada: {
+    name: 'Manada',
+    color: '#ff9800',
+    age: '7-10 años',
+    icon: '🐺',
+    progressions: [
+      { id: 'pata-tierna', name: 'Pata Tierna', img: pataTiernaImg },
+      { id: 'saltador', name: 'Saltador', img: saltadorImg },
+      { id: 'rastreador', name: 'Rastreador', img: rastreadorImg },
+      { id: 'cazador', name: 'Cazador', img: cazadorImg },
+      { id: 'completa', name: 'Progresión Completa', img: manadaCompletaImg }
+    ]
+  },
+  unidad: {
+    name: 'Unidad',
+    color: '#4caf50',
+    age: '10-14 años',
+    icon: '⚜️',
+    progressions: [
+      { id: 'pista', name: 'Pista', img: pistaImg },
+      { id: 'senda', name: 'Senda', img: sendaImg },
+      { id: 'rumbo', name: 'Rumbo', img: rumboImg },
+      { id: 'travesia', name: 'Travesía', img: travesiaImg },
+      { id: 'completa', name: 'Progresión Completa', img: unidadCompletaImg }
+    ]
+  },
+  caminantes: {
+    name: 'Caminantes',
+    color: '#2196f3',
+    age: '14-18 años',
+    icon: '🥾',
+    progressions: [
+      { id: 'norte', name: 'Norte', img: norteImg },
+      { id: 'este', name: 'Este', img: esteImg },
+      { id: 'sur', name: 'Sur', img: surImg },
+      { id: 'oeste', name: 'Oeste', img: oesteImg },
+      { id: 'completa', name: 'Progresión Completa', img: caminantesCompletaImg }
+    ]
+  },
+  rover: {
+    name: 'Rover',
+    color: '#e53935',
+    age: '18-22 años',
+    icon: '🔴',
+    progressions: [
+      { id: 'encuentro', name: 'Encuentro', img: encuentroImg },
+      { id: 'compromiso', name: 'Compromiso', img: compromisoImg },
+      { id: 'proyeccion', name: 'Proyección', img: proyeccionImg },
+      { id: 'completa', name: 'Progresión Completa', img: roversCompletaImg }
+    ]
+  }
+};
+
+// Función auxiliar para obtener imagen de progresión
+const getProgressionImage = (progressionName, branch) => {
+  const branchData = branchesData[branch];
+  if (!branchData) return null;
+  const prog = branchData.progressions.find(
+    (p) =>
+      p.name.toLowerCase() === progressionName?.toLowerCase() ||
+      p.id === progressionName?.toLowerCase().replace(/\s+/g, '-')
+  );
+  return prog?.img || null;
+};
+
+// Función auxiliar para obtener imagen de especialidad
+const getSpecialtyImage = (specialtyName) => {
+  const spec = specialtiesData.find(
+    (s) =>
+      s.name.toLowerCase() === specialtyName?.toLowerCase() || s.id === specialtyName?.toLowerCase()
+  );
+  return spec?.img || null;
 };
 
 // Componente principal del perfil
@@ -531,18 +644,43 @@ export const Profile = () => {
                         </div>
                       ) : (
                         <div className="badges-preview">
-                          {profile?.user_progressions?.slice(0, 4).map((prog) => (
-                            <div key={prog.id} className="badge-item progression">
-                              <FaMedal />
-                              <span>{prog.progression_name}</span>
-                            </div>
-                          ))}
-                          {profile?.user_specialties?.slice(0, 4).map((spec) => (
-                            <div key={spec.id} className="badge-item specialty">
-                              <FaStar />
-                              <span>{spec.specialty_name}</span>
-                            </div>
-                          ))}
+                          {profile?.user_progressions?.slice(0, 4).map((prog) => {
+                            const progImg = getProgressionImage(
+                              prog.progression_name,
+                              profile?.branch
+                            );
+                            return (
+                              <div key={prog.id} className="badge-item progression">
+                                {progImg ? (
+                                  <img
+                                    src={progImg}
+                                    alt={prog.progression_name}
+                                    className="badge-img"
+                                  />
+                                ) : (
+                                  <FaMedal />
+                                )}
+                                <span>{prog.progression_name}</span>
+                              </div>
+                            );
+                          })}
+                          {profile?.user_specialties?.slice(0, 4).map((spec) => {
+                            const specImg = getSpecialtyImage(spec.specialty_name);
+                            return (
+                              <div key={spec.id} className="badge-item specialty">
+                                {specImg ? (
+                                  <img
+                                    src={specImg}
+                                    alt={spec.specialty_name}
+                                    className="badge-img"
+                                  />
+                                ) : (
+                                  <FaStar />
+                                )}
+                                <span>{spec.specialty_name}</span>
+                              </div>
+                            );
+                          })}
                         </div>
                       )}
                     </CardBody>
@@ -662,20 +800,31 @@ export const Profile = () => {
                     </div>
                   ) : (
                     <div className="badges-grid">
-                      {profile?.user_progressions?.map((prog) => (
-                        <Card key={prog.id} className="badge-card progression">
-                          <CardBody>
-                            <div className="badge-icon">
-                              <FaMedal />
-                            </div>
-                            <h4>{prog.progression_name}</h4>
-                            <span className="badge-date">
-                              <FaCalendarAlt />
-                              {new Date(prog.awarded_at).toLocaleDateString('es-AR')}
-                            </span>
-                          </CardBody>
-                        </Card>
-                      ))}
+                      {profile?.user_progressions?.map((prog) => {
+                        const progImg = getProgressionImage(prog.progression_name, profile?.branch);
+                        return (
+                          <Card key={prog.id} className="badge-card progression">
+                            <CardBody>
+                              <div className="badge-icon">
+                                {progImg ? (
+                                  <img
+                                    src={progImg}
+                                    alt={prog.progression_name}
+                                    className="badge-img"
+                                  />
+                                ) : (
+                                  <FaMedal />
+                                )}
+                              </div>
+                              <h4>{prog.progression_name}</h4>
+                              <span className="badge-date">
+                                <FaCalendarAlt />
+                                {new Date(prog.awarded_at).toLocaleDateString('es-AR')}
+                              </span>
+                            </CardBody>
+                          </Card>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -702,25 +851,36 @@ export const Profile = () => {
                     </div>
                   ) : (
                     <div className="badges-grid">
-                      {profile?.user_specialties?.map((spec) => (
-                        <Card key={spec.id} className="badge-card specialty">
-                          <CardBody>
-                            <div className="badge-icon">
-                              <FaStar />
-                            </div>
-                            <h4>{spec.specialty_name}</h4>
-                            <Chip size="sm" className={`level-chip ${spec.level}`}>
-                              {spec.level === 'basic' && 'Básico'}
-                              {spec.level === 'advanced' && 'Avanzado'}
-                              {spec.level === 'master' && 'Maestro'}
-                            </Chip>
-                            <span className="badge-date">
-                              <FaCalendarAlt />
-                              {new Date(spec.awarded_at).toLocaleDateString('es-AR')}
-                            </span>
-                          </CardBody>
-                        </Card>
-                      ))}
+                      {profile?.user_specialties?.map((spec) => {
+                        const specImg = getSpecialtyImage(spec.specialty_name);
+                        return (
+                          <Card key={spec.id} className="badge-card specialty">
+                            <CardBody>
+                              <div className="badge-icon">
+                                {specImg ? (
+                                  <img
+                                    src={specImg}
+                                    alt={spec.specialty_name}
+                                    className="badge-img"
+                                  />
+                                ) : (
+                                  <FaStar />
+                                )}
+                              </div>
+                              <h4>{spec.specialty_name}</h4>
+                              <Chip size="sm" className={`level-chip ${spec.level}`}>
+                                {spec.level === 'basic' && 'Básico'}
+                                {spec.level === 'advanced' && 'Avanzado'}
+                                {spec.level === 'master' && 'Maestro'}
+                              </Chip>
+                              <span className="badge-date">
+                                <FaCalendarAlt />
+                                {new Date(spec.awarded_at).toLocaleDateString('es-AR')}
+                              </span>
+                            </CardBody>
+                          </Card>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
