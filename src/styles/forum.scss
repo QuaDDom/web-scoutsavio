@@ -1061,8 +1061,22 @@
       background: rgba(0, 0, 0, 0.04) !important;
     }
 
-    .reply-info .reply-author {
-      color: rgba(0, 0, 0, 0.9);
+    .reply-info {
+      .reply-author {
+        color: rgba(0, 0, 0, 0.9);
+      }
+
+      .reply-date {
+        color: rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    .reply-actions-right .reply-btn-nested {
+      color: rgba(0, 0, 0, 0.5);
+
+      &:hover {
+        color: $scout-orange;
+      }
     }
 
     .reply-body {

@@ -769,8 +769,18 @@
       }
     }
 
-    .badges-section .badges-label {
-      color: rgba(0, 0, 0, 0.5);
+    .badges-section {
+      .badges-label {
+        color: rgba(0, 0, 0, 0.5);
+      }
+
+      .badges-list .badge-item {
+        background: rgba(0, 0, 0, 0.05);
+        
+        .badge-img {
+          background: rgba(0, 0, 0, 0.08);
+        }
+      }
     }
   }
 
@@ -1050,6 +1060,12 @@ html.light {
       border-color: rgba(0, 0, 0, 0.1);
     }
 
+    .recipient-selector {
+      .recipient-label {
+        color: rgba(0, 0, 0, 0.9);
+      }
+    }
+
     .user-select-list {
       .select-hint,
       .no-users {
@@ -1060,9 +1076,17 @@ html.light {
     .attachment-item {
       background: rgba(0, 0, 0, 0.05);
 
+      .att-name {
+        color: #1a1a2e;
+      }
+
       .att-size {
         color: rgba(0, 0, 0, 0.5);
       }
+    }
+
+    .attachments-section .attachments-label {
+      color: #1a1a2e;
     }
   }
 }
