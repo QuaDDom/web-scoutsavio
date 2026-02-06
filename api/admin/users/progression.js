@@ -44,8 +44,7 @@ export default async function handler(req, res) {
     const { error } = await supabase.from('user_progressions').insert({
       user_id: userId,
       progression_id: progression.progression_id,
-      progression_name: progression.progression_name,
-      achieved_at: new Date().toISOString()
+      progression_name: progression.progression_name
     });
 
     if (error) throw error;

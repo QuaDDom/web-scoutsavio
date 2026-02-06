@@ -45,8 +45,7 @@ export default async function handler(req, res) {
       user_id: userId,
       specialty_id: specialty.specialty_id,
       specialty_name: specialty.specialty_name,
-      level: specialty.level || 'basic',
-      achieved_at: new Date().toISOString()
+      level: specialty.level || 'basic'
     });
 
     if (error) throw error;
