@@ -8,7 +8,7 @@ export const SEO = ({
   url = '',
   type = 'website'
 }) => {
-  const baseUrl = 'https://scoutsavio.vercel.app';
+  const baseUrl = 'https://scoutsavio.org';
   const fullUrl = `${baseUrl}${url}`;
   const fullTitle = title
     ? `${title} | Grupo Scout 331 Savio`

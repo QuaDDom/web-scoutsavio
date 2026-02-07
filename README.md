@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://web-scoutsavio-zkxw.vercel.app">
+  <a href="https://scoutsavio.org">
     <img src="https://img.shields.io/badge/🌐_Ver_Sitio-Live-success?style=for-the-badge" alt="Live Site" />
   </a>
   <img src="https://img.shields.io/badge/React-18.2-61DAFB?style=for-the-badge&logo=react" alt="React" />

@@ -3,7 +3,7 @@ import { Resend } from 'resend';
 // Solo inicializar Resend si hay API key configurada
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
-const FROM_EMAIL = 'Grupo Scout Savio <noreply@scoutsavio.vercel.app>';
+const FROM_EMAIL = 'Grupo Scout Savio <noreply@scoutsavio.org>';
 const ADMIN_EMAIL = 'scoutsavio331@gmail.com';
 
 // Notificar a admins de nueva subida
@@ -26,7 +26,7 @@ export async function notifyAdminsNewUpload(uploaderName, photosCount, category)
           <p><strong>${uploaderName}</strong> ha subido <strong>${photosCount} foto(s)</strong> a la galería.</p>
           <p><strong>Categoría:</strong> ${category}</p>
           <br/>
-          <a href="https://scoutsavio.vercel.app/admin" 
+          <a href="https://scoutsavio.org/admin" 
              style="background: linear-gradient(135deg, #e53935, #ff6b35); 
                     color: white; 
                     padding: 12px 24px; 
@@ -67,7 +67,7 @@ export async function notifyUserApproved(userEmail, userName, photosCount) {
           <p>Hola ${userName},</p>
           <p>¡Buenas noticias! Tus <strong>${photosCount} foto(s)</strong> fueron aprobadas y ya están visibles en nuestra galería.</p>
           <br/>
-          <a href="https://scoutsavio.vercel.app/galeria" 
+          <a href="https://scoutsavio.org/galeria" 
              style="background: linear-gradient(135deg, #e53935, #ff6b35); 
                     color: white; 
                     padding: 12px 24px; 

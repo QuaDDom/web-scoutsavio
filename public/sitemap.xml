@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://scoutsavio.vercel.app/</loc>
+    <loc>https://scoutsavio.org/</loc>
     <lastmod>2026-02-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://scoutsavio.vercel.app/sobre</loc>
+    <loc>https://scoutsavio.org/sobre</loc>
     <lastmod>2026-02-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://scoutsavio.vercel.app/guia</loc>
+    <loc>https://scoutsavio.org/guia</loc>
     <lastmod>2026-02-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://scoutsavio.vercel.app/guia/branches</loc>
+    <loc>https://scoutsavio.org/guia/branches</loc>
     <lastmod>2026-02-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://scoutsavio.vercel.app/guia/progressions</loc>
+    <loc>https://scoutsavio.org/guia/progressions</loc>
     <lastmod>2026-02-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://scoutsavio.vercel.app/guia/specialties</loc>
+    <loc>https://scoutsavio.org/guia/specialties</loc>
     <lastmod>2026-02-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://scoutsavio.vercel.app/galeria</loc>
+    <loc>https://scoutsavio.org/galeria</loc>
     <lastmod>2026-02-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://scoutsavio.vercel.app/contacto</loc>
+    <loc>https://scoutsavio.org/contacto</loc>
     <lastmod>2026-02-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
